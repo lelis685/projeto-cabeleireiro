@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 @Entity
 public class Cabeleleiro extends EntidadeAbstrata<Long> {
 
+	
 	private String razaoSocial;
 	private String nomeFantasia;
 	private String cnpj;
