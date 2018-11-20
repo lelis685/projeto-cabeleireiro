@@ -1,48 +1,52 @@
 <!DOCTYPE html>
-<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thym">
-
-
-
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-
-
-<title>CodePen - Log-in</title>
-
-<link rel='stylesheet'
-	href='http://codepen.io/assets/libs/fullpage/jquery-ui.css'>
-
-<link rel="stylesheet" href="css/style.css" media="screen"
-	type="text/css" />
+        <meta charset="utf-8">
+        <title>Login</title>
+        <meta name="author" content="Sleyter Bispo De Jesus e Marco Antonio">
+        <meta name="description" content="Projeto TCC Uninove">
+        <link rel="stylesheet" th:href="@{/css/estilo.css}">
+        <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+        
 
 </head>
-
 <body>
 
-	<div class="login-card">
-		<h1>Log-in</h1>
-		<br>
-		<form>
-			<input type="text" name="user" placeholder="Username"> <input
-				type="password" name="pass" placeholder="Password"> <input
-				type="submit" name="login" class="login login-submit" value="login">
-		</form>
 
-		<div class="login-help">
-			<a th:href="@{/registration}">Register</a>
-			• <a href="#">Forgot Password</a>
+  <div class="tipoContainer">
+
+  </div>
+
+  <div class="flex-md-row align-items-center
+  p-3 px-md-4 mb-3 bg-light border-bottom shadow-sm fixed-top containerMenu" id="menu">
+  <h5 class="my-0 mr-md-auto font-weight-normal tituloMenu">Cabeleireiro</h5>
+
+</div>
 
 
+    <div class="container">
 
-		</div>
-	</div>
-
-	<!-- <div id="error"><img src="https://dl.dropboxusercontent.com/u/23299152/Delete-icon.png" /> Your caps-lock is on.</div> -->
-
-	<script
-		src='http://codepen.io/assets/libs/fullpage/jquery_and_jqueryui.js'></script>
-
+    	<form action="" method="" accept-charset="utf-8" class="form-login">
+    		<h2 class="form-login-heading">Login</h2>
+        <br><br>
+    		<label for="inputEmail" class="sr-only">E-mail</label>
+    		<input type="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
+        <br>
+    		<label for="inputPassword" class="sr-only">Senha</label>
+    		<input type="Password" id="inputPassword" class="form-control" placeholder="Senha" required>
+    		<div class="checkbox">
+				<label>
+              <a class="itensLogin" href="">Esqueci minha Senha</a>
+              <br>
+              <a  class="itensLogin"  th:href="@{usuarios/cadastrar}">Quero me Cadastrar, sou Cliente!!</a>
+              <br>
+              <a  class="itensLogin"  th:href="@{cabeleireiros/cadastrar}" data-analytics="NavBarProfileDropDownSettings">
+                 Quero me Cadastrar, sou Cabeleireiro!!
+              </a>
+				</label>
+    		</div>
+    		<button type="submit" class="btn btn-lg btn-block btnLogin">Acessar</button>
+    	</form>
+    </div>
 </body>
-
 </html>

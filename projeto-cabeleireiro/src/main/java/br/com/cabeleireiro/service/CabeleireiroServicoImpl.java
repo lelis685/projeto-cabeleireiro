@@ -6,24 +6,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.cabeleireiro.dao.CabeleiroDAO;
-import br.com.cabeleireiro.domain.Cabeleleiro;
+import br.com.cabeleireiro.domain.Cabeleireiro;
 
 @Service 
 @Transactional
-public class CabeleleiroServicoImpl implements CabeleleiroServico {
+public class CabeleireiroServicoImpl implements CabeleireiroServico {
 
 
 	@Autowired
-	private CabeleiroDAO dao;
+	private CabeleireiroServico dao;
 
 	@Override
-	public void salva(Cabeleleiro cabeleiro) {
-		dao.salva(cabeleiro);
+	public void salva(Cabeleireiro cabeleireiro) {
+		dao.salva(cabeleireiro);
 	}
 
 	@Override
-	public void atualiza(Cabeleleiro cabeleiro) {
+	public void atualiza(Cabeleireiro cabeleiro) {
 		dao.atualiza(cabeleiro);
 	}
 
@@ -34,13 +33,13 @@ public class CabeleleiroServicoImpl implements CabeleleiroServico {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Cabeleleiro econtraPorId(Long id) {
+	public Cabeleireiro econtraPorId(Long id) {
 		return dao.econtraPorId(id);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Cabeleleiro> encontrarTodos() {
+	public List<Cabeleireiro> encontrarTodos() {
 		return dao.encontrarTodos();
 	}
 

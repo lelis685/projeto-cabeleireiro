@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Cadastro Cabeleireiro</title>
+<link rel="stylesheet" th:href="@{/css/estiloCabeleireiro.css}">
+
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+
+
+
+
+</head>
+<body>
+	<div class="tipoContainer"></div>
+
+	<div
+		class="flex-md-row align-items-center
+    p-3 px-md-4 mb-3 bg-light border-bottom shadow-sm fixed-top containerMenu"
+		id="menu">
+		<h5 class="my-0 mr-md-auto font-weight-normal tituloMenu">Cabeleireiro</h5>
+
+	</div>
+
+
+	<div class="loginbox">
+		<img th:src="@{/imagens/logo-cabeleireiro.jpg}" class="avatar">
+		<h1>Inicie o cadastro do Cabeleireiro</h1>
+		<form action="index.html" method="POST">
+
+			<p>Nome do Esbalecimento</p>
+			<input id="" type="text" name=""
+				placeholder="Informe o nome do estabelecimento">
+
+			<p>CNPJ</p>
+			<input id="" type="text" name="" placeholder="Informe o CNPJ">
+
+			<p>Telefone</p>
+			<input id="" type="text" name="" placeholder="Informe o telefone">
+
+			<p>E-mail</p>
+			<input id="" type="text" name="" placeholder="Informe o email">
+
+
+           <p>Estado</p>
+			<select>
+				<option
+					th:each="estado : ${T(br.com.cabeleireiro.domain.UF).values()}"
+					th:value="estado" th:text="${estado.nomeEstado}"></option>
+			</select><br><br>
+
+
+			<p>Cidade</p>
+			<input id="" type="text" name="" placeholder="Informe a cidade">
+
+			<p>Logradouro</p>
+			<input id="" type="text" name="" placeholder="Informe o logradouro">
+
+			<p>Bairro</p>
+			<input id="" type="text" name="" placeholder="Informe a cidade">
+
+			<p>Número</p>
+			<input id="" type="number" name="" placeholder="Informe o número">
+
+			<p>CEP</p>
+			<input id="" type="text" name="" placeholder="Informe o CEP">
+
+			<p>Complemento</p>
+			<input id="" type="text" name="" placeholder="Informe o complemento">
+
+
+			<p>Senha</p>
+			<input id="" type="password" name="" placeholder="Informe a Senha">
+
+			<p>Cofirme Senha</p>
+			<input id="" type="password" name="" placeholder="Confirme a Senha">
+
+			<input id="enviar" type="submit" name="enviaCadastro"
+				value="Cadastar">
+
+            <p class="linkQualquer"> <a th:href="@{/login}">Ir pro Login.</a></p>
+		</form>
+	</div>
+
+
+</body>
+</html>

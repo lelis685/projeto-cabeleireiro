@@ -11,10 +11,5 @@ public class HomeController {
 		return "login";
 	}
 	
-	@RequestMapping("/registration")
-	public String registrar() {
-		return "registration";
-	}
-	
 
 }
