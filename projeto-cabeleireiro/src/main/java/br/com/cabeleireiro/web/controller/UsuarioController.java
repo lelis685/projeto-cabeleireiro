@@ -11,20 +11,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import br.com.cabeleireiro.domain.Cabeleireiro;
 import br.com.cabeleireiro.domain.Usuario;
 import br.com.cabeleireiro.service.UsuarioServico;
 
 @Controller
 @RequestMapping("/usuarios")
 public class UsuarioController {
-
 	
 	@Autowired
 	private UsuarioServico usuarioServico;
 	
 	@GetMapping("/cadastrar")
-	public String cadastrar(Cabeleireiro cabeleireiro) {
+	public String cadastrar(Usuario usuario) {
 		return "usuario/cadastro-usuario";
 	}
 	
@@ -39,13 +37,23 @@ public class UsuarioController {
 	public String salvar(@Valid Usuario usuario, BindingResult result, RedirectAttributes attr) {
 		
 		if (result.hasErrors()) {
-			return "cadastro-usuario";
+			return "funcionario/cadastro";
 		}
-		
+	
 		usuarioServico.salva(usuario);
 		attr.addFlashAttribute("success", "Usuário cadastrado com sucesso.");
-		return "redirect:/cadastrar";
+
+		return "redirect:/login";
 	}
+	/*
+	@RequestMapping(value="/person", method=RequestMethod.POST)
+	public String contactSubmit(@ModelAttribute Person person, BindingResult bindingResult, Model model) {
+	    if (bindingResult.hasErrors()) {
+	        //errors processing
+	    }  
+	    model.addAttribute("person", person);
+	    return "result";
+	}*/
 	
 	
 	

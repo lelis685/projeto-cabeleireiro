@@ -62,17 +62,5 @@ public abstract class AbstratoDAO<T, PK extends Serializable> {
 	}
 
 
-	/*
-	 * return um objeto params: jpql , valor dos parametros
-	 */
-	protected T createQuerySingleResult(String jpql, Object... params) {
-		TypedQuery<T> query = entidadeGerenciadora.createQuery(jpql, classeEntidade);
-		for (int i = 0; i < params.length; i++) {
-			query.setParameter(i + 1, params[i]);
-		}
-		return query.getSingleResult();
-	}
-	
-	
-	
+
 }

@@ -3,9 +3,13 @@ package br.com.cabeleireiro.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.cabeleireiro.dao.UsuarioDAO;
 import br.com.cabeleireiro.domain.Usuario;
 
 @Service 
@@ -14,7 +18,7 @@ public class UsuarioServicoImpl implements UsuarioServico {
 
 
 	@Autowired
-	private UsuarioServico dao;
+	private UsuarioDAO dao;
 
 	@Override
 	public void salva(Usuario usuario) {
@@ -45,5 +49,6 @@ public class UsuarioServicoImpl implements UsuarioServico {
 
 
 
+   
 
 }
