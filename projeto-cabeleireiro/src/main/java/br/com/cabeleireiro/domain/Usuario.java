@@ -19,7 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = "usuario")
-public class Usuario extends EntidadeAbstrata<Long> implements UserDetails {
+public class Usuario extends EntidadeAbstrata<Long> implements UserDetails  {
 
 	private static final long serialVersionUID = 1L;
 

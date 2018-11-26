@@ -1,47 +1,46 @@
 package br.com.cabeleireiro.config;
 
-import javax.annotation.Resource;
-
-import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import br.com.cabeleireiro.service.UsuarioServico;
 
 @Configuration
 @EnableWebSecurity
-public class SegurancaConfiguracao extends WebSecurityConfigurerAdapter {
+public class SegurancaConfiguracao extends WebSecurityConfigurerAdapter{
 
-	
+	@Autowired
+	private UsuarioServico usuarioServico;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		// csrf habilita a protecao do lado do servidor
 
-		http.csrf().requireCsrfProtectionMatcher(new AntPathRequestMatcher("**/login"))
-		.and().authorizeRequests().antMatchers("/painel").hasRole("USER")
-		.and().formLogin().defaultSuccessUrl("/painel").loginPage("/login")
-		.and().logout().permitAll();
 
-		super.configure(http);
-	}
-
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		PasswordEncoder encoder = new BCryptPasswordEncoder();
-		return encoder;
+		http.authorizeRequests()
+		    .antMatchers("/painel").hasRole("USER")
+		    .antMatchers("/cadastro-usuario").permitAll()
+		    .antMatchers("/cadastro-cabeleireiro").permitAll()
+		   
+//		    .antMatchers(HttpMethod.POST,"/produtos").hasRole("ADMIN")
+//		    .antMatchers(HttpMethod.GET,"/produtos").hasRole("ADMIN")
+		  
+		    .antMatchers("/resources/**").permitAll()   
+		    .antMatchers("/").permitAll()   
+		    .anyRequest().authenticated() // qualquer requisição deve ser autenticada caso contrario envia para form de login
+		    .and().formLogin().loginPage("/login").permitAll()
+		    .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"));     // logoutRequestMatcher -> qual url ira funcionar 
+		
 	}
 	
-	@Override
-	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/*.css");
-		web.ignoring().antMatchers("/*.js");
-	}
+
+
 	
 	
 

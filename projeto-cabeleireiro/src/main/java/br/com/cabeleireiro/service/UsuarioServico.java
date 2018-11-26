@@ -4,7 +4,7 @@ import java.util.List;
 
 import br.com.cabeleireiro.domain.Usuario;
 
-public interface UsuarioServico {
+public interface UsuarioServico  {
 	
 	void salva(Usuario usuario);
 	void atualiza(Usuario usuario);
