@@ -1,47 +1,78 @@
 package br.com.cabeleireiro.config;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import br.com.cabeleireiro.service.UsuarioServico;
-
 @Configuration
 @EnableWebSecurity
 public class SegurancaConfiguracao extends WebSecurityConfigurerAdapter{
 
+
 	@Autowired
-	private UsuarioServico usuarioServico;
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+	@Autowired
+	private DataSource dataSource;
+
+	@Value("${spring.queries.select-usuario}")
+	private String selectUsuarios;
+
+	@Value("${spring.queries.select-role}")
+	private String selectRoles;
+
 
 	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		// csrf habilita a protecao do lado do servidor
-
-
-		http.authorizeRequests()
-		    .antMatchers("/painel").hasRole("USER")
-		    .antMatchers("/cadastro-usuario").permitAll()
-		    .antMatchers("/cadastro-cabeleireiro").permitAll()
-		   
-//		    .antMatchers(HttpMethod.POST,"/produtos").hasRole("ADMIN")
-//		    .antMatchers(HttpMethod.GET,"/produtos").hasRole("ADMIN")
-		  
-		    .antMatchers("/resources/**").permitAll()   
-		    .antMatchers("/").permitAll()   
-		    .anyRequest().authenticated() // qualquer requisição deve ser autenticada caso contrario envia para form de login
-		    .and().formLogin().loginPage("/login").permitAll()
-		    .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"));     // logoutRequestMatcher -> qual url ira funcionar 
-		
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth
+		.jdbcAuthentication()
+		.usersByUsernameQuery(selectUsuarios)  
+		.authoritiesByUsernameQuery(selectRoles)
+		.dataSource(dataSource)
+		.passwordEncoder(bCryptPasswordEncoder);
 	}
 	
+	
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		
+		http
+		  .authorizeRequests()
+		  .antMatchers("/").permitAll()
+		  .antMatchers("/login").permitAll()
+		  .antMatchers("/cabeleireiro/**").permitAll()
+		  .antMatchers("/usuarios/**").permitAll()
+		  .antMatchers("/admin/**").hasAnyAuthority("ADMIN").anyRequest()
+		  .authenticated()
+		  .antMatchers("/").permitAll()
+          .antMatchers("/login").permitAll()
+          .and().csrf().disable().formLogin()
+          .loginPage("/login").failureUrl("/login?error=true")
+          .usernameParameter("email")
+          .passwordParameter("senha")
+          .and().logout()
+          .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+          .logoutSuccessUrl("/").and().exceptionHandling()
+          .accessDeniedPage("/acesso-negado");
+		
+	}
+
+	 @Override
+	    public void configure(WebSecurity web) throws Exception {
+	        web
+	                .ignoring()
+	                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/imagens/**");
+	    }
 
 
-	
-	
 
 }

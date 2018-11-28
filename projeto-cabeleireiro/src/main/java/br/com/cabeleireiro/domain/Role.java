@@ -1,31 +1,38 @@
 package br.com.cabeleireiro.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.springframework.security.core.GrantedAuthority;
-
 @Entity
-@Table(name = "autoridades")
-public class Role implements GrantedAuthority{
-
-	private static final long serialVersionUID = 1L;
+@Table(name = "role")
+public class Role {
 
 	@Id
-	private String nome;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "role_id")
+	private Long id;
 
-	public String getNome() {
-		return nome;
+	@Column(name = "role")
+	private String role;
+
+	public Long getId() {
+		return id;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	@Override
-	public String getAuthority() {
-		return this.nome;
+	public String getRole() {
+		return role;
 	}
-	
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
 }

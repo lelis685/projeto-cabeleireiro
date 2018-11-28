@@ -19,21 +19,7 @@
 		<h5 class="my-0 mr-md-auto font-weight-normal tituloMenu">Cabeleireiro</h5>
 
 	</div>
-
-	<!--  <form th:action="${funcionario.id == null} ? @{/funcionarios/salvar} : @{/funcionarios/editar}" 
-	                  th:object="${funcionario}" method="POST">
-	                  
-	                  
-	                   <div class="form-row">
-	                    <div class="form-group col-md-6">
-	                        <label for="nome">Nome do Funcionário</label>
-	                        <input type="text" class="form-control" id="nome" placeholder="Nome Completo"
-	                               autofocus="autofocus" th:field="*{nome}" 
-	                               th:classappend="${#fields.hasErrors('nome')} ? 'is-invalid'" />
-	                        <div class="invalid-feedback">
-								<span th:errors="*{nome}"></span>
-	                        </div>
-	                    </div>-->
+	
 
 	<div class="loginbox">
 		<img th:src="@{/imagens/avatar.png}" class="avatar">
@@ -41,37 +27,54 @@
 		
 		<form th:action="@{/usuarios/salvar}" th:object="${usuario}"method="POST">
 
-			<p>Nome</p>
+			<p>
+			<label th:if="${#fields.hasErrors('nome')}"  th:errors="*{nome}"
+			   class="validation-message">Nome</label>
+			</p>
 			<input id="nome" type="text" autofocus="autofocus" th:field="*{nome}"
 				name="nome" placeholder="Informe o nome"/>
 			
 
-			<p>Sobrenome</p>
+			<p>
+			<label th:if="${#fields.hasErrors('sobreNome')}"  th:errors="*{sobreNome}"
+			   class="validation-message">Sobrenome</label>
+			</p>
 			<input id="sobreNome" type="text" name="sobreNome"
 				autofocus="autofocus" th:field="*{sobreNome}"
 				placeholder="Informe o sobrenome" />
 		
 
-			<p>Celular</p>
+			<p>
+			<label th:if="${#fields.hasErrors('celular')}"  th:errors="*{celular}"
+			   class="validation-message">Celular</label>
+			</p>
 			<input id="celular" type="text" name="celular" autofocus="autofocus"
 				th:field="*{celular}" placeholder="Informe o celular" />
 			
 
 
-			<p>E-mail</p>
+			<p>
+			<label th:if="${#fields.hasErrors('email')}"  th:errors="*{email}"
+			   class="validation-message">E-mail</label>
+			</p>
 			<input id="email" type="email" name="email" autofocus="autofocus"
 				th:field="*{email}" placeholder="Informe o email" />
 			
 
-			<p>Data de Nascimento</p>
+			 <p>
+			<label th:if="${#fields.hasErrors('dataNascimento')}"  th:errors="*{dataNascimento}"
+			   class="validation-message">Data Nascimento</label>
+			</p>
 			<input id="dataNascimento" type="date" name="dataNascimento"
 				autofocus="autofocus" th:field="*{dataNascimento}"  />
 
-			<p>Senha</p>
+			 <p>
+			<label th:if="${#fields.hasErrors('senha')}"  th:errors="*{senha}"
+			   class="validation-message">Senha</label>
+			</p>
 			<input id="senha" type="password" name="senha" autofocus="autofocus"
 				th:field="*{senha}" placeholder="Informe a Senha"  />
 				
-
 
 			<input type="hidden" id="id" th:field="*{id}" /> 
 			<input id="enviar" type="submit" name="enviaCadastro" value="Cadastar">
@@ -79,6 +82,8 @@
 			<p class="linkQualquer">
 				<a th:href="@{/login}">Ir pro Login.</a>
 			</p>
+			
+			  <h3><span class="text-success" th:utext="${msgSucesso}"></span></h3>
 
 		</form>
 	</div>

@@ -1,49 +1,65 @@
 package br.com.cabeleireiro.domain;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = "usuario")
-public class Usuario extends EntidadeAbstrata<Long> implements UserDetails  {
+public class Usuario extends EntidadeAbstrata<Long> {
+
 
 	private static final long serialVersionUID = 1L;
 
 	@Column(nullable = false)
+	@NotEmpty(message ="*Por favor preencha seu nome")
 	private String nome;
 
-	@Column(nullable = false)
+	@Column(nullable = false, name="sobre_nome")
+	@NotEmpty(message ="*Por favor preencha seu sobrenome")
 	private String sobreNome;
 
 	@Column(nullable = false)
 	private String celular;
 
 	@DateTimeFormat(iso = ISO.DATE)
-	@Column(name = "data_saida", columnDefinition = "DATE")
+	@Column(name = "data_nascimento", columnDefinition = "DATE")
+	//@NotEmpty(message ="*Por favor preencha sua data de nascimento")
 	private LocalDate dataNascimento;
+	
+
 
 	@Column(nullable = false)
+	@Email(message = "*Por favor preencha um email válido")
+	@NotEmpty(message ="*Por favor preencha seu email")
 	private String email;
 
+	@Column(name = "ativo")
+	private int ativo;
+
 	@Column(nullable = false)
+	@Length(min = 5, message = "*Sua senha deve ter no mínimo 5 caracteres")
+	@NotEmpty(message = "*Por favor preencha sua senha")
 	private String senha;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-	private List<Role> roles = new ArrayList<Role>();
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "usuario_role", 
+	joinColumns = @JoinColumn(name = "usuario_id"), 
+	inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<Role> roles;
 
 	public Usuario() {
 	}
@@ -106,47 +122,20 @@ public class Usuario extends EntidadeAbstrata<Long> implements UserDetails  {
 		this.senha = senha;
 	}
 
-	public List<Role> getRoles() {
+	public Set<Role> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(List<Role> roles) {
+	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return this.roles;
+	public int getAtivo() {
+		return ativo;
 	}
 
-	@Override
-	public String getPassword() {
-		return this.senha;
-	}
-
-	@Override
-	public String getUsername() {
-		return this.email;
-	}
-
-	@Override
-	public boolean isAccountNonExpired() {
-		return true;
-	}
-
-	@Override
-	public boolean isAccountNonLocked() {
-		return true;
-	}
-
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
-
-	@Override
-	public boolean isEnabled() {
-		return true;
+	public void setAtivo(int ativo) {
+		this.ativo = ativo;
 	}
 
 }
