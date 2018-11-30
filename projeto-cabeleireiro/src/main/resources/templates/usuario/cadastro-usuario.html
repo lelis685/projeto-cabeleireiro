@@ -3,10 +3,9 @@
 <head>
 <meta charset="utf-8">
 <title>Cadastro Cliente</title>
-<link rel="stylesheet" th:href="@{/css/estiloCliente.css}">
 
 <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-
+<link rel="stylesheet" th:href="@{/css/estiloCliente.css}">
 
 </head>
 <body>
@@ -19,75 +18,88 @@
 		<h5 class="my-0 mr-md-auto font-weight-normal tituloMenu">Cabeleireiro</h5>
 
 	</div>
-	
+
 
 	<div class="loginbox">
 		<img th:src="@{/imagens/avatar.png}" class="avatar">
 		<h1>Inicie o cadastro do Cliente</h1>
-		
-		<form th:action="@{/usuarios/salvar}" th:object="${usuario}"method="POST">
+
+    <div th:if="${msgSucesso} != null">
+		<div class="alert">
+			<span class="closebtn"
+				onclick="this.parentElement.style.display='none';">&times;</span>
+			<span class=alert th:utext="${msgSucesso}" ></span>
+		</div>
+	 </div>
+
+		<form th:action="@{/usuarios/salvar}" th:object="${usuario}"
+			method="POST">
 
 			<p>
-			<label th:if="${#fields.hasErrors('nome')}"  th:errors="*{nome}"
-			   class="validation-message">Nome</label>
+				<label th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"
+					class="validation-message"></label>
 			</p>
+			<label>Nome</label>
 			<input id="nome" type="text" autofocus="autofocus" th:field="*{nome}"
-				name="nome" placeholder="Informe o nome"/>
-			
+				name="nome" placeholder="Informe o nome" />
+
 
 			<p>
-			<label th:if="${#fields.hasErrors('sobreNome')}"  th:errors="*{sobreNome}"
-			   class="validation-message">Sobrenome</label>
+				<label th:if="${#fields.hasErrors('sobreNome')}"
+					th:errors="*{sobreNome}" class="validation-message"></label>
 			</p>
+			<label>Sobrenome</label>
 			<input id="sobreNome" type="text" name="sobreNome"
 				autofocus="autofocus" th:field="*{sobreNome}"
 				placeholder="Informe o sobrenome" />
-		
+
 
 			<p>
-			<label th:if="${#fields.hasErrors('celular')}"  th:errors="*{celular}"
-			   class="validation-message">Celular</label>
+				<label th:if="${#fields.hasErrors('celular')}"
+					th:errors="*{celular}" class="validation-message"></label>
 			</p>
+			<label>Celular</label>
 			<input id="celular" type="text" name="celular" autofocus="autofocus"
 				th:field="*{celular}" placeholder="Informe o celular" />
-			
+
 
 
 			<p>
-			<label th:if="${#fields.hasErrors('email')}"  th:errors="*{email}"
-			   class="validation-message">E-mail</label>
+				<label th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+					class="validation-message"></label>
 			</p>
+			<label>E-mail</label>
 			<input id="email" type="email" name="email" autofocus="autofocus"
 				th:field="*{email}" placeholder="Informe o email" />
-			
 
-			 <p>
-			<label th:if="${#fields.hasErrors('dataNascimento')}"  th:errors="*{dataNascimento}"
-			   class="validation-message">Data Nascimento</label>
+
+			<p>
+				<label th:if="${#fields.hasErrors('dataNascimento')}"
+					th:errors="*{dataNascimento}" class="validation-message"></label>
 			</p>
+			<label>Data Nascimento</label>
 			<input id="dataNascimento" type="date" name="dataNascimento"
-				autofocus="autofocus" th:field="*{dataNascimento}"  />
+				autofocus="autofocus" th:field="*{dataNascimento}" />
 
-			 <p>
-			<label th:if="${#fields.hasErrors('senha')}"  th:errors="*{senha}"
-			   class="validation-message">Senha</label>
+			<p>
+				<label th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}"
+					class="validation-message"></label>
 			</p>
+			<label>Senha</label>
 			<input id="senha" type="password" name="senha" autofocus="autofocus"
-				th:field="*{senha}" placeholder="Informe a Senha"  />
-				
-
-			<input type="hidden" id="id" th:field="*{id}" /> 
-			<input id="enviar" type="submit" name="enviaCadastro" value="Cadastar">
+				th:field="*{senha}" placeholder="Informe a Senha" /> <input
+				type="hidden" id="id" th:field="*{id}" /> <input id="enviar"
+				type="submit" name="enviaCadastro" value="Cadastar">
 
 			<p class="linkQualquer">
 				<a th:href="@{/login}">Ir pro Login.</a>
 			</p>
-			
-			  <h3><span class="text-success" th:utext="${msgSucesso}"></span></h3>
+
+			<h3>
+				
+			</h3>
 
 		</form>
 	</div>
-
-
 </body>
 </html>

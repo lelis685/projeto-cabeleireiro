@@ -12,6 +12,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -33,14 +34,13 @@ public class Usuario extends EntidadeAbstrata<Long> {
 	private String sobreNome;
 
 	@Column(nullable = false)
+	@NotEmpty(message ="*Por favor preencha seu celular")
 	private String celular;
 
 	@DateTimeFormat(iso = ISO.DATE)
 	@Column(name = "data_nascimento", columnDefinition = "DATE")
-	//@NotEmpty(message ="*Por favor preencha sua data de nascimento")
+	@NotNull(message = "*Por favor preencha sua data de nascimento")
 	private LocalDate dataNascimento;
-	
-
 
 	@Column(nullable = false)
 	@Email(message = "*Por favor preencha um email válido")

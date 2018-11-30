@@ -77,7 +77,7 @@ body{
 .loginbox{
   background: linear-gradient(to right, #2b2b2b 0%, #574f2f 100%);
   width: 50%;
-  height: 850px;
+  height: 1000px;
   color: #fff;
   margin-left: 50%;
   margin-right: 50%;
@@ -179,3 +179,39 @@ h1{
 .loginbox ::placeholder{
   color: #fff;
 }
+.validation-message {
+    font-style: normal;
+    font-size: 12px;
+    color: #fffab3;
+}
+
+
+/* The alert message box */
+.alert {
+    padding: 10px;
+    background-color: #fffab3; /* Red */
+    color: black;
+    margin-bottom: 8px;
+    align-items: center;
+  font-weight: bold;
+}
+
+/* The close button */
+.closebtn {
+	  align-items: center;
+    margin-left: 15px;
+    color: black;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* When moving the mouse over the close button */
+.closebtn:hover {
+    color: black;
+}
+
+
