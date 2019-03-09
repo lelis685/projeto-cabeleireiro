@@ -68,7 +68,7 @@ public class SegurancaConfiguracao extends WebSecurityConfigurerAdapter{
 
 	 @Override
 	    public void configure(WebSecurity web) throws Exception {
-			System.out.println("configure");
+		
 
 		 web
 	                .ignoring()
