@@ -1,15 +1,20 @@
 package br.com.cabeleireiro.domain;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.Collection;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -19,22 +24,23 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 @Entity
-@Table(name = "usuario")
-public class Usuario extends EntidadeAbstrata<Long> {
+@Table(name = "usuario", uniqueConstraints = @UniqueConstraint(columnNames = "email", name = "ck_email_unique"))
+public class Usuario {
 
-
-	private static final long serialVersionUID = 1L;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
 	@Column(nullable = false)
-	@NotEmpty(message ="*Por favor preencha seu nome")
+	@NotEmpty(message = "*Por favor preencha seu nome")
 	private String nome;
 
-	@Column(nullable = false, name="sobre_nome")
-	@NotEmpty(message ="*Por favor preencha seu sobrenome")
+	@Column(nullable = false, name = "sobre_nome")
+	@NotEmpty(message = "*Por favor preencha seu sobrenome")
 	private String sobreNome;
 
 	@Column(nullable = false)
-	@NotEmpty(message ="*Por favor preencha seu celular")
+	@NotEmpty(message = "*Por favor preencha seu celular")
 	private String celular;
 
 	@DateTimeFormat(iso = ISO.DATE)
@@ -44,7 +50,7 @@ public class Usuario extends EntidadeAbstrata<Long> {
 
 	@Column(nullable = false)
 	@Email(message = "*Por favor preencha um email válido")
-	@NotEmpty(message ="*Por favor preencha seu email")
+	@NotEmpty(message = "*Por favor preencha seu email")
 	private String email;
 
 	@Column(name = "ativo")
@@ -55,11 +61,14 @@ public class Usuario extends EntidadeAbstrata<Long> {
 	@NotEmpty(message = "*Por favor preencha sua senha")
 	private String senha;
 
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "usuario_role", 
-	joinColumns = @JoinColumn(name = "usuario_id"), 
-	inverseJoinColumns = @JoinColumn(name = "role_id"))
-	private Set<Role> roles;
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(
+			name = "usuarios_roles", 
+			joinColumns = @JoinColumn(
+					name = "usuario_id", referencedColumnName = "id"), 
+			inverseJoinColumns = @JoinColumn(
+					name = "role_id", referencedColumnName = "id"))
+	private Collection<Role> roles;
 
 	public Usuario() {
 	}
@@ -72,6 +81,25 @@ public class Usuario extends EntidadeAbstrata<Long> {
 		this.dataNascimento = dataNascimento;
 		this.email = email;
 		this.senha = senha;
+	}
+
+	public Usuario(String nome, String sobreNome, String celular, LocalDate dataNascimento, String email, String senha,
+			Collection<Role> roles) {
+		this.nome = nome;
+		this.sobreNome = sobreNome;
+		this.celular = celular;
+		this.dataNascimento = dataNascimento;
+		this.email = email;
+		this.senha = senha;
+		this.roles = roles;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getSobreNome() {
@@ -122,11 +150,11 @@ public class Usuario extends EntidadeAbstrata<Long> {
 		this.senha = senha;
 	}
 
-	public Set<Role> getRoles() {
+	public Collection<Role> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(Set<Role> roles) {
+	public void setRoles(Collection<Role> roles) {
 		this.roles = roles;
 	}
 
@@ -137,5 +165,14 @@ public class Usuario extends EntidadeAbstrata<Long> {
 	public void setAtivo(int ativo) {
 		this.ativo = ativo;
 	}
+
+	@Override
+	public String toString() {
+		return "Usuario [id=" + id + ", nome=" + nome + ", sobreNome=" + sobreNome + ", celular=" + celular
+				+ ", dataNascimento=" + dataNascimento + ", email=" + email + ", ativo=" + ativo + ", senha=" + senha
+				+ ", roles=" + roles + "]";
+	}
+	
+	
 
 }

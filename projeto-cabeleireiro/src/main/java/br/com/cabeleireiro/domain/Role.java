@@ -1,23 +1,27 @@
 package br.com.cabeleireiro.domain;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "role")
 public class Role {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "role_id")
 	private Long id;
 
-	@Column(name = "role")
-	private String role;
+	private String nome;
+
+	public Role() {
+		super();
+	}
+
+	public Role(String nome) {
+		super();
+		this.nome = nome;
+	}
 
 	public Long getId() {
 		return id;
@@ -27,12 +31,17 @@ public class Role {
 		this.id = id;
 	}
 
-	public String getRole() {
-		return role;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setRole(String role) {
-		this.role = role;
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	@Override
+	public String toString() {
+		return "Role [id=" + id + ", nome=" + nome + "]";
 	}
 
 }

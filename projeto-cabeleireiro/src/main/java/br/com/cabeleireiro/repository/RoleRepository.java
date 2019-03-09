@@ -8,6 +8,6 @@ import br.com.cabeleireiro.domain.Role;
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Integer> {
 
-	Role findByRole(String role);
+	Role findByNome(String nome);
 
 }

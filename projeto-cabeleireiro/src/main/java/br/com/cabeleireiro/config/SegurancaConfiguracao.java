@@ -39,6 +39,7 @@ public class SegurancaConfiguracao extends WebSecurityConfigurerAdapter{
 		.authoritiesByUsernameQuery(selectRoles)
 		.dataSource(dataSource)
 		.passwordEncoder(bCryptPasswordEncoder);
+		System.out.println("configure");
 	}
 	
 	
@@ -49,26 +50,27 @@ public class SegurancaConfiguracao extends WebSecurityConfigurerAdapter{
 		  .authorizeRequests()
 		  .antMatchers("/").permitAll()
 		  .antMatchers("/login").permitAll()
-		  .antMatchers("/cabeleireiro/**").permitAll()
+		  .antMatchers("/cabeleireiros/**").permitAll()
 		  .antMatchers("/usuarios/**").permitAll()
 		  .antMatchers("/admin/**").hasAnyAuthority("ADMIN").anyRequest()
-		  .authenticated()
-		  .antMatchers("/").permitAll()
-          .antMatchers("/login").permitAll()
-          .and().csrf().disable().formLogin()
+		  .authenticated() .and().csrf().disable().formLogin()
           .loginPage("/login").failureUrl("/login?error=true")
+          .defaultSuccessUrl("/usuarios/usuario/pos-login-usuario")
           .usernameParameter("email")
           .passwordParameter("senha")
           .and().logout()
           .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
           .logoutSuccessUrl("/").and().exceptionHandling()
           .accessDeniedPage("/acesso-negado");
-		
+		System.out.println("configure");
+
 	}
 
 	 @Override
 	    public void configure(WebSecurity web) throws Exception {
-	        web
+			System.out.println("configure");
+
+		 web
 	                .ignoring()
 	                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/imagens/**");
 	    }

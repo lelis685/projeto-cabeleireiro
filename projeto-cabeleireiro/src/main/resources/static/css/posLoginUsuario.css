@@ -1,0 +1,36 @@
+#barra-navegacao{
+	float: right;
+	padding-top: 30px;
+	color: black;
+}
+
+body{
+
+
+
+}
+
+tr.azul{
+	color: white;
+	background: blue;
+}
+
+h1{
+	color: black;
+}
+
+a:link {
+   text-decoration:none;
+}
+
+a:visited {
+    color: black;
+}
+
+a:hover {
+    color: black;
+}
+
+a:active {
+    color: black;
+}

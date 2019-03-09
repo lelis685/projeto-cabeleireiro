@@ -20,21 +20,26 @@ public class UsuarioServico  {
 	private RoleRepository roleRepository;
 
 	@Autowired
-	public UsuarioServico(UsuarioRepository usuarioRepository, BCryptPasswordEncoder bCryptPasswordEncoder,
+	public UsuarioServico(UsuarioRepository usuarioRepository,
+			BCryptPasswordEncoder bCryptPasswordEncoder,
 			RoleRepository roleRepository) {
 		this.usuarioRepository = usuarioRepository;
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 		this.roleRepository = roleRepository;
+		System.out.println("UsuarioServico");
+
 	}
 	
 	public Usuario encontrarUsuarioPorEmail(String email) {
+		System.out.println("encontrarUsuarioPorEmail");
 		return usuarioRepository.findByEmail(email);
+		
 	}
 	
 	public Usuario salvarUsuario(Usuario usuario) {
 		usuario.setSenha(bCryptPasswordEncoder.encode(usuario.getSenha()));
 		usuario.setAtivo(1);
-		Role usuarioRole = roleRepository.findByRole("USUARIO");
+		Role usuarioRole = roleRepository.findByNome("USUARIO");
 		usuario.setRoles(new HashSet<Role>(Arrays.asList(usuarioRole)));
 		return usuarioRepository.save(usuario);
 	}

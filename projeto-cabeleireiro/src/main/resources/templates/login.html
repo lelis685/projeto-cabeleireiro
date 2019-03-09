@@ -12,7 +12,6 @@
 </head>
 <body>
 
-
   <div class="tipoContainer">
 
   </div>
@@ -26,18 +25,27 @@
 
     <div class="container">
 
-    	<form action="" method="" accept-charset="utf-8" class="form-login">
+    	<form th:action="@{/login}"  method="post"  class="form-login">
     		<h2 class="form-login-heading">Login</h2>
         <br><br>
-    		<label for="inputEmail" class="sr-only">E-mail</label>
-    		<input type="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
+     
+        <div align="center" th:if="${param.error}">
+            <p style="font-size: 20; color: #FF1C19;">Email ou Senha inválido, por favor verifique</p>
+        </div>
+    	
+    		<label  class="sr-only">E-mail</label>
+    		<input type="email" id="email" name="email" class="form-control" th:placeholder="Email" required autofocus>
         <br>
-    		<label for="inputPassword" class="sr-only">Senha</label>
-    		<input type="Password" id="inputPassword" class="form-control" placeholder="Senha" required>
+    	
+    		<label class="sr-only">Senha</label>
+    		<input type="password" id="senha" name="senha" class="form-control" th:placeholder="Senha" required>
+    		
     		<div class="checkbox">
 				<label>
+            
               <a class="itensLogin" href="">Esqueci minha Senha</a>
               <br>
+            
               <a  class="itensLogin"  th:href="@{usuarios/cadastrar}">Quero me Cadastrar, sou Cliente!!</a>
               <br>
               <a  class="itensLogin"  th:href="@{cabeleireiros/cadastrar}" data-analytics="NavBarProfileDropDownSettings">
@@ -45,7 +53,7 @@
               </a>
 				</label>
     		</div>
-    		<button type="submit" class="btn btn-lg btn-block btnLogin">Acessar</button>
+    		<button type="Submit" class="btn btn-lg btn-block btnLogin">Acessar</button>
     	</form>
     </div>
 </body>
