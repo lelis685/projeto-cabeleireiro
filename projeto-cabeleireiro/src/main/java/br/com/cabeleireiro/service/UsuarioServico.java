@@ -33,7 +33,6 @@ public class UsuarioServico  {
 	public Usuario encontrarUsuarioPorEmail(String email) {
 		System.out.println("encontrarUsuarioPorEmail");
 		return usuarioRepository.findByEmail(email);
-		
 	}
 	
 	public Usuario salvarUsuario(Usuario usuario) {

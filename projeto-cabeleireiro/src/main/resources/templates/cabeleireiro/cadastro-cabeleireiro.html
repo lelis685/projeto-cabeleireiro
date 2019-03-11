@@ -25,59 +25,125 @@
 	<div class="loginbox">
 		<img th:src="@{/imagens/logo-cabeleireiro.jpg}" class="avatar">
 		<h1>Inicie o cadastro do Cabeleireiro</h1>
-		<form action="index.html" method="POST">
 
-			<p>Nome do Esbalecimento</p>
-			<input id="" type="text" name=""
+		<div th:if="${msgSucesso} != null">
+			<div class="alert">
+				<span class="closebtn"
+					onclick="this.parentElement.style.display='none';">&times;</span> <span
+					class=alert th:utext="${msgSucesso}"></span>
+			</div>
+		</div>
+
+
+		<form th:action="@{/cabeleireiros/salvar}" th:object="${cabeleireiro}"
+			method="POST">
+
+			<p>
+				<label th:if="${#fields.hasErrors('nomeEstabelecimento')}"
+					th:errors="*{nomeEstabelecimento}" class="validation-message"></label>
+			</p>
+			<label>Nome do Esbalecimento</label> <input id="nomeEstabelecimento"
+				type="text" name="nomeEstabelecimento" autofocus="autofocus"
+				th:field="*{nomeEstabelecimento}"
 				placeholder="Informe o nome do estabelecimento">
 
-			<p>CNPJ</p>
-			<input id="" type="text" name="" placeholder="Informe o CNPJ">
-
-			<p>Telefone</p>
-			<input id="" type="text" name="" placeholder="Informe o telefone">
-
-			<p>E-mail</p>
-			<input id="" type="text" name="" placeholder="Informe o email">
+			<p>
+				<label th:if="${#fields.hasErrors('cnpj')}" th:errors="*{cnpj}"
+					class="validation-message"></label>
+			</p>
+			<label>CNPJ</label> <input id="cnpj" th:field="*{cnpj}" type="text"
+				name="cnpj" autofocus="autofocus" placeholder="Informe o CNPJ">
 
 
-           <p>Estado</p>
-			<select>
-				<option
-					th:each="estado : ${T(br.com.cabeleireiro.domain.UF).values()}"
-					th:value="estado" th:text="${estado.nomeEstado}"></option>
-			</select><br><br>
+			<p>
+				<label th:if="${#fields.hasErrors('telefone')}"
+					th:errors="*{telefone}" class="validation-message"></label>
+			</p>
+			<label>Telefone</label> <input id="telefone" type="text"
+				th:field="*{telefone}" name="telefone"
+				placeholder="Informe o telefone">
 
 
-			<p>Cidade</p>
-			<input id="" type="text" name="" placeholder="Informe a cidade">
+			<p>
+				<label th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+					class="validation-message"></label>
+			</p>
 
-			<p>Logradouro</p>
-			<input id="" type="text" name="" placeholder="Informe o logradouro">
-
-			<p>Bairro</p>
-			<input id="" type="text" name="" placeholder="Informe a cidade">
-
-			<p>Número</p>
-			<input id="" type="number" name="" placeholder="Informe o número">
-
-			<p>CEP</p>
-			<input id="" type="text" name="" placeholder="Informe o CEP">
-
-			<p>Complemento</p>
-			<input id="" type="text" name="" placeholder="Informe o complemento">
+			<label>E-mail</label> <input id="email" type="email" name="email"
+				autofocus="autofocus" th:field="*{email}"
+				placeholder="Informe o email" /> <label for="uf">Estado</label> <select
+				id="uf" class="form-control" th:field="*{endereco.uf}"
+				th:classappend="${#fields.hasErrors('endereco.uf')} ? 'is-invalid'">
+				<option value="">Selecione Estado</option>
+				<option th:each="uf : ${ufs}" th:value="${uf}"
+					th:text="${uf.nomeEstado}"></option>
+			</select>
+			<div class="invalid-feedback">
+				<span th:errors="*{endereco.uf}"></span>
+			</div>
 
 
-			<p>Senha</p>
-			<input id="" type="password" name="" placeholder="Informe a Senha">
 
-			<p>Cofirme Senha</p>
-			<input id="" type="password" name="" placeholder="Confirme a Senha">
+			<p>
+				<label th:if="${#fields.hasErrors('endereco.cidade')}"
+					th:errors="*{endereco.cidade}" class="validation-message"></label>
+			</p>
+			<label>Cidade</label> <input id="cidade" type="text" name="cidade"
+				autofocus="autofocus" th:field="*{endereco.cidade}"
+				placeholder="Informe a cidade">
 
-			<input id="enviar" type="submit" name="enviaCadastro"
-				value="Cadastar">
 
-            <p class="linkQualquer"> <a th:href="@{/login}">Ir pro Login.</a></p>
+			<p>
+				<label th:if="${#fields.hasErrors('endereco.bairro')}"
+					th:errors="*{endereco.bairro}" class="validation-message"></label>
+			</p>
+			<label>Bairro</label> <input id="bairro" type="text" name="bairro"
+				autofocus="autofocus" th:field="*{endereco.bairro}"
+				placeholder="Informe a cidade">
+
+
+			<p>
+				<label th:if="${#fields.hasErrors('endereco.numero')}"
+					th:errors="*{endereco.numero}" class="validation-message"></label>
+			</p>
+			<label>Número</label> <input id="numero" type="number" name="numero"
+				autofocus="autofocus" th:field="*{endereco.numero}"
+				placeholder="Informe o número">
+
+
+			<p>
+				<label th:if="${#fields.hasErrors('endereco.cep')}"
+					th:errors="*{endereco.cep}" class="validation-message"></label>
+			</p>
+			<label>CEP</label> <input id="cep" type="text" name="cep"
+				autofocus="autofocus" th:field="*{endereco.cep}"
+				placeholder="Informe o CEP">
+
+
+			<p>
+				<label th:if="${#fields.hasErrors('endereco.complemento')}"
+					th:errors="*{endereco.complemento}" class="validation-message"></label>
+			</p>
+			<label>Complemento</label> <input id="complemento" type="text"
+				name="complemento" autofocus="autofocus"
+				th:field="*{endereco.complemento}"
+				placeholder="Informe o complemento">
+
+
+			<p>
+				<label th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}"
+					class="validation-message"></label>
+			</p>
+			<label>Senha</label> <input id="senha" type="password" name="senha"
+				autofocus="autofocus" th:field="*{senha}"
+				placeholder="Informe a Senha" /> <input type="hidden" id="id"
+				th:field="*{id}" /> <input id="enviar" type="submit"
+				name="enviaCadastro" value="Cadastar">
+
+
+			<p class="linkQualquer">
+				<a th:href="@{/login}">Ir pro Login.</a>
+			</p>
 		</form>
 	</div>
 

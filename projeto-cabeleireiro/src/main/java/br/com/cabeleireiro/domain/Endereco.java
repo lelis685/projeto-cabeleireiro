@@ -4,51 +4,36 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-
-import org.hibernate.validator.constraints.NotBlank;
 
 @Embeddable
 public class Endereco {
-	
-	@NotBlank
-	@Size(min = 3, max = 255)
-	@Column(nullable = false)
-	private String logradouro;
 
-	@NotBlank
-	@Size(min = 3, max = 255)
+	
 	@Column(nullable = false)
+	@NotEmpty(message = "*Por favor preencha seu bairro")
 	private String bairro;
 
-	@NotBlank
-	@Size(min = 3, max = 255)
 	@Column(nullable = false)
+	@NotEmpty(message = "*Por favor preencha sua cidade")
 	private String cidade;
 
-	@Column(nullable = false, length = 2)
+	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
+	@NotEmpty(message = "*Por favor preencha seu UF")
 	private UF uf;
 
-	@NotBlank
 	@Column(nullable = false, length = 9)
+	@NotEmpty(message = "*Por favor preencha seu cep")
 	private String cep;
 
-	@Digits(integer = 5, fraction = 0)
 	@Column(nullable = false, length = 5)
+	@NotEmpty(message = "*Por favor preencha seu número")
 	private Integer numero;
 
 	@Size(max = 255)
 	private String complemento;
-
-	public String getLogradouro() {
-		return logradouro;
-	}
-
-	public void setLogradouro(String logradouro) {
-		this.logradouro = logradouro;
-	}
 
 	public String getBairro() {
 		return bairro;
@@ -97,4 +82,13 @@ public class Endereco {
 	public void setComplemento(String complemento) {
 		this.complemento = complemento;
 	}
+
+	@Override
+	public String toString() {
+		return "Endereco [bairro=" + bairro + ", cidade=" + cidade + ", uf=" + uf + ", cep=" + cep + ", numero="
+				+ numero + ", complemento=" + complemento + "]";
+	}
+	
+	
+	
 }

@@ -43,7 +43,7 @@ public class UsuarioController {
 			    .rejectValue("email", "error.usuario",
 			    		"Já existe um usuário com esse email");
 		}
-		
+		System.out.println(usuario);
 		if(bindingResult.hasErrors()) {
 			mv.setViewName("usuario/cadastro-usuario");
 		}else {
