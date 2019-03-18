@@ -29,7 +29,6 @@ public class Cabeleireiro  {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-
 	@Column(name = "nome_estabelecimento",nullable= false)
 	@NotEmpty(message = "*Por favor preencha seu nome do estabelecimento")
 	private String nomeEstabelecimento;
@@ -61,9 +60,9 @@ public class Cabeleireiro  {
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(
-			name = "usuarios_roles", 
+			name = "cabeleireiros_roles", 
 			joinColumns = @JoinColumn(
-					name = "usuario_id", referencedColumnName = "id"), 
+					name = "cabeleireiro_id", referencedColumnName = "id"), 
 			inverseJoinColumns = @JoinColumn(
 					name = "role_id", referencedColumnName = "id"))
 	private Collection<Role> roles;

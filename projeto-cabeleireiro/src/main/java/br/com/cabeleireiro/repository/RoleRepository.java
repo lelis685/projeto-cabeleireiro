@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import br.com.cabeleireiro.domain.Role;
 
 @Repository
-public interface RoleRepository extends JpaRepository<Role, Integer> {
+public interface RoleRepository extends JpaRepository<Role, Long> {
 
 	Role findByNome(String nome);
 

@@ -71,18 +71,19 @@
 
 			<label>E-mail</label> <input id="email" type="email" name="email"
 				autofocus="autofocus" th:field="*{email}"
-				placeholder="Informe o email" /> <label for="uf">Estado</label> <select
+				placeholder="Informe o email" />
+				
+				 <label for="uf">Estado</label> <select
 				id="uf" class="form-control" th:field="*{endereco.uf}"
 				th:classappend="${#fields.hasErrors('endereco.uf')} ? 'is-invalid'">
 				<option value="">Selecione Estado</option>
 				<option th:each="uf : ${ufs}" th:value="${uf}"
 					th:text="${uf.nomeEstado}"></option>
 			</select>
+		
 			<div class="invalid-feedback">
 				<span th:errors="*{endereco.uf}"></span>
 			</div>
-
-
 
 			<p>
 				<label th:if="${#fields.hasErrors('endereco.cidade')}"
@@ -91,6 +92,14 @@
 			<label>Cidade</label> <input id="cidade" type="text" name="cidade"
 				autofocus="autofocus" th:field="*{endereco.cidade}"
 				placeholder="Informe a cidade">
+				
+				<p>
+				<label th:if="${#fields.hasErrors('endereco.rua')}"
+					th:errors="*{endereco.rua}" class="validation-message"></label>
+			</p>
+			<label>Rua</label> <input id="rua" type="text" name="rua"
+				autofocus="autofocus" th:field="*{endereco.rua}"
+				placeholder="Informe a rua">
 
 
 			<p>

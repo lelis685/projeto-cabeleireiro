@@ -35,10 +35,13 @@ public class CabeleireiroServico {
 	
 	
 	public Cabeleireiro salvarCabeleireiro(Cabeleireiro cabeleireiro) {
+		System.out.println(cabeleireiro);
 		cabeleireiro.setSenha(bCryptPasswordEncoder.encode(cabeleireiro.getSenha()));
 		cabeleireiro.setAtivo(1);
+		System.out.println("1");
 		Role usuarioRole = roleRepository.findByNome("CABELEIREIRO");
 		cabeleireiro.setRoles(new HashSet<Role>(Arrays.asList(usuarioRole)));
+		System.err.println(usuarioRole);
 		return cabeleireiroRepository.save(cabeleireiro);
 	}
 	

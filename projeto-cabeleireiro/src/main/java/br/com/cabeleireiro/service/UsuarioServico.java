@@ -26,18 +26,17 @@ import br.com.cabeleireiro.repository.UsuarioRepository;
 import br.com.cabeleireiro.repository.filter.CabeleireiroFilter;
 
 @Service
-public class UsuarioServico  {
-	
-    private UsuarioRepository usuarioRepository;
+public class UsuarioServico {
+
+	private UsuarioRepository usuarioRepository;
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	private RoleRepository roleRepository;
-	
+
 	@PersistenceContext
 	private EntityManager manager;
 
 	@Autowired
-	public UsuarioServico(UsuarioRepository usuarioRepository,
-			BCryptPasswordEncoder bCryptPasswordEncoder,
+	public UsuarioServico(UsuarioRepository usuarioRepository, BCryptPasswordEncoder bCryptPasswordEncoder,
 			RoleRepository roleRepository) {
 		this.usuarioRepository = usuarioRepository;
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -45,12 +44,12 @@ public class UsuarioServico  {
 		System.out.println("UsuarioServico");
 
 	}
-	
+
 	public Usuario encontrarUsuarioPorEmail(String email) {
 		System.out.println("encontrarUsuarioPorEmail");
 		return usuarioRepository.findByEmail(email);
 	}
-	
+
 	public Usuario salvarUsuario(Usuario usuario) {
 		usuario.setSenha(bCryptPasswordEncoder.encode(usuario.getSenha()));
 		usuario.setAtivo(1);
@@ -58,20 +57,37 @@ public class UsuarioServico  {
 		usuario.setRoles(new HashSet<Role>(Arrays.asList(usuarioRole)));
 		return usuarioRepository.save(usuario);
 	}
-	
 
-	public List<Cabeleireiro> filtrar(CabeleireiroFilter cabeleireiroFilter) {
+	public List<CabeleireiroFilter> filtrar(CabeleireiroFilter cabeleireiroFilter) {
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
 		CriteriaQuery<Cabeleireiro> criteria = builder.createQuery(Cabeleireiro.class);
 		Root<Cabeleireiro> root = criteria.from(Cabeleireiro.class);
-		
+
 		Predicate[] predicates = restricoesQuery(cabeleireiroFilter, builder, root);
 		criteria.where(predicates);
-		TypedQuery<Cabeleireiro> query = manager.createQuery(criteria);
-		
-		 return new ArrayList<>(query.getResultList());
-	}
 	
+		TypedQuery<Cabeleireiro> query = manager.createQuery(criteria);
+
+		List<CabeleireiroFilter> cf = criaListaCabeleireiroFilter(query);
+
+		return cf;
+	}
+
+	private List<CabeleireiroFilter> criaListaCabeleireiroFilter(TypedQuery<Cabeleireiro> query) {
+		List<CabeleireiroFilter> cf = new ArrayList<>();
+		// copiar só campos necessarios
+		for (int i = 0; i < query.getResultList().size(); i++) {
+			CabeleireiroFilter cc = new CabeleireiroFilter();
+			cc.setNomeEstabelecimento(query.getResultList().get(i).getNomeEstabelecimento());
+			cc.setBairro(query.getResultList().get(i).getEndereco().getBairro());
+			cc.setCep(query.getResultList().get(i).getEndereco().getCep());
+			cc.setCidade(query.getResultList().get(i).getEndereco().getCidade());
+			cc.setNumero(query.getResultList().get(i).getEndereco().getNumero());
+			cc.setRua(query.getResultList().get(i).getEndereco().getRua());
+			cf.add(cc);
+		}
+		return cf;
+	}
 
 	public Predicate[] restricoesQuery(CabeleireiroFilter cabeleireiroFilter, CriteriaBuilder builder,
 			Root<Cabeleireiro> root) {
@@ -81,12 +97,17 @@ public class UsuarioServico  {
 
 		if (!StringUtils.isEmpty(cabeleireiroFilter.getNomeEstabelecimento())) {
 			predicates.add(builder.like(builder.lower(root.get("nomeEstabelecimento")),
-					"%" + cabeleireiroFilter.getNomeEstabelecimento().toLowerCase() + "%"));
+					 "%"+ cabeleireiroFilter.getNomeEstabelecimento().toLowerCase() + "%"));
 		}
 
 		if (!StringUtils.isEmpty(cabeleireiroFilter.getBairro())) {
 			predicates.add(builder.like(builder.lower(root.get("endereco").get("bairro")),
 					"%" + cabeleireiroFilter.getBairro().toLowerCase() + "%"));
+		}
+
+		if (!StringUtils.isEmpty(cabeleireiroFilter.getRua())) {
+			predicates.add(builder.like(builder.lower(root.get("endereco").get("rua")),
+					"%" + cabeleireiroFilter.getRua().toLowerCase() + "%"));
 		}
 
 		if (!StringUtils.isEmpty(cabeleireiroFilter.getCidade())) {
@@ -96,17 +117,15 @@ public class UsuarioServico  {
 
 		if (!StringUtils.isEmpty(cabeleireiroFilter.getCep())) {
 			predicates.add(builder.like(builder.lower(root.get("endereco").get("cep")),
-					"%" + cabeleireiroFilter.getCep().toLowerCase() + "%"));
+					cabeleireiroFilter.getCep()));
 		}
 
-		if (!StringUtils.isEmpty(cabeleireiroFilter.getCep())) {
-			predicates.add(builder.equal(root.get("endereco").get("numero"), cabeleireiroFilter.getCep()));
+		if (!StringUtils.isEmpty(cabeleireiroFilter.getNumero())) {
+			predicates.add(builder.equal(root.get("endereco").get("numero"), cabeleireiroFilter.getNumero()));
 		}
 
 		return predicates.toArray(new Predicate[predicates.size()]);
 
 	}
-	
-	
-	
+
 }

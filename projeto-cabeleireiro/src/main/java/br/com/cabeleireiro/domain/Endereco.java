@@ -10,7 +10,10 @@ import javax.validation.constraints.Size;
 @Embeddable
 public class Endereco {
 
-	
+	@Column(nullable = false)
+	@NotEmpty(message = "*Por favor preencha sua rua")
+	private String rua;
+
 	@Column(nullable = false)
 	@NotEmpty(message = "*Por favor preencha seu bairro")
 	private String bairro;
@@ -82,13 +85,22 @@ public class Endereco {
 	public void setComplemento(String complemento) {
 		this.complemento = complemento;
 	}
+	
+	
+
+	public String getRua() {
+		return rua;
+	}
+
+	public void setRua(String rua) {
+		this.rua = rua;
+	}
 
 	@Override
 	public String toString() {
-		return "Endereco [bairro=" + bairro + ", cidade=" + cidade + ", uf=" + uf + ", cep=" + cep + ", numero="
-				+ numero + ", complemento=" + complemento + "]";
+		return "Endereco [rua=" + rua + ", bairro=" + bairro + ", cidade=" + cidade + ", uf=" + uf + ", cep=" + cep
+				+ ", numero=" + numero + ", complemento=" + complemento + "]";
 	}
-	
-	
-	
+
+
 }

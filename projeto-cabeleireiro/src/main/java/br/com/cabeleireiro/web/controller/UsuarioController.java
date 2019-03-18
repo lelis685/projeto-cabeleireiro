@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import br.com.cabeleireiro.domain.Cabeleireiro;
 import br.com.cabeleireiro.domain.Usuario;
 import br.com.cabeleireiro.repository.filter.CabeleireiroFilter;
 import br.com.cabeleireiro.service.UsuarioServico;
@@ -79,16 +78,19 @@ public class UsuarioController {
 		System.err.println(cabeleireiroFilter);
 		
 		model.addAttribute("cabeleireiroFilter", cabeleireiroFilter);
+		ModelAndView mv = new ModelAndView("usuario/pos-login-usuario");
 		
 		
-		CabeleireiroFilter c = new CabeleireiroFilter(cabeleireiroFilter.getNomeEstabelecimento(), cabeleireiroFilter.getBairro(), 
-				cabeleireiroFilter.getCidade(), cabeleireiroFilter.getCep(), cabeleireiroFilter.getNumero());
+		CabeleireiroFilter c = new CabeleireiroFilter(cabeleireiroFilter.getNomeEstabelecimento(), cabeleireiroFilter.getRua(), 
+				cabeleireiroFilter.getBairro(), cabeleireiroFilter.getCidade(), cabeleireiroFilter.getCep(), cabeleireiroFilter.getNumero());
 		
-		List<Cabeleireiro> cabeleireiros = usuarioServico.filtrar(c);
+		List<CabeleireiroFilter> cabeleireiros = usuarioServico.filtrar(c);
+		
+		mv.addObject("total", cabeleireiros.size());
+	
 		model.addAttribute("cabeleireiros", cabeleireiros);
 
 		System.out.println(cabeleireiros.toString());
-		ModelAndView mv = new ModelAndView("usuario/pos-login-usuario");
 		
 		return mv;
 	}
