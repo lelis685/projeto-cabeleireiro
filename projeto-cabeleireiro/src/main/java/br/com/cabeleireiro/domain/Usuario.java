@@ -72,6 +72,15 @@ public class Usuario {
 
 	public Usuario() {
 	}
+	
+	
+
+	public Usuario(Long id) {
+		super();
+		this.id = id;
+	}
+
+
 
 	public Usuario(String nome, String sobreNome, String celular, LocalDate dataNascimento, String email,
 			String senha) {

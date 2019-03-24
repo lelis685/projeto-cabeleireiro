@@ -16,6 +16,7 @@ import javax.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import br.com.cabeleireiro.domain.Cabeleireiro;
@@ -24,6 +25,7 @@ import br.com.cabeleireiro.domain.Usuario;
 import br.com.cabeleireiro.repository.RoleRepository;
 import br.com.cabeleireiro.repository.UsuarioRepository;
 import br.com.cabeleireiro.repository.filter.CabeleireiroFilter;
+import br.com.cabeleireiro.repository.filter.UsuarioFilter;
 
 @Service
 public class UsuarioServico {
@@ -46,9 +48,31 @@ public class UsuarioServico {
 	}
 
 	public Usuario encontrarUsuarioPorEmail(String email) {
-		System.out.println("encontrarUsuarioPorEmail");
 		return usuarioRepository.findByEmail(email);
 	}
+	
+	public Usuario encontrarUsuarioPorId(Long id) {
+		System.out.println("encontrarUsuarioPorId");
+		return usuarioRepository.findById(id).orElse(null);
+	}
+	
+	@Transactional
+	public void atualizarUsuario(Long id,UsuarioFilter usuarioFilter) {
+		Usuario usuarioEncontrado = encontrarUsuarioPorId(id);
+	
+		usuarioEncontrado.setAtivo(usuarioFilter.getAtivo());
+		usuarioEncontrado.setNome(usuarioFilter.getNome());
+		usuarioEncontrado.setSobreNome(usuarioFilter.getSobreNome());
+		usuarioEncontrado.setDataNascimento(usuarioFilter.getDataNascimento());
+		usuarioEncontrado.setEmail(usuarioFilter.getEmail());
+		usuarioEncontrado.setCelular(usuarioFilter.getCelular());
+		
+		System.out.println(id);
+		
+		usuarioRepository.setUsuarioInfoById(usuarioEncontrado.getNome(), usuarioEncontrado.getSobreNome(), 
+				usuarioEncontrado.getDataNascimento(), usuarioEncontrado.getCelular(), usuarioEncontrado.getAtivo(), id);
+	}
+	
 
 	public Usuario salvarUsuario(Usuario usuario) {
 		usuario.setSenha(bCryptPasswordEncoder.encode(usuario.getSenha()));

@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import br.com.cabeleireiro.domain.Usuario;
 import br.com.cabeleireiro.repository.filter.CabeleireiroFilter;
+import br.com.cabeleireiro.repository.filter.UsuarioFilter;
 import br.com.cabeleireiro.service.UsuarioServico;
 
 @Controller
@@ -58,35 +60,87 @@ public class UsuarioController {
 
 		return mv;
 	}
+	
+	@GetMapping("/editar/{id}")
+	public ModelAndView mostrarFormularioAtualizar(@PathVariable("id") Long id,Model model) {
+		ModelAndView mv = new ModelAndView();
+		
+		System.out.println("mostrarFormularioAtualizar");
+	
+		Usuario usuarioEncotrado = usuarioServico.encontrarUsuarioPorId(id);
+		
+	
+		UsuarioFilter usuario = new UsuarioFilter(usuarioEncotrado.getId(),usuarioEncotrado.getNome(), usuarioEncotrado.getSobreNome(),
+				usuarioEncotrado.getCelular(), usuarioEncotrado.getDataNascimento(), usuarioEncotrado.getEmail(), usuarioEncotrado.getAtivo());
+		
+		mv.addObject("usuario",usuario);
+	
+		mv.setViewName("usuario/atualiza-cadastro-usuario");
+	
+	    return mv;
+	}
+	
+	@PostMapping("/atualizar/{id}")
+	  public ModelAndView atualizarUsuario(@PathVariable("id") long id, @Valid UsuarioFilter usuario, BindingResult resultado) {
+		ModelAndView modelAndView = new ModelAndView();
+		
+        if (resultado.hasErrors()) {
+			usuario.setId(id);
+			modelAndView.setViewName("usuario/atualiza-cadastro-usuario");
+			return modelAndView;
+        }
+		
+		usuarioServico.atualizarUsuario(id,usuario);
+     
+		System.out.println("atualizarUsuario controller");
+        return home(new CabeleireiroFilter());
+    }
+	
+	
 
 	@RequestMapping(value = "/usuario/pos-login-usuario", method = RequestMethod.GET)
 	public ModelAndView home(@ModelAttribute CabeleireiroFilter cabeleireiroFilter) {
+	
 		System.out.println("home()");
+	
 		ModelAndView mv = new ModelAndView();
+		mv.setViewName("usuario/pos-login-usuario");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Usuario usuario = usuarioServico.encontrarUsuarioPorEmail(auth.getName());
 		mv.addObject("nomeUsuario", "Bem-vindo " + usuario.getNome() + ", " + usuario.getSobreNome());
+		
+		mv.addObject("usuario",usuario);
+		System.out.println(usuario.getId());
+	
 		mv.addObject("cabeleireiroFilter", cabeleireiroFilter);
-		mv.setViewName("usuario/pos-login-usuario");
+		
+		System.out.println(usuario + "home()");
 		return mv;
 	}
 
 	@GetMapping("/pesquisa-cabeleireiro")
-	public ModelAndView pesquisarCabeleireiro(@ModelAttribute CabeleireiroFilter cabeleireiroFilter, BindingResult result, Model model) {
+	public ModelAndView pesquisarCabeleireiro(@ModelAttribute CabeleireiroFilter cabeleireiroFilter, Model model) {
 		
 		System.err.println("pesquisarCabeleireiro");
 		System.err.println(cabeleireiroFilter);
 		
 		model.addAttribute("cabeleireiroFilter", cabeleireiroFilter);
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Usuario usuario = usuarioServico.encontrarUsuarioPorEmail(auth.getName());
+	     
+		
 		ModelAndView mv = new ModelAndView("usuario/pos-login-usuario");
 		
-		
+		mv.addObject("usuario",usuario);
+
 		CabeleireiroFilter c = new CabeleireiroFilter(cabeleireiroFilter.getNomeEstabelecimento(), cabeleireiroFilter.getRua(), 
 				cabeleireiroFilter.getBairro(), cabeleireiroFilter.getCidade(), cabeleireiroFilter.getCep(), cabeleireiroFilter.getNumero());
 		
 		List<CabeleireiroFilter> cabeleireiros = usuarioServico.filtrar(c);
 		
 		mv.addObject("total", cabeleireiros.size());
+		
 	
 		model.addAttribute("cabeleireiros", cabeleireiros);
 
@@ -95,28 +149,7 @@ public class UsuarioController {
 		return mv;
 	}
 
-	/*
-	 * 
-	  @GetMapping("/show/products")
-	  public String getProduct(Model model,@ModelAttribute("myFormObject") MyFormObject myFormObject, BindingResult result) {
-	    
-	      List<Product> products = this.productService.getAllProducts(myFormObject.getPName());
-	     
-	      model.addAttribute("products", products);
-	      return "show_product";
-	      
-	      @RequestMapping(value="/person", method=RequestMethod.POST)
-public String contactSubmit(@ModelAttribute Person person, BindingResult bindingResult, Model model) {
-    if (bindingResult.hasErrors()) {
-        //errors processing
-    }  
-    model.addAttribute("person", person);
-    return "result";
-}
-	      
-	      
-	
-*/
+
 	
 	
 }

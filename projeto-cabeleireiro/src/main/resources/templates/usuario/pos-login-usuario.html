@@ -26,16 +26,22 @@
 
         </div>
 
-        <div clas="collapse navbar-collapse" id="barra-navegacao">
-          <button class="dropdown btn btn-default">
-                <a href="" class="dropdown-toggle noneunderline" data-toggle="dropdown">
-                MINHA CONTA <span class="caret"></span>
+        <div class="collapse navbar-collapse" id="barra-navegacao">
+          <button class="dropdown btn btn-default" th:object="${usuario}">
+                <a  class="dropdown-toggle noneunderline" data-toggle="dropdown">
+                    Minha Conta <span class="caret"></span>
               </a>
+              
+         
 
                 <ul class="dropdown-menu">
-                 <li><a href="#" th:href="@{/logout}">Sair</a></li>
+                 <li><a  th:href="@{/logout}">Sair</a></li>
+                  <li> <a  th:href="@{/usuarios/editar/{id}(id=${usuario.id})}"  >Atualizar Cadastro</a></li>
+               
                 </ul>
-              </button>
+              
+            
+          </button>
  
         </div>
 
@@ -87,18 +93,7 @@
         </form>
 
 
-     
-     <!-- <form ui-jp="parsley" th:action="@{/show/products}" th:object="${myFormObject}" method="get">
-                            <div class="row m-b">
-                                <div class="col-sm-6">
-                                    Search by Name: <input id="filter" type="text" th:field="*{pName}" class="form-control input-sm w-auto inline m-r"/>
-                                    <button class="md-btn md-fab m-b-sm indigo"><i class="material-icons md-24">&#xe8b6;</i></button>
-                                </div>
-                            </div>
-                      
-                        </form> --> 
-     
-     
+
      
 
           <h3 align="center">RESULTADOS ENCONTRADOS: <span th:utext="${total}"></span> </h3><br>
