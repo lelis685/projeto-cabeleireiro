@@ -7,6 +7,7 @@
         <meta name="description" content="Projeto TCC Uninove">
         <link rel="stylesheet" th:href="@{/css/estilo.css}">
         <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+        <link rel="stylesheet" th:href="@{/css/estiloCliente.css}">
         
 
 </head>
@@ -24,10 +25,19 @@
 
 
     <div class="container">
+    
 
     	<form th:action="@{/login}"  method="post"  class="form-login">
     		<h2 class="form-login-heading">Login</h2>
         <br><br>
+    
+     <div th:if="${msgSucesso} != null">
+		<div class="alert">
+			<span class="closebtn"
+				onclick="this.parentElement.style.display='none';">&times;</span>
+			<span class=alert th:utext="${msgSucesso}" ></span>
+		</div>
+	 </div>
      
         <div align="center" th:if="${param.error}">
             <p style="font-size: 20; color: #FF1C19;">Email ou Senha inválido, por favor verifique</p>

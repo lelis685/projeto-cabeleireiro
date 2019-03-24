@@ -10,7 +10,7 @@ public class HomeController {
 
 	 @RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
 	    public ModelAndView login(){
-		 System.out.println("login");
+		    System.out.println("login");
 	        ModelAndView mv = new ModelAndView();
 	        mv.setViewName("login");
 	        return mv;

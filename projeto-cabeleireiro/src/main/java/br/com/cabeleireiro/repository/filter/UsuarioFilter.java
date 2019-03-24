@@ -35,19 +35,17 @@ public class UsuarioFilter {
 	public UsuarioFilter() {
 	}
 
-	public UsuarioFilter(Long id, String nome, String sobreNome, String celular, LocalDate dataNascimento, String email,
-			int ativo) {
-		super();
+	public UsuarioFilter(Long id, String nome, String sobreNome, String celular, LocalDate dataNascimento, String email
+			) {
 		this.id = id;
 		this.nome = nome;
 		this.sobreNome = sobreNome;
 		this.celular = celular;
 		this.dataNascimento = dataNascimento;
 		this.email = email;
-		this.ativo = 1;
+		
 	}
 
-	private int ativo;
 
 	public String getNome() {
 		return nome;
@@ -97,12 +95,6 @@ public class UsuarioFilter {
 		this.email = email;
 	}
 
-	public int getAtivo() {
-		return ativo;
-	}
 
-	public void setAtivo(int ativo) {
-		this.ativo = ativo;
-	}
 
 }

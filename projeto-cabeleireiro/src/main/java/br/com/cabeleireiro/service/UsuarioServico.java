@@ -56,11 +56,29 @@ public class UsuarioServico {
 		return usuarioRepository.findById(id).orElse(null);
 	}
 	
+	
+
+	@Transactional
+	public void desativarUsuario(Long id) {
+		Usuario usuarioEncontrado = encontrarUsuarioPorId(id);
+		usuarioEncontrado.setAtivo(0);
+		usuarioRepository.desativarUsuario(usuarioEncontrado.getAtivo(),id);
+	}
+	
+	
+	@Transactional
+	public void ativarUsuario(String email) {
+		Usuario usuarioEncontrado = encontrarUsuarioPorEmail(email);
+		usuarioEncontrado.setAtivo(1);
+		usuarioRepository.ativarUsuario(usuarioEncontrado.getAtivo(),email);
+	}
+	
+	
+	
 	@Transactional
 	public void atualizarUsuario(Long id,UsuarioFilter usuarioFilter) {
 		Usuario usuarioEncontrado = encontrarUsuarioPorId(id);
 	
-		usuarioEncontrado.setAtivo(usuarioFilter.getAtivo());
 		usuarioEncontrado.setNome(usuarioFilter.getNome());
 		usuarioEncontrado.setSobreNome(usuarioFilter.getSobreNome());
 		usuarioEncontrado.setDataNascimento(usuarioFilter.getDataNascimento());
@@ -70,7 +88,7 @@ public class UsuarioServico {
 		System.out.println(id);
 		
 		usuarioRepository.setUsuarioInfoById(usuarioEncontrado.getNome(), usuarioEncontrado.getSobreNome(), 
-				usuarioEncontrado.getDataNascimento(), usuarioEncontrado.getCelular(), usuarioEncontrado.getAtivo(), id);
+				usuarioEncontrado.getDataNascimento(), usuarioEncontrado.getCelular(), id);
 	}
 	
 

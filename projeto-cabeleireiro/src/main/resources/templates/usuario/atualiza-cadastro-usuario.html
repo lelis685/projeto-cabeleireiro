@@ -32,14 +32,14 @@
 		</div>
 	 </div>
 
+          
+          
+            
+		
 		<form action="#" th:action="@{/usuarios/atualizar/{id}(id=${usuario.id})}" th:object="${usuario}" method="post">
                             
                             
                             
-                <input type="radio" th:field="*{ativo}"name="ativo" value="1"> Ativada</input>
-                <input type="radio" th:field="*{ativo}" name="ativo" value="0"> Desativada</input>
-
-
 
 			<p>
 				<label th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"
@@ -93,9 +93,13 @@
 				type="submit" name="enviaCadastro" value="Atualizar">
 				
 				
+		
+				
+				
+				
 
 			<p class="linkQualquer">
-				<a th:href="@{/login}">Voltar</a>
+				<a th:href="@{/usuarios/usuario/pos-login-usuario}">Voltar</a>
 			</p>
 
 			<h3>
@@ -103,6 +107,10 @@
 			</h3>
 
 		</form>
+		
+		   <form class="button" th:action="@{/usuarios/desativar/{id}(id=${usuario.id})}" th:object="${usuario}"  method="POST">
+                        <input type="submit"class="btn btn-lg btn-block btnLogin" value="Desativar Conta"/>
+                  </form>
 	</div>
 </body>
 </html>

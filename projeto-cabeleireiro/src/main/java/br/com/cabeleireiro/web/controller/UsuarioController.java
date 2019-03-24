@@ -38,6 +38,46 @@ public class UsuarioController {
 		mv.setViewName("usuario/cadastro-usuario");
 		return mv;
 	}
+	
+	
+	@PostMapping("/desativar/{id}")
+	public ModelAndView desativar(@PathVariable("id") Long id) {
+		ModelAndView mv = new ModelAndView();
+		usuarioServico.desativarUsuario(id);
+		mv.setViewName("login");
+		mv.addObject("msgSucesso", "Conta desativada com sucesso.");
+		return mv;
+	}
+
+	@GetMapping("/ativar")
+	public ModelAndView mostrarFormAtivar() {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("usuario/ativa-cadastro-usuario");
+		mv.addObject("usuario", new Usuario());
+		return mv;
+	}
+	
+	
+	
+	@PostMapping("/ativarPost")
+	public ModelAndView ativar(@Valid Usuario usuario, BindingResult bindingResult) {
+		ModelAndView mv = new ModelAndView();
+
+		Usuario usuarioExiste = usuarioServico.encontrarUsuarioPorEmail(usuario.getEmail());
+
+		if (usuarioExiste == null) {
+			bindingResult.rejectValue("email", "error.usuario", "Não existe um usuário com esse email");
+			 mv.setViewName("usuario/ativa-cadastro-usuario");
+			 return mv;
+		}
+			usuarioServico.ativarUsuario(usuarioExiste.getEmail());
+		
+			mv.addObject("msgSucesso", "Usuário ativado com sucesso.");
+			 mv.setViewName("usuario/ativa-cadastro-usuario");
+			return mv;
+	}
+	
+	
 
 	@PostMapping("/salvar")
 	public ModelAndView salvarUsuario(@Valid Usuario usuario, BindingResult bindingResult) {
@@ -71,7 +111,7 @@ public class UsuarioController {
 		
 	
 		UsuarioFilter usuario = new UsuarioFilter(usuarioEncotrado.getId(),usuarioEncotrado.getNome(), usuarioEncotrado.getSobreNome(),
-				usuarioEncotrado.getCelular(), usuarioEncotrado.getDataNascimento(), usuarioEncotrado.getEmail(), usuarioEncotrado.getAtivo());
+				usuarioEncotrado.getCelular(), usuarioEncotrado.getDataNascimento(), usuarioEncotrado.getEmail());
 		
 		mv.addObject("usuario",usuario);
 	
@@ -123,7 +163,6 @@ public class UsuarioController {
 		
 		System.err.println("pesquisarCabeleireiro");
 		System.err.println(cabeleireiroFilter);
-		
 		model.addAttribute("cabeleireiroFilter", cabeleireiroFilter);
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -131,6 +170,7 @@ public class UsuarioController {
 	     
 		
 		ModelAndView mv = new ModelAndView("usuario/pos-login-usuario");
+		mv.addObject("nomeUsuario", "Bem-vindo " + usuario.getNome() + ", " + usuario.getSobreNome());
 		
 		mv.addObject("usuario",usuario);
 

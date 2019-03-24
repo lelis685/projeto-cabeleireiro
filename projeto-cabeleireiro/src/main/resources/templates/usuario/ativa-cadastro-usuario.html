@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Cadastro Cliente</title>
+
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+<link rel="stylesheet" th:href="@{/css/estiloCliente.css}">
+
+</head>
+<body>
+	<div class="tipoContainer"></div>
+
+	<div
+		class="flex-md-row align-items-center
+    p-3 px-md-4 mb-3 bg-light border-bottom shadow-sm fixed-top containerMenu"
+		id="menu">
+		<h5 class="my-0 mr-md-auto font-weight-normal tituloMenu">Cabeleireiro</h5>
+
+	</div>
+
+
+	<div class="loginbox">
+		<img th:src="@{/imagens/avatar.png}" class="avatar">
+		<h1>Inicie ativação do cadastro</h1>
+
+  <div th:if="${msgSucesso} != null">
+		<div class="alert">
+			<span class="closebtn"
+				onclick="this.parentElement.style.display='none';">&times;</span>
+			<span class=alert th:utext="${msgSucesso}" ></span>
+		</div>
+	 </div>
+
+		<form action="#" th:action="@{/usuarios/ativarPost}" th:object="${usuario}"
+			method="POST">
+			
+			<p>
+				<label th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+					class="validation-message"></label>
+			</p>
+			<label>E-mail</label>
+			<input id="email" type="email" name="email" autofocus="autofocus"
+				th:field="*{email}" placeholder="Informe o email" />
+
+				
+				<input
+				type="hidden" id="id" th:field="*{id}" /> 
+				
+				<input id="enviar"
+				type="submit" name="enviaCadastro" value="Ativar Conta">
+
+			<p class="linkQualquer">
+				<a th:href="@{/login}">Ir pro Login.</a>
+			</p>
+
+			<h3>
+				
+			</h3>
+
+		</form>
+	</div>
+</body>
+</html>
