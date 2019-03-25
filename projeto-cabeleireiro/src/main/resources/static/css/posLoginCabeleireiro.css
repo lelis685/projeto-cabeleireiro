@@ -1,0 +1,43 @@
+#barra-navegacao{
+	float: right;
+	padding-top: 30px;
+	color: black;
+}
+
+body{
+
+
+}
+
+ul.lista-info{
+	border: 1px solid black;
+	list-style-type: none;
+	padding: 5px;
+	font-family: monotype corsiva itálico;
+}
+
+
+tr.azul{
+	color: white;
+	background: blue;
+}
+
+h1{
+	color: black;
+}
+
+a:link {
+   text-decoration:none;
+}
+
+a:visited {
+    color: black;
+}
+
+a:hover {
+    color: black;
+}
+
+a:active {
+    color: black;
+}

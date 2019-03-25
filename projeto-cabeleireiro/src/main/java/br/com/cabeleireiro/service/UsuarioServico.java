@@ -57,7 +57,6 @@ public class UsuarioServico {
 	}
 	
 	
-
 	@Transactional
 	public void desativarUsuario(Long id) {
 		Usuario usuarioEncontrado = encontrarUsuarioPorId(id);

@@ -3,18 +3,20 @@ package br.com.cabeleireiro.web.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
-
 
 import br.com.cabeleireiro.domain.Cabeleireiro;
 import br.com.cabeleireiro.domain.UF;
+import br.com.cabeleireiro.repository.filter.CabeleireiroFilter;
 import br.com.cabeleireiro.service.CabeleireiroServico;
 
 @Controller
@@ -56,6 +58,30 @@ public class CabeleireiroController {
 			mv.setViewName("cabeleireiro/cadastro-cabeleireiro");
 		}
 		
+		return mv;
+	}
+	
+	
+	@RequestMapping(value = "/cabeleireiro/pos-login-cabeleireiro", method = RequestMethod.GET)
+	public ModelAndView home(@ModelAttribute CabeleireiroFilter cabeleireiroFilter) {
+	
+		System.out.println("home()");
+	
+		ModelAndView mv = new ModelAndView();
+		
+		mv.setViewName("cabeleireiro/pos-login-cabeleireiro");
+	
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	
+		Cabeleireiro cabeleireiro = cabeleireiroServico.encontrarCabeleireiroPorEmail(auth.getName());
+	
+		
+		mv.addObject("cabeleireiro",cabeleireiro);
+		
+	
+		
+		System.out.println(cabeleireiro);
+	
 		return mv;
 	}
 	
