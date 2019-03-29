@@ -23,22 +23,26 @@
 	<div class="loginbox">
 		<img th:src="@{/imagens/avatar.png}" class="avatar">
 		<h1>Inicie ativação do cadastro</h1>
-
-  <div th:if="${msgSucesso} != null">
+		
+		<div th:if="${msgSucesso} != null">
 		<div class="alert">
 			<span class="closebtn"
 				onclick="this.parentElement.style.display='none';">&times;</span>
 			<span class=alert th:utext="${msgSucesso}" ></span>
-		</div>
-	 </div>
+	    	</div>
+	           </div>
 
-		<form action="#" th:action="@{/usuarios/ativarPost}" th:object="${usuario}"
-			method="POST">
+
+
+		<form action="#" th:action="@{/ativa-cadastro-usuario}" th:object="${usuario}"method="POST">
 			
-			<p>
-				<label th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
-					class="validation-message"></label>
-			</p>
+			  <div th:if="${error} != null">
+		<div class="alert">
+			<span class="closebtn"
+				onclick="this.parentElement.style.display='none';">&times;</span>
+			<span class=alert th:utext="${error}" ></span>
+	    	</div>
+	           </div>
 			<label>E-mail</label>
 			<input id="email" type="email" name="email" autofocus="autofocus"
 				th:field="*{email}" placeholder="Informe o email" />
@@ -54,9 +58,6 @@
 				<a th:href="@{/login}">Ir pro Login.</a>
 			</p>
 
-			<h3>
-				
-			</h3>
 
 		</form>
 	</div>

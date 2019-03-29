@@ -44,7 +44,7 @@
         </div>
     	
     		<label  class="sr-only">E-mail</label>
-    		<input type="email" id="email" name="email" class="form-control" th:placeholder="Email" required autofocus>
+    		<input type="email" id="email" name="email" class="form-control" th:placeholder="Email" required autofocus />
         <br>
     	
     		<label class="sr-only">Senha</label>
@@ -54,10 +54,8 @@
 				<label>
             
           
-              <a class="itensLogin" href="">Esqueci minha Senha</a>
-              <br>
-          
-             <a  class="itensLogin"  th:href="@{usuarios/ativar}">Desativei minha conta, quero ativa-la !!</a>
+             
+             <a  class="itensLogin"  th:href="@{/ativa-cadastro-usuario}">Desativei minha conta, quero ativa-la !!</a>
              <br>
               <a  class="itensLogin"  th:href="@{usuarios/cadastrar}">Quero me Cadastrar, sou Cliente!!</a>
               <br>

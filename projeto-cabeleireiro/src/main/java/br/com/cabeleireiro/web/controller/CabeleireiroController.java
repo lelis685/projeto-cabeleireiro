@@ -6,17 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.com.cabeleireiro.domain.Cabeleireiro;
-import br.com.cabeleireiro.domain.UF;
 import br.com.cabeleireiro.repository.filter.CabeleireiroFilter;
+import br.com.cabeleireiro.repository.filter.CabeleireiroFilterAtualiza;
 import br.com.cabeleireiro.service.CabeleireiroServico;
 
 @Controller
@@ -75,10 +77,7 @@ public class CabeleireiroController {
 	
 		Cabeleireiro cabeleireiro = cabeleireiroServico.encontrarCabeleireiroPorEmail(auth.getName());
 	
-		
 		mv.addObject("cabeleireiro",cabeleireiro);
-		
-	
 		
 		System.out.println(cabeleireiro);
 	
@@ -86,11 +85,56 @@ public class CabeleireiroController {
 	}
 	
 	
-	@ModelAttribute("ufs")
-	public UF[] getUFs() {
-		return UF.values();
+	@GetMapping("/editar/{id}")
+	public ModelAndView mostrarFormularioAtualizar(@PathVariable("id") Long id,Model model) {
+		ModelAndView mv = new ModelAndView();
+		
+		Cabeleireiro cabeleireiroEncotrado = cabeleireiroServico.encontrarCabeleireiroPorId(id);
+	
+	    CabeleireiroFilterAtualiza cabeleireiro = new CabeleireiroFilterAtualiza
+			   (cabeleireiroEncotrado.getId(), cabeleireiroEncotrado.getNomeEstabelecimento(), cabeleireiroEncotrado.getCnpj(),
+					   cabeleireiroEncotrado.getEndereco(), cabeleireiroEncotrado.getEmail(), cabeleireiroEncotrado.getTelefone());
+		
+		mv.addObject("cabeleireiro",cabeleireiro);
+	
+		mv.setViewName("cabeleireiro/atualiza-cadastro-cabeleireiro");
+	
+	    return mv;
 	}
 	
+	@PostMapping("/atualizar/{id}")
+	  public ModelAndView atualizarCabeleireiro(@PathVariable("id") long id, @Valid CabeleireiroFilterAtualiza cabeleireiroFilterAtualiza, BindingResult resultado) {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("cabeleireiro/atualiza-cadastro-cabeleireiro");
+		modelAndView.addObject("cabeleireiro",cabeleireiroServico.encontrarCabeleireiroPorEmail(cabeleireiroFilterAtualiza.getEmail()));	
+		if (resultado.hasErrors()) {
+    	  cabeleireiroFilterAtualiza.setId(id);
+			modelAndView.setViewName("cabeleireiro/atualiza-cadastro-cabeleireiro");
+			return modelAndView;
+      }
+		
+      cabeleireiroServico.atualizarCabeleireiro(id, cabeleireiroFilterAtualiza);
+      modelAndView.addObject("msgSucesso", "Dados atualizados com sucesso.");
+   
+      return modelAndView;
+  }
+	
+	
+	
+	@PostMapping("/desativar/{id}")
+	public ModelAndView desativar(@PathVariable("id") Long id) {
+		ModelAndView mv = new ModelAndView();
+		cabeleireiroServico.desativarCabeleireiro(id);
+		mv.setViewName("login");
+		mv.addObject("msgSucesso", "Conta desativada com sucesso.");
+		return mv;
+	}
+	
+	
+	
+	
+	
+
 	
 	
 	

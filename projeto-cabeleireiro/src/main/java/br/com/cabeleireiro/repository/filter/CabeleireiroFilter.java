@@ -11,19 +11,36 @@ public class CabeleireiroFilter {
 	private String cidade;
 
 	private String cep;
+	
+	private String regiao;
 
 	private Integer numero;
 
 
-	public CabeleireiroFilter(String nomeEstabelecimento, String rua, String bairro, String cidade, String cep,
+	public CabeleireiroFilter(String nomeEstabelecimento, String rua, String bairro, String cidade, String cep,String regiao,
 			Integer numero) {
 		this.nomeEstabelecimento = nomeEstabelecimento;
 		this.rua = rua;
 		this.bairro = bairro;
 		this.cidade = cidade;
 		this.cep = cep;
+		this.regiao = regiao;
 		this.numero = numero;
 	}
+	
+	
+
+	public String getRegiao() {
+		return regiao;
+	}
+
+
+
+	public void setRegiao(String regiao) {
+		this.regiao = regiao;
+	}
+
+
 
 	public CabeleireiroFilter() {
 	}

@@ -125,6 +125,7 @@ public class UsuarioServico {
 			cc.setCidade(query.getResultList().get(i).getEndereco().getCidade());
 			cc.setNumero(query.getResultList().get(i).getEndereco().getNumero());
 			cc.setRua(query.getResultList().get(i).getEndereco().getRua());
+			cc.setRegiao(query.getResultList().get(i).getEndereco().getRegiao());
 			cf.add(cc);
 		}
 		return cf;
@@ -155,6 +156,11 @@ public class UsuarioServico {
 			predicates.add(builder.like(builder.lower(root.get("endereco").get("cidade")),
 					"%" + cabeleireiroFilter.getCidade().toLowerCase() + "%"));
 		}
+		
+		if (!StringUtils.isEmpty(cabeleireiroFilter.getRegiao())) {
+			predicates.add(builder.like(builder.lower(root.get("endereco").get("regiao")),
+					"%" + cabeleireiroFilter.getRegiao().toLowerCase() + "%"));
+		}
 
 		if (!StringUtils.isEmpty(cabeleireiroFilter.getCep())) {
 			predicates.add(builder.like(builder.lower(root.get("endereco").get("cep")),
@@ -164,6 +170,8 @@ public class UsuarioServico {
 		if (!StringUtils.isEmpty(cabeleireiroFilter.getNumero())) {
 			predicates.add(builder.equal(root.get("endereco").get("numero"), cabeleireiroFilter.getNumero()));
 		}
+		
+	
 
 		return predicates.toArray(new Predicate[predicates.size()]);
 

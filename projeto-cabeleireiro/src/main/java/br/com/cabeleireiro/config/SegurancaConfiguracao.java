@@ -38,8 +38,6 @@ public class SegurancaConfiguracao extends WebSecurityConfigurerAdapter{
 
 	@Value("${spring.queries.select-role-cabeleireiro}")
 	private String selectRolesCabelireiro;
-	
-
 
 
 	@Override
@@ -69,6 +67,7 @@ public class SegurancaConfiguracao extends WebSecurityConfigurerAdapter{
 		.authorizeRequests()
 		.antMatchers("/").permitAll()
 		.antMatchers("/login").permitAll()
+		.antMatchers("/ativa-cadastro-usuario").permitAll()
 		.antMatchers("/cabeleireiros/**").permitAll()
 		.antMatchers("/usuarios/**").permitAll()
 		.antMatchers("/admin/**").hasAnyAuthority("ADMIN").anyRequest()

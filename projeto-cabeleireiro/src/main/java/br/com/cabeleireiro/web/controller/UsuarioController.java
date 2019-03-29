@@ -49,7 +49,7 @@ public class UsuarioController {
 		return mv;
 	}
 
-	@GetMapping("/ativar")
+	/*@GetMapping("/ativar")
 	public ModelAndView mostrarFormAtivar() {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("usuario/ativa-cadastro-usuario");
@@ -62,20 +62,19 @@ public class UsuarioController {
 	@PostMapping("/ativarPost")
 	public ModelAndView ativar(@Valid Usuario usuario, BindingResult bindingResult) {
 		ModelAndView mv = new ModelAndView();
+		mv.setViewName("usuario/ativa-cadastro-usuario");
 
 		Usuario usuarioExiste = usuarioServico.encontrarUsuarioPorEmail(usuario.getEmail());
 
 		if (usuarioExiste == null) {
 			bindingResult.rejectValue("email", "error.usuario", "Não existe um usuário com esse email");
-			 mv.setViewName("usuario/ativa-cadastro-usuario");
 			 return mv;
 		}
 			usuarioServico.ativarUsuario(usuarioExiste.getEmail());
-		
 			mv.addObject("msgSucesso", "Usuário ativado com sucesso.");
-			 mv.setViewName("usuario/ativa-cadastro-usuario");
+			
 			return mv;
-	}
+	}*/
 	
 	
 
@@ -88,7 +87,6 @@ public class UsuarioController {
 		if (usuarioExiste != null) {
 			bindingResult.rejectValue("email", "error.usuario", "Já existe um usuário com esse email");
 		}
-		System.out.println(usuario);
 		if (bindingResult.hasErrors()) {
 			mv.setViewName("usuario/cadastro-usuario");
 		} else {
@@ -102,14 +100,11 @@ public class UsuarioController {
 	}
 	
 	@GetMapping("/editar/{id}")
-	public ModelAndView mostrarFormularioAtualizar(@PathVariable("id") Long id,Model model) {
+	public ModelAndView mostrarFormularioAtualizar(@PathVariable("id") Long id) {
 		ModelAndView mv = new ModelAndView();
-		
-		System.out.println("mostrarFormularioAtualizar");
 	
 		Usuario usuarioEncotrado = usuarioServico.encontrarUsuarioPorId(id);
 		
-	
 		UsuarioFilter usuario = new UsuarioFilter(usuarioEncotrado.getId(),usuarioEncotrado.getNome(), usuarioEncotrado.getSobreNome(),
 				usuarioEncotrado.getCelular(), usuarioEncotrado.getDataNascimento(), usuarioEncotrado.getEmail());
 		
@@ -121,19 +116,18 @@ public class UsuarioController {
 	}
 	
 	@PostMapping("/atualizar/{id}")
-	  public ModelAndView atualizarUsuario(@PathVariable("id") long id, @Valid UsuarioFilter usuario, BindingResult resultado) {
+	  public ModelAndView atualizarUsuario(@PathVariable("id") Long id, @Valid UsuarioFilter usuario, BindingResult resultado) {
 		ModelAndView modelAndView = new ModelAndView();
-		
+		modelAndView.setViewName("usuario/atualiza-cadastro-usuario");
+		modelAndView.addObject("usuario",usuario);	
         if (resultado.hasErrors()) {
-			usuario.setId(id);
-			modelAndView.setViewName("usuario/atualiza-cadastro-usuario");
+        	usuario.setId(id);
 			return modelAndView;
         }
-		
-		usuarioServico.atualizarUsuario(id,usuario);
-     
-		System.out.println("atualizarUsuario controller");
-        return home(new CabeleireiroFilter());
+        usuarioServico.atualizarUsuario(id,usuario);
+        
+        modelAndView.addObject("msgSucesso", "Dados atualizados com sucesso.");
+        return modelAndView;
     }
 	
 	
@@ -141,41 +135,38 @@ public class UsuarioController {
 	@RequestMapping(value = "/usuario/pos-login-usuario", method = RequestMethod.GET)
 	public ModelAndView home(@ModelAttribute CabeleireiroFilter cabeleireiroFilter) {
 	
-		System.out.println("home()");
-	
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("usuario/pos-login-usuario");
+	
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
 		Usuario usuario = usuarioServico.encontrarUsuarioPorEmail(auth.getName());
+	
 		mv.addObject("nomeUsuario", "Bem-vindo " + usuario.getNome() + ", " + usuario.getSobreNome());
 		
 		mv.addObject("usuario",usuario);
-		System.out.println(usuario.getId());
 	
 		mv.addObject("cabeleireiroFilter", cabeleireiroFilter);
 		
-		System.out.println(usuario + "home()");
+		mv.setViewName("usuario/pos-login-usuario");
+		
 		return mv;
 	}
 
 	@GetMapping("/pesquisa-cabeleireiro")
 	public ModelAndView pesquisarCabeleireiro(@ModelAttribute CabeleireiroFilter cabeleireiroFilter, Model model) {
 		
-		System.err.println("pesquisarCabeleireiro");
-		System.err.println(cabeleireiroFilter);
 		model.addAttribute("cabeleireiroFilter", cabeleireiroFilter);
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Usuario usuario = usuarioServico.encontrarUsuarioPorEmail(auth.getName());
 	     
-		
 		ModelAndView mv = new ModelAndView("usuario/pos-login-usuario");
 		mv.addObject("nomeUsuario", "Bem-vindo " + usuario.getNome() + ", " + usuario.getSobreNome());
 		
 		mv.addObject("usuario",usuario);
 
 		CabeleireiroFilter c = new CabeleireiroFilter(cabeleireiroFilter.getNomeEstabelecimento(), cabeleireiroFilter.getRua(), 
-				cabeleireiroFilter.getBairro(), cabeleireiroFilter.getCidade(), cabeleireiroFilter.getCep(), cabeleireiroFilter.getNumero());
+				cabeleireiroFilter.getBairro(), cabeleireiroFilter.getCidade(), cabeleireiroFilter.getCep(),cabeleireiroFilter.getRegiao() ,cabeleireiroFilter.getNumero());
 		
 		List<CabeleireiroFilter> cabeleireiros = usuarioServico.filtrar(c);
 		
@@ -184,7 +175,6 @@ public class UsuarioController {
 	
 		model.addAttribute("cabeleireiros", cabeleireiros);
 
-		System.out.println(cabeleireiros.toString());
 		
 		return mv;
 	}

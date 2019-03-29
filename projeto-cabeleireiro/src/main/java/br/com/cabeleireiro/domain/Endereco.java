@@ -2,8 +2,6 @@ package br.com.cabeleireiro.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
@@ -21,11 +19,10 @@ public class Endereco {
 	@Column(nullable = false)
 	@NotEmpty(message = "*Por favor preencha sua cidade")
 	private String cidade;
-
+	
 	@Column(nullable = false)
-	@Enumerated(EnumType.STRING)
-	@NotEmpty(message = "*Por favor preencha seu UF")
-	private UF uf;
+	@NotEmpty(message = "*Por favor preencha sua região")
+	private String regiao;
 
 	@Column(nullable = false, length = 9)
 	@NotEmpty(message = "*Por favor preencha seu cep")
@@ -37,6 +34,15 @@ public class Endereco {
 
 	@Size(max = 255)
 	private String complemento;
+	
+
+	public String getRegiao() {
+		return regiao;
+	}
+
+	public void setRegiao(String regiao) {
+		this.regiao = regiao;
+	}
 
 	public String getBairro() {
 		return bairro;
@@ -52,14 +58,6 @@ public class Endereco {
 
 	public void setCidade(String cidade) {
 		this.cidade = cidade;
-	}
-
-	public UF getUf() {
-		return uf;
-	}
-
-	public void setUf(UF uf) {
-		this.uf = uf;
 	}
 
 	public String getCep() {
@@ -85,8 +83,6 @@ public class Endereco {
 	public void setComplemento(String complemento) {
 		this.complemento = complemento;
 	}
-	
-	
 
 	public String getRua() {
 		return rua;
@@ -98,8 +94,8 @@ public class Endereco {
 
 	@Override
 	public String toString() {
-		return "Endereco [rua=" + rua + ", bairro=" + bairro + ", cidade=" + cidade + ", uf=" + uf + ", cep=" + cep
-				+ ", numero=" + numero + ", complemento=" + complemento + "]";
+		return "Endereco [rua=" + rua + ", bairro=" + bairro + ", cidade=" + cidade + ", regiao=" + regiao + ", cep="
+				+ cep + ", numero=" + numero + ", complemento=" + complemento + "]";
 	}
 
 

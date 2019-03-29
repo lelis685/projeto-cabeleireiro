@@ -2,9 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
-<title>Cadastro Cabeleireiro</title>
+<title>Atualizar dados Cabeleireiro</title>
 <link rel="stylesheet" th:href="@{/css/estiloCabeleireiro.css}">
-
+<link rel="stylesheet" th:href="@{/css/estiloCliente.css}">
 <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 
 
@@ -22,7 +22,7 @@
 
 	<div class="loginbox">
 		<img th:src="@{/imagens/logo-cabeleireiro.jpg}" class="avatar">
-		<h1>Inicie o cadastro do Cabeleireiro</h1>
+		<h2>Inicie a atualização de dados do Cabeleireiro</h2>
 
 		<div th:if="${msgSucesso} != null">
 			<div class="alert">
@@ -33,7 +33,7 @@
 		</div>
 
 
-		<form th:action="@{/cabeleireiros/salvar}" th:object="${cabeleireiro}"
+		<form th:action="@{/cabeleireiros/atualizar/{id} (id=${cabeleireiro.id})}" th:object="${cabeleireiro}"
 			method="POST">
 
 			<p>
@@ -70,7 +70,7 @@
 			<label>E-mail</label> <input id="email" type="email" name="email"
 				autofocus="autofocus" th:field="*{email}"
 				placeholder="Informe o email" />
-
+				
 
 			<p>
 				<label th:if="${#fields.hasErrors('endereco.cidade')}"
@@ -80,6 +80,7 @@
 				autofocus="autofocus" th:field="*{endereco.cidade}"
 				placeholder="Informe a cidade">
 				
+			
 				<p>
 				<label th:if="${#fields.hasErrors('endereco.rua')}"
 					th:errors="*{endereco.rua}" class="validation-message"></label>
@@ -87,6 +88,15 @@
 			<label>Rua</label> <input id="rua" type="text" name="rua"
 				autofocus="autofocus" th:field="*{endereco.rua}"
 				placeholder="Informe a rua">
+				
+				
+				<p>
+				<label th:if="${#fields.hasErrors('endereco.regiao')}"
+					th:errors="*{endereco.regiao}" class="validation-message"></label>
+			</p>
+			<label>Rua</label> <input id="regiao" type="text" name="regiao"
+				autofocus="autofocus" th:field="*{endereco.regiao}"
+				placeholder="Informe a região">
 
 
 			<p>
@@ -96,14 +106,6 @@
 			<label>Bairro</label> <input id="bairro" type="text" name="bairro"
 				autofocus="autofocus" th:field="*{endereco.bairro}"
 				placeholder="Informe a cidade">
-				
-					<p>
-				<label th:if="${#fields.hasErrors('endereco.regiao')}"
-					th:errors="*{endereco.regiao}" class="validation-message"></label>
-			</p>
-			<label>Região</label> <input id="regiao" type="text" name="regiao"
-				autofocus="autofocus" th:field="*{endereco.regiao}"
-				placeholder="Informe a região">
 
 
 			<p>
@@ -133,24 +135,24 @@
 				th:field="*{endereco.complemento}"
 				placeholder="Informe o complemento">
 
-
-			<p>
-				<label th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}"
-					class="validation-message"></label>
-			</p>
-			<label>Senha</label> <input id="senha" type="password" name="senha"
-				autofocus="autofocus" th:field="*{senha}"
-				placeholder="Informe a Senha" /> <input type="hidden" id="id"
-				th:field="*{id}" /> <input id="enviar" type="submit"
-				name="enviaCadastro" value="Cadastar">
-
-
-			<p class="linkQualquer">
-				<a th:href="@{/login}">Ir pro Login.</a>
-			</p>
+				<input type="hidden" id="id"
+				th:field="*{id}" /> 
+				
+				
+				<input id="enviar" type="submit"
+				name="enviaCadastro" value="Atualizar">
+				
+				
+				<p class="linkQualquer">
+				<a th:href="@{/cabeleireiros/cabeleireiro/pos-login-cabeleireiro}">Voltar</a>
+			
 		</form>
-	</div>
 
+		   <form class="button" th:action="@{/cabeleireiros/desativar/{id}(id=${cabeleireiro.id})}" th:object="${cabeleireiro}"  method="POST">
+                        <input type="submit"class="btn btn-lg btn-block btnLogin" value="Desativar Conta"/>
+                  </form>
+
+	</div>
 
 </body>
 </html>

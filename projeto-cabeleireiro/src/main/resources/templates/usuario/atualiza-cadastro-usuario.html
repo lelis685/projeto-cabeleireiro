@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
-<title>Atualiza Cadastro Cliente</title>
+<title>Atualiza Cadastro Cabeleireiro</title>
 
 <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 <link rel="stylesheet" th:href="@{/css/estiloCliente.css}">
@@ -31,15 +31,8 @@
 			<span class=alert th:utext="${msgSucesso}" ></span>
 		</div>
 	 </div>
-
-          
-          
-            
 		
 		<form action="#" th:action="@{/usuarios/atualizar/{id}(id=${usuario.id})}" th:object="${usuario}" method="post">
-                            
-                            
-                            
 
 			<p>
 				<label th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"
@@ -91,20 +84,13 @@
 				
 				<input id="enviar"
 				type="submit" name="enviaCadastro" value="Atualizar">
-				
-				
-		
-				
-				
-				
+
 
 			<p class="linkQualquer">
 				<a th:href="@{/usuarios/usuario/pos-login-usuario}">Voltar</a>
 			</p>
 
-			<h3>
-				
-			</h3>
+			
 
 		</form>
 		

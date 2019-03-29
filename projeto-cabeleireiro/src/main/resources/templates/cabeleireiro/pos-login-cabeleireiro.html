@@ -1,23 +1,17 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-  <head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+   
+   
     <title>TELA 3 TCC</title>
 
     <!-- Bootstrap -->
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/tela2.css" rel="stylesheet">
-    <link rel="icon" href="img/img.png">
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/posLoginCabeleireiro.css}" rel="stylesheet">
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
   </head>
   <body>
 
@@ -27,19 +21,21 @@
         
         <div class="navbar-header">
 
-          <a href="#" class="navbar-brand"><h1>Salão Jaça- Espaço do seu cabelo</h1></a>
+          <a href="#" class="navbar-brand"><h1>Salão Faça- Espaço do seu cabelo</h1></a>
 
         </div>
 
         <div clas="collapse navbar-collapse" id="barra-navegacao">
           <button class="dropdown btn btn-default">
                 <a href="" class="dropdown-toggle noneunderline" data-toggle="dropdown">
-                MINHA CONTA <span class="caret"></span>
+                Minha Conta <span class="caret"></span>
               </a>
-
                 <ul class="dropdown-menu">
-                 <li><a href="#">SAIR</a></li>
+                 <li><a  th:href="@{/logout}">Sair</a></li>
+                  <li> <a  th:href="@{/cabeleireiros/editar/{id}(id=${cabeleireiro.id})}"  >Atualizar Cadastro</a></li>
+               
                 </ul>
+               
               </button>
           </ul>
 
@@ -129,6 +125,6 @@
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
   </body>
 </html>
