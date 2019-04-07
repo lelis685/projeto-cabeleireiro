@@ -2,6 +2,8 @@ package br.com.cabeleireiro.repository.filter;
 
 public class CabeleireiroFilter {
 
+	private long id;
+
 	private String nomeEstabelecimento;
 
 	private String rua;
@@ -11,14 +13,16 @@ public class CabeleireiroFilter {
 	private String cidade;
 
 	private String cep;
-	
+
 	private String regiao;
+
+	private String complemento;
 
 	private Integer numero;
 
-
-	public CabeleireiroFilter(String nomeEstabelecimento, String rua, String bairro, String cidade, String cep,String regiao,
-			Integer numero) {
+	public CabeleireiroFilter(long id, String nomeEstabelecimento, String rua, String bairro, String cidade, String cep,
+			String regiao, String complemento, Integer numero) {
+		this.id = id;
 		this.nomeEstabelecimento = nomeEstabelecimento;
 		this.rua = rua;
 		this.bairro = bairro;
@@ -26,21 +30,32 @@ public class CabeleireiroFilter {
 		this.cep = cep;
 		this.regiao = regiao;
 		this.numero = numero;
+		this.complemento = complemento;
 	}
-	
-	
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getComplemento() {
+		return complemento;
+	}
+
+	public void setComplemento(String complemento) {
+		this.complemento = complemento;
+	}
 
 	public String getRegiao() {
 		return regiao;
 	}
 
-
-
 	public void setRegiao(String regiao) {
 		this.regiao = regiao;
 	}
-
-
 
 	public CabeleireiroFilter() {
 	}
@@ -98,7 +113,5 @@ public class CabeleireiroFilter {
 		return "CabeleireiroFilter [nomeEstabelecimento=" + nomeEstabelecimento + ", rua=" + rua + ", bairro=" + bairro
 				+ ", cidade=" + cidade + ", cep=" + cep + ", numero=" + numero + "]";
 	}
-
-	
 
 }

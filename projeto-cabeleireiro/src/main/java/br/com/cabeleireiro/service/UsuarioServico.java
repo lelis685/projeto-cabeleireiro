@@ -43,16 +43,14 @@ public class UsuarioServico {
 		this.usuarioRepository = usuarioRepository;
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 		this.roleRepository = roleRepository;
-		System.out.println("UsuarioServico");
-
 	}
+	
 
 	public Usuario encontrarUsuarioPorEmail(String email) {
 		return usuarioRepository.findByEmail(email);
 	}
 	
 	public Usuario encontrarUsuarioPorId(Long id) {
-		System.out.println("encontrarUsuarioPorId");
 		return usuarioRepository.findById(id).orElse(null);
 	}
 	
@@ -84,13 +82,12 @@ public class UsuarioServico {
 		usuarioEncontrado.setEmail(usuarioFilter.getEmail());
 		usuarioEncontrado.setCelular(usuarioFilter.getCelular());
 		
-		System.out.println(id);
 		
 		usuarioRepository.setUsuarioInfoById(usuarioEncontrado.getNome(), usuarioEncontrado.getSobreNome(), 
 				usuarioEncontrado.getDataNascimento(), usuarioEncontrado.getCelular(), id);
 	}
 	
-
+	@Transactional
 	public Usuario salvarUsuario(Usuario usuario) {
 		usuario.setSenha(bCryptPasswordEncoder.encode(usuario.getSenha()));
 		usuario.setAtivo(1);
@@ -116,9 +113,12 @@ public class UsuarioServico {
 
 	private List<CabeleireiroFilter> criaListaCabeleireiroFilter(TypedQuery<Cabeleireiro> query) {
 		List<CabeleireiroFilter> cf = new ArrayList<>();
+	
 		// copiar só campos necessarios
+	
 		for (int i = 0; i < query.getResultList().size(); i++) {
 			CabeleireiroFilter cc = new CabeleireiroFilter();
+			cc.setId(query.getResultList().get(i).getId());
 			cc.setNomeEstabelecimento(query.getResultList().get(i).getNomeEstabelecimento());
 			cc.setBairro(query.getResultList().get(i).getEndereco().getBairro());
 			cc.setCep(query.getResultList().get(i).getEndereco().getCep());
@@ -126,6 +126,15 @@ public class UsuarioServico {
 			cc.setNumero(query.getResultList().get(i).getEndereco().getNumero());
 			cc.setRua(query.getResultList().get(i).getEndereco().getRua());
 			cc.setRegiao(query.getResultList().get(i).getEndereco().getRegiao());
+		
+			if(query.getResultList().get(i).getEndereco().getComplemento() == null) {
+				cc.setComplemento(" ");
+			}else {
+				cc.setComplemento(query.getResultList().get(i).getEndereco().getComplemento());
+			}
+			
+			
+		
 			cf.add(cc);
 		}
 		return cf;
@@ -170,8 +179,6 @@ public class UsuarioServico {
 		if (!StringUtils.isEmpty(cabeleireiroFilter.getNumero())) {
 			predicates.add(builder.equal(root.get("endereco").get("numero"), cabeleireiroFilter.getNumero()));
 		}
-		
-	
 
 		return predicates.toArray(new Predicate[predicates.size()]);
 

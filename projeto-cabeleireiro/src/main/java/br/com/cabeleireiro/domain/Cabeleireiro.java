@@ -1,6 +1,8 @@
 package br.com.cabeleireiro.domain;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
@@ -20,16 +23,15 @@ import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
 
-
 @Entity
 @Table(name = "cabeleireiro", uniqueConstraints = @UniqueConstraint(columnNames = "email", name = "ck_email_unique_cab"))
-public class Cabeleireiro  {
+public class Cabeleireiro {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "nome_estabelecimento",nullable= false)
+	@Column(name = "nome_estabelecimento", nullable = false)
 	@NotEmpty(message = "*Por favor preencha seu nome do estabelecimento")
 	private String nomeEstabelecimento;
 
@@ -53,25 +55,35 @@ public class Cabeleireiro  {
 
 	@Column(name = "ativo")
 	private int ativo;
-	
+
 	@Column(nullable = false)
 	@NotEmpty(message = "*Por favor preencha seu telefone")
 	private String telefone;
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(
-			name = "cabeleireiros_roles", 
-			joinColumns = @JoinColumn(
-					name = "cabeleireiro_id", referencedColumnName = "id"), 
-			inverseJoinColumns = @JoinColumn(
-					name = "role_id", referencedColumnName = "id"))
-	private Collection<Role> roles;
+	@Column(nullable = false, name = "valor_adulto")
+	private double valorAdulto;
+
+	@Column(nullable = false, name = "valor_infantil")
+	private double valorInfantil;
+
+
 	
+	@OneToMany(mappedBy="cabeleireiro",cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	private List<Fila> filas  = new ArrayList<Fila>();
+
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable
+	(name = "cabeleireiros_roles", joinColumns =
+	@JoinColumn(name = "cabeleireiro_id", referencedColumnName = "id"), 
+	inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+	private Collection<Role> roles;
 
 	public Cabeleireiro() {
 	}
 
-	public Cabeleireiro(String nomeEstabelecimento,String telefone,String cnpj,Endereco endereco,String email,String senha,int ativo, Collection<Role> roles) {
+	public Cabeleireiro(String nomeEstabelecimento, String telefone, String cnpj, Endereco endereco, String email,
+			String senha, int ativo, Collection<Role> roles, double valorAdulto, double valorInfantil) {
 		this.nomeEstabelecimento = nomeEstabelecimento;
 		this.cnpj = cnpj;
 		this.endereco = endereco;
@@ -80,9 +92,12 @@ public class Cabeleireiro  {
 		this.ativo = ativo;
 		this.telefone = telefone;
 		this.roles = roles;
+		this.valorAdulto = valorAdulto;
+		this.valorInfantil = valorInfantil;
 	}
-	
-	public Cabeleireiro(String nomeEstabelecimento,String telefone,String cnpj,Endereco endereco,String email,String senha,int ativo) {
+
+	public Cabeleireiro(String nomeEstabelecimento, String telefone, String cnpj, Endereco endereco, String email,
+			String senha, int ativo) {
 		this.nomeEstabelecimento = nomeEstabelecimento;
 		this.cnpj = cnpj;
 		this.endereco = endereco;
@@ -93,6 +108,32 @@ public class Cabeleireiro  {
 	}
 	
 	
+	
+
+
+	public List<Fila> getFilas() {
+		return filas;
+	}
+
+	public void setFilas(List<Fila> filas) {
+		this.filas = filas;
+	}
+
+	public double getValorAdulto() {
+		return valorAdulto;
+	}
+
+	public void setValorAdulto(double valorAdulto) {
+		this.valorAdulto = valorAdulto;
+	}
+
+	public double getValorInfantil() {
+		return valorInfantil;
+	}
+
+	public void setValorInfantil(double valorInfantil) {
+		this.valorInfantil = valorInfantil;
+	}
 
 	public String getTelefone() {
 		return telefone;
@@ -165,6 +206,8 @@ public class Cabeleireiro  {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
+	
+	
 
 	@Override
 	public String toString() {
@@ -172,9 +215,5 @@ public class Cabeleireiro  {
 				+ ", endereco=" + endereco + ", email=" + email + ", senha=" + senha + ", ativo=" + ativo + ", roles="
 				+ roles + "]";
 	}
-
-
-
-
 
 }

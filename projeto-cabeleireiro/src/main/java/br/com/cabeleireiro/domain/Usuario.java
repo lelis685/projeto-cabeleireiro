@@ -2,6 +2,8 @@ package br.com.cabeleireiro.domain;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,12 +15,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -62,25 +67,20 @@ public class Usuario {
 	private String senha;
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(
-			name = "usuarios_roles", 
-			joinColumns = @JoinColumn(
-					name = "usuario_id", referencedColumnName = "id"), 
-			inverseJoinColumns = @JoinColumn(
-					name = "role_id", referencedColumnName = "id"))
+	@JoinTable(name = "usuarios_roles", joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
 	private Collection<Role> roles;
+
+	@OneToMany(mappedBy = "usuario")
+	@Fetch(FetchMode.SUBSELECT) 
+	private Set<Fila> filas = new HashSet<Fila>();
 
 	public Usuario() {
 	}
-	
-	
 
 	public Usuario(Long id) {
 		super();
 		this.id = id;
 	}
-
-
 
 	public Usuario(String nome, String sobreNome, String celular, LocalDate dataNascimento, String email,
 			String senha) {
@@ -105,6 +105,14 @@ public class Usuario {
 
 	public Long getId() {
 		return id;
+	}
+
+	public Set<Fila> getFilas() {
+		return filas;
+	}
+
+	public void setFilas(Set<Fila> filas) {
+		this.filas = filas;
 	}
 
 	public void setId(Long id) {
@@ -181,7 +189,5 @@ public class Usuario {
 				+ ", dataNascimento=" + dataNascimento + ", email=" + email + ", ativo=" + ativo + ", senha=" + senha
 				+ ", roles=" + roles + "]";
 	}
-	
-	
 
 }

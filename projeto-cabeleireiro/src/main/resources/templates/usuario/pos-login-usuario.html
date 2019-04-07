@@ -31,8 +31,6 @@
                 <a  class="dropdown-toggle noneunderline" data-toggle="dropdown">
                     Minha Conta <span class="caret"></span>
               </a>
-              
-         
 
                 <ul class="dropdown-menu">
                  <li><a  th:href="@{/logout}">Sair</a></li>
@@ -102,29 +100,15 @@
 
           <h3 align="center">RESULTADOS ENCONTRADOS: <span th:utext="${total}"></span> </h3><br>
 
-    <!--  <table class="table table-striped table-bordered">
-        <tr>
-            <td>Room</td>
-            <td>Room Number</td>
-            <td>Guest</td>
-        </tr>
-        <tr th:each="roomReservation: ${roomReservations}">
-            <td th:text="${roomReservation.roomName}">Room Name</td>
-            <td th:text="${roomReservation.roomNumber}">Room Number</td>
-            <td th:text="${roomReservation.lastName}!=null? ${roomReservation.lastName} + ', ' + ${roomReservation.firstName} : 'VACANT'">Full Name</td>
-        </tr>
-        rua   ||, numero - complemento - bairro, cidade , cep
-      R. Fernando Nobre, 749 - SALA 3 - Parque Rincao, Cotia - SP, 06705-490
- 
-    </table>-->
-    
+
    
 
-          <table class="table table-striped table-bordered">
+        <table class="table table-striped table-bordered">
         <thead>
           <tr class="btn-info azul">
             <th>Nome do Estabelecimento</th>
             <th>Endereço completo</th>
+             <th>Fila</th>
           </tr>
         </thead>
 
@@ -132,8 +116,12 @@
          <tr th:each="cabeleireiro: ${cabeleireiros}">
               <td th:text="${cabeleireiro.nomeEstabelecimento}">Nome do Estabelecimento</td>
            
-              <td th:text="${cabeleireiro.rua} + ', '+ ${cabeleireiro.numero} + ' - ' +
-                  ${cabeleireiro.bairro} + ', '+  ${cabeleireiro.cidade} +', '+${cabeleireiro.cep}">Endereço completo</td>
+              <td th:text="${cabeleireiro.rua} + ', '+ ${cabeleireiro.numero} + ' - ' +${cabeleireiro.complemento}+' - '+
+                  ${cabeleireiro.bairro} + ', '+  ${cabeleireiro.cidade} + ' Região '+ ${cabeleireiro.regiao}+', '+${cabeleireiro.cep}">Endereço completo</td>
+           
+                 
+                
+                   <td> <a  th:href="@{/usuarios/fila/{id}(id=${cabeleireiro.id})}" >Visualizar fila</a></td>
           </tr>
         </tbody>
       </table>

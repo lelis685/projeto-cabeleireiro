@@ -32,12 +32,18 @@ public class CabeleireiroFilterAtualiza {
 	@NotEmpty(message = "*Por favor preencha seu telefone")
 	private String telefone;
 
+	@Column(name = "valor_adulto")
+	private double valorAdulto;
+
+	@Column(name = "valor_infantil")
+	private double valorInfantil;
+
 	public CabeleireiroFilterAtualiza() {
 		super();
 	}
 
 	public CabeleireiroFilterAtualiza(Long id, String nomeEstabelecimento, String cnpj, Endereco endereco, String email,
-			String telefone) {
+			String telefone, double valorAdulto, double valorInfantil) {
 		this.id = id;
 		this.nomeEstabelecimento = nomeEstabelecimento;
 		this.cnpj = cnpj;
@@ -48,6 +54,22 @@ public class CabeleireiroFilterAtualiza {
 
 	public Long getId() {
 		return id;
+	}
+
+	public double getValorAdulto() {
+		return valorAdulto;
+	}
+
+	public void setValorAdulto(double valorAdulto) {
+		this.valorAdulto = valorAdulto;
+	}
+
+	public double getValorInfantil() {
+		return valorInfantil;
+	}
+
+	public void setValorInfantil(double valorInfantil) {
+		this.valorInfantil = valorInfantil;
 	}
 
 	public void setId(Long id) {

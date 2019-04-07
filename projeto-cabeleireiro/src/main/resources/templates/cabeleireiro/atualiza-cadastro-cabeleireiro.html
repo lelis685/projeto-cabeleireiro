@@ -134,6 +134,29 @@
 				name="complemento" autofocus="autofocus"
 				th:field="*{endereco.complemento}"
 				placeholder="Informe o complemento">
+				
+				
+				
+				
+				<p>
+				<label th:if="${#fields.hasErrors('valorAdulto')}"
+					th:errors="*{valorAdulto}" class="validation-message"></label>
+			</p>
+			<label>Valor Corte Adulto</label> <input id="valorAdulto" type="text"
+				name="complemento" autofocus="autofocus" th:field="*{valorAdulto}"
+				placeholder="Informe o valor do corte adulto">
+
+
+
+			<p>
+				<label th:if="${#fields.hasErrors('valorInfantil')}"
+					th:errors="*{valorInfantil}" class="validation-message"></label>
+			</p>
+			<label>Valor Corte Infantil</label> <input id="valorInfantil"
+				type="text" name="complemento" autofocus="autofocus"
+				th:field="*{valorInfantil}"
+				placeholder="Informe o valor do corte infantil">
+				
 
 				<input type="hidden" id="id"
 				th:field="*{id}" /> 

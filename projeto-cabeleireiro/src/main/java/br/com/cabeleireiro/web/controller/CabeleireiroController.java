@@ -93,7 +93,8 @@ public class CabeleireiroController {
 	
 	    CabeleireiroFilterAtualiza cabeleireiro = new CabeleireiroFilterAtualiza
 			   (cabeleireiroEncotrado.getId(), cabeleireiroEncotrado.getNomeEstabelecimento(), cabeleireiroEncotrado.getCnpj(),
-					   cabeleireiroEncotrado.getEndereco(), cabeleireiroEncotrado.getEmail(), cabeleireiroEncotrado.getTelefone());
+					   cabeleireiroEncotrado.getEndereco(), cabeleireiroEncotrado.getEmail(), cabeleireiroEncotrado.getTelefone(),cabeleireiroEncotrado.getValorAdulto(),
+					   cabeleireiroEncotrado.getValorInfantil());
 		
 		mv.addObject("cabeleireiro",cabeleireiro);
 	

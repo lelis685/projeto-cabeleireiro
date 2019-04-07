@@ -10,15 +10,25 @@ import br.com.cabeleireiro.domain.Cabeleireiro;
 @Repository
 public interface CabeleireiroRepository extends JpaRepository<Cabeleireiro, Long> {
 
+	/*
+    CONSULTA QUE RETORNA DIFERENÇA EM MINUTOS DE INICIO E FIM
+	select inicio,fim,
+	 CAPTURA MINUTOS E ENTAO SOMA COM A CONVERSAO DE HORAS PARA MINUTOS
+	 TIME_FORMAT(time(fim) -  time(inicio),'%i' ) + TIME_FORMAT(time(fim) -  time(inicio),'%H' )*60
+	from teste;
+	
+	*/
+	
+	
 	Cabeleireiro findByEmail(String email);
 
 	@Modifying
 	@Query("update Cabeleireiro u set u.nomeEstabelecimento = ?1, u.cnpj = ?2, "
 			+ "u.endereco.rua = ?3, u.endereco.bairro = ?4,  "
 			+ "u.endereco.cidade = ?5, u.endereco.cep = ?6, u.endereco.numero = ?7," + "u.endereco.complemento = ?8,u.email = ?9 "
-			+ ", u.endereco.regiao = ?10 where u.id = ?11")
+			+ ", u.endereco.regiao = ?10, u.valorAdulto=?11,u.valorInfantil=?12  where u.id = ?13")
 	void setCabeleireiroInfoById(String nomeEstabelecimento, String cnpj, String rua, String bairro, String cidade,
-			String cep, Integer numero, String complemento,String email,String regiao, Long id);
+			String cep, Integer numero, String complemento,String email,String regiao,double valorAdulto, double valorInfantil, Long id);
 
 	@Modifying
 	@Query("update Cabeleireiro u set u.ativo = ?1  where u.id = ?2")

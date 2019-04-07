@@ -7,9 +7,18 @@
 
 <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 
-
 </head>
 <body>
+
+			
+<div class="input-group clockpicker">
+    <input type="text" class="form-control" value="09:30">
+    <span class="input-group-addon">
+        <span class="glyphicon glyphicon-time"></span>
+    </span>
+</div>
+
+
 	<div class="tipoContainer"></div>
 
 	<div
@@ -79,8 +88,8 @@
 			<label>Cidade</label> <input id="cidade" type="text" name="cidade"
 				autofocus="autofocus" th:field="*{endereco.cidade}"
 				placeholder="Informe a cidade">
-				
-				<p>
+
+			<p>
 				<label th:if="${#fields.hasErrors('endereco.rua')}"
 					th:errors="*{endereco.rua}" class="validation-message"></label>
 			</p>
@@ -96,8 +105,8 @@
 			<label>Bairro</label> <input id="bairro" type="text" name="bairro"
 				autofocus="autofocus" th:field="*{endereco.bairro}"
 				placeholder="Informe a cidade">
-				
-					<p>
+
+			<p>
 				<label th:if="${#fields.hasErrors('endereco.regiao')}"
 					th:errors="*{endereco.regiao}" class="validation-message"></label>
 			</p>
@@ -133,6 +142,31 @@
 				th:field="*{endereco.complemento}"
 				placeholder="Informe o complemento">
 
+
+
+			<p>
+				<label th:if="${#fields.hasErrors('valorAdulto')}"
+					th:errors="*{valorAdulto}" class="validation-message"></label>
+			</p>
+			<label>Valor Corte Adulto</label> <input id="valorAdulto" type="text"
+				name="complemento" autofocus="autofocus" th:field="*{valorAdulto}"
+				placeholder="Informe o valor do corte adulto">
+
+
+
+			<p>
+				<label th:if="${#fields.hasErrors('valorInfantil')}"
+					th:errors="*{valorInfantil}" class="validation-message"></label>
+			</p>
+			<label>Valor Corte Infantil</label> <input id="valorInfantil"
+				type="text" name="complemento" autofocus="autofocus"
+				th:field="*{valorInfantil}"
+				placeholder="Informe o valor do corte infantil">
+				
+				
+	
+			
+			
 
 			<p>
 				<label th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}"

@@ -67,12 +67,15 @@ public class CabeleireiroServico {
 		cabeleireiroEncontrado.getEndereco().setCidade(cabeleireiroFilterAtualiza.getEndereco().getCidade());
 		cabeleireiroEncontrado.getEndereco().setCep(cabeleireiroFilterAtualiza.getEndereco().getCep());
 		cabeleireiroEncontrado.getEndereco().setRegiao(cabeleireiroFilterAtualiza.getEndereco().getRegiao());
+		cabeleireiroEncontrado.setValorAdulto(cabeleireiroFilterAtualiza.getValorAdulto());
+		cabeleireiroEncontrado.setValorInfantil(cabeleireiroFilterAtualiza.getValorInfantil());
 
 		cabeleireiroRepository.setCabeleireiroInfoById(cabeleireiroEncontrado.getNomeEstabelecimento(),
 				cabeleireiroEncontrado.getCnpj(), cabeleireiroEncontrado.getEndereco().getRua(),
 				cabeleireiroEncontrado.getEndereco().getBairro(), cabeleireiroEncontrado.getEndereco().getCidade(),
 				cabeleireiroEncontrado.getEndereco().getCep(), cabeleireiroEncontrado.getEndereco().getNumero(),
-				cabeleireiroEncontrado.getEndereco().getComplemento(), cabeleireiroEncontrado.getEmail(),cabeleireiroEncontrado.getEndereco().getRegiao(), id);
+				cabeleireiroEncontrado.getEndereco().getComplemento(), cabeleireiroEncontrado.getEmail(),cabeleireiroEncontrado.getEndereco().getRegiao()
+				,cabeleireiroEncontrado.getValorAdulto(),cabeleireiroEncontrado.getValorInfantil(), id);
 	}
 
 	public Cabeleireiro salvarCabeleireiro(Cabeleireiro cabeleireiro) {

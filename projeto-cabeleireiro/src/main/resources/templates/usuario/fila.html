@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Fila</title>
+
+    <!-- Bootstrap -->
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/fila-usuario.css}" rel="stylesheet">
+    <link rel="icon" href="img/img.png">
+    
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    
+
+  </head>
+  <body>
+
+      <nav class="navbar navbar-default">
+        
+        <div class="container">
+        
+        <div class="navbar-header">
+           
+                <h1><span th:utext="${nome}"></span></h1>
+   
+
+      
+              
+                <a th:href="@{/logout}">Sair</a>
+               <a th:href="@{/usuarios/usuario/pos-login-usuario}">Voltar</a>
+
+      
+
+        </div>
+
+      </nav>
+    <br><br>
+
+    <div class="container">
+     
+
+     <div class="page-header">
+          
+          <div class="row"> 
+
+         
+
+  
+              <form class="button" th:action="@{/usuarios/fila/{id}(id=${id})}" th:object="${cabeleireiro}"  method="POST">
+                       
+                       <b>Valores: </b>Corte adulto R$ <span th:utext="${adulto}"></span>   <input type="radio" th:name="valor" th:value="${adulto}" checked="checked"/>   
+                   Corte infantil R$  <span th:utext="${infantil}"></span>   <input type="radio" th:name="valor" th:value="${infantil}" />
+                       
+                        <input type="submit" class="btn btn-info "value="Entrar na fila"/>
+                        
+                  </form>
+              <br>
+           
+             
+          
+      <button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#demo">Sair da Fila</button>
+     <div id="demo" class="collapse out">
+       <input type="text" placeholder="Motivo da desistência"/>
+          <button class="btn btn-info">Confirmar</button>
+  </div>
+          
+          
+          
+ 
+          </div>
+          
+          <div class="form-group col-sm-4">
+              
+          
+    
+              <ul class="lista-info">
+
+             
+             
+                <li><b>Tempo medio de atendimento: </b></li>
+                <li><b>Tempo estimado para ser atendido:</b> </li>
+              </ul>
+
+          </div>
+
+          
+
+     </div>
+
+       <br><br><br>
+
+<section>
+ <div class="row">
+
+  <div class="form-group col-sm-4">
+
+    
+
+
+
+  </div>
+
+<div class="form-group col-sm-8">
+          <table class="table table-striped table-bordered table-hover table-condensed">
+        <thead>
+          <tr class="btn-info azul">
+
+            <th>Nome</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+              <td>Sleyter Bispo</td>
+              <td>Em andamento</td>
+          </tr>
+          <tr>
+              <td>Marco Lelis</td>
+              <td>Pendente</td>
+          </tr>
+          <tr>
+              <td>Thiago Abreu</td>
+              <td>Pendente</td>
+          </tr>
+
+          <tr>
+              <td>Bruno Vaz</td>
+              <td>Pendente</td>
+          </tr>
+
+          <tr>
+              <td>Erika Moreira</td>
+              <td>Pendente</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+  </section>
+
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+  </body>
+</html>

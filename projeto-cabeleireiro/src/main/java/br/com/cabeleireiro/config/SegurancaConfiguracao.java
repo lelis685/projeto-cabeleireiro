@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -54,6 +55,7 @@ public class SegurancaConfiguracao extends WebSecurityConfigurerAdapter{
 		.authoritiesByUsernameQuery(selectRolesCabelireiro)
 		.dataSource(dataSource)
 		.passwordEncoder(bCryptPasswordEncoder);
+		
 	}
 
 
@@ -74,15 +76,16 @@ public class SegurancaConfiguracao extends WebSecurityConfigurerAdapter{
 		.authenticated() .and().csrf().disable().formLogin()
 		.loginPage("/login")
 		.failureUrl("/login?error=true")
-		//.defaultSuccessUrl("/usuarios/usuario/pos-login-usuario")
 		.successHandler(lidaMultilasRoles)
+		
 		.usernameParameter("email")
 		.passwordParameter("senha")
 		.and().logout()
 		.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 		.logoutSuccessUrl("/").and().exceptionHandling()
-		.accessDeniedPage("/acesso-negado");
-
+		.accessDeniedPage("/acesso-negado")
+		.and()
+		.sessionManagement().enableSessionUrlRewriting(true);
 	}
 
 	@Override
