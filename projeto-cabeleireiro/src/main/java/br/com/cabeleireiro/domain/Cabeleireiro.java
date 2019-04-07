@@ -2,7 +2,9 @@ package br.com.cabeleireiro.domain;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,6 +23,8 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
@@ -70,6 +74,10 @@ public class Cabeleireiro {
 	
 	@OneToMany(mappedBy="cabeleireiro",cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	private List<Fila> filas  = new ArrayList<Fila>();
+	
+	@OneToMany(mappedBy = "cabeleireiro")
+	@Fetch(FetchMode.SUBSELECT) 
+	private Set<Desistencia> desistencias = new  HashSet<>();
 
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -107,6 +115,13 @@ public class Cabeleireiro {
 		this.ativo = ativo;
 	}
 	
+	public Set<Desistencia> getDesistencias() {
+		return desistencias;
+	}
+
+	public void setDesistencias(Set<Desistencia> desistencias) {
+		this.desistencias = desistencias;
+	}
 	
 	
 

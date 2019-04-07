@@ -73,6 +73,10 @@ public class Usuario {
 	@OneToMany(mappedBy = "usuario")
 	@Fetch(FetchMode.SUBSELECT) 
 	private Set<Fila> filas = new HashSet<Fila>();
+	
+	@OneToMany(mappedBy = "usuario")
+	@Fetch(FetchMode.SUBSELECT) 
+	private Set<Desistencia> desistencias = new  HashSet<>();
 
 	public Usuario() {
 	}
@@ -177,6 +181,16 @@ public class Usuario {
 
 	public int getAtivo() {
 		return ativo;
+	}
+	
+	
+
+	public Set<Desistencia> getDesistencias() {
+		return desistencias;
+	}
+
+	public void setDesistencias(Set<Desistencia> desistencias) {
+		this.desistencias = desistencias;
 	}
 
 	public void setAtivo(int ativo) {

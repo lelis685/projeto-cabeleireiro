@@ -1,14 +1,16 @@
 package br.com.cabeleireiro.web.controller;
 
-import java.time.LocalDate;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.http.HttpRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -23,12 +25,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.com.cabeleireiro.domain.Cabeleireiro;
+import br.com.cabeleireiro.domain.Desistencia;
 import br.com.cabeleireiro.domain.Fila;
 import br.com.cabeleireiro.domain.Status;
 import br.com.cabeleireiro.domain.Usuario;
 import br.com.cabeleireiro.repository.filter.CabeleireiroFilter;
 import br.com.cabeleireiro.repository.filter.UsuarioFilter;
 import br.com.cabeleireiro.service.CabeleireiroServico;
+import br.com.cabeleireiro.service.DesistenciaServico;
 import br.com.cabeleireiro.service.FilaServico;
 import br.com.cabeleireiro.service.UsuarioServico;
 
@@ -41,10 +45,12 @@ public class UsuarioController {
 
 	@Autowired
 	private CabeleireiroServico cabeleireiroServico;
-	
+
 	@Autowired
 	private FilaServico filaServico;
-
+	
+	@Autowired
+	private DesistenciaServico desistenciaServico;
 
 	@GetMapping("/cadastrar")
 	public ModelAndView cadastrar() {
@@ -55,7 +61,6 @@ public class UsuarioController {
 		return mv;
 	}
 
-
 	@PostMapping("/desativar/{id}")
 	public ModelAndView desativar(@PathVariable("id") Long id) {
 		ModelAndView mv = new ModelAndView();
@@ -64,7 +69,7 @@ public class UsuarioController {
 		mv.addObject("msgSucesso", "Conta desativada com sucesso.");
 		return mv;
 	}
-
+	
 
 	@PostMapping("/salvar")
 	public ModelAndView salvarUsuario(@Valid Usuario usuario, BindingResult bindingResult) {
@@ -86,50 +91,110 @@ public class UsuarioController {
 
 		return mv;
 	}
+	
+	
 
+	@PostMapping("/sair/{id}")
+	public String sairFila(@PathVariable("id") Long id,HttpServletRequest req) {
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
+		Usuario usuario = usuarioServico.encontrarUsuarioPorEmail(auth.getName());
+
+		Cabeleireiro cabeleireiro = cabeleireiroServico.encontrarCabeleireiroPorId(id);
+
+		Fila usuarioExiste = filaServico.usuarioExiste(usuario);
+
+		
+		if (usuarioExiste != null) {
+			desistenciaServico.salvarDesistencia(new Desistencia(cabeleireiro, usuario
+					, usuarioExiste.getValor(),req.getParameter("motivo"), formataData()));
+			
+			filaServico.sairFila(usuarioExiste.getUsuario());
+		}
+		
+		return "redirect:/usuarios/fila/" + id;
+	}
+	
+	
 	@GetMapping("/fila/{id}")
 	public ModelAndView mostrarPagFila(@PathVariable("id") Long id) {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("usuario/fila");
-		
+
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		
+
 		Usuario usuario = usuarioServico.encontrarUsuarioPorEmail(auth.getName());
-	
+
 		Cabeleireiro cabeleireiroEncontrado = cabeleireiroServico.encontrarCabeleireiroPorId(id);
-		mv.addObject("cabeleireiro",cabeleireiroEncontrado);
-		mv.addObject("usuario",usuario);
-		mv.addObject("nome","Bem-vindo ao "+cabeleireiroEncontrado.getNomeEstabelecimento());
+		List<Fila> filaPorCabeleireiro = filaServico.getFilaPorCabeleireiro(cabeleireiroEncontrado);
 		
+
+		mv.addObject("fila", filaPorCabeleireiro);
+		mv.addObject("cabeleireiro", cabeleireiroEncontrado);
+		mv.addObject("usuario", usuario);
+		mv.addObject("nome", "Bem-vindo ao " + cabeleireiroEncontrado.getNomeEstabelecimento());
+
+		mv.addObject("infantil", +cabeleireiroEncontrado.getValorInfantil());
+		mv.addObject("adulto", +cabeleireiroEncontrado.getValorAdulto());
+	
+		Fila usuarioExiste = filaServico.usuarioExiste(usuario);
 		
-		mv.addObject("infantil",+cabeleireiroEncontrado.getValorInfantil());
-		mv.addObject("adulto",+cabeleireiroEncontrado.getValorAdulto());
-		
-		
-		
-		
+		if (usuarioExiste != null) {
+			mv.addObject("error","Você está em uma fila do "+ usuarioExiste.getCabeleireiro().getNomeEstabelecimento());
+			return mv;
+		}
+
 		return mv;
 	}
-	
-	
+
 	@PostMapping("/fila/{id}")
 	public ModelAndView gravarFila(@PathVariable("id") Long id, HttpServletRequest req) {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	
+
 		Usuario usuario = usuarioServico.encontrarUsuarioPorEmail(auth.getName());
-	
+
 		Cabeleireiro cabeleireiro = cabeleireiroServico.encontrarCabeleireiroPorId(id);
-	
+
+		Fila usuarioExiste = filaServico.usuarioExiste(usuario);
+
+		if (usuarioExiste != null) {
+			return mostrarPagFila(id);
+		}
+
+		Date data = formataData();
+
+
+		Fila fila = new Fila(cabeleireiro, usuario, data, null, null, Status.PENDENTE,
+				Double.parseDouble(req.getParameter("valor")));
 		
-		Fila fila = new Fila(cabeleireiro, usuario, LocalDate.now(), null, null, Status.PENDENTE,Double.parseDouble(req.getParameter("valor")));
-		
+
 		filaServico.inserirFila(fila);
-		
+
+
 		return mostrarPagFila(id);
 	}
 
+	private Date formataData() {
+		// formatar data atual com horas
+		String dataAtual = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+		SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		TimeZone tz = TimeZone.getTimeZone("America/Sao_Paulo");
+		TimeZone.setDefault(tz);
+		formato.setTimeZone(tz);
+
+		Date data = null;
+
+		try {
+			data = formato.parse(dataAtual);
+
+			System.err.println(data);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return data;
+	}
 
 	@GetMapping("/editar/{id}")
 	public ModelAndView mostrarFormularioAtualizar(@PathVariable("id") Long id) {
@@ -137,10 +202,11 @@ public class UsuarioController {
 
 		Usuario usuarioEncotrado = usuarioServico.encontrarUsuarioPorId(id);
 
-		UsuarioFilter usuario = new UsuarioFilter(usuarioEncotrado.getId(),usuarioEncotrado.getNome(), usuarioEncotrado.getSobreNome(),
-				usuarioEncotrado.getCelular(), usuarioEncotrado.getDataNascimento(), usuarioEncotrado.getEmail());
+		UsuarioFilter usuario = new UsuarioFilter(usuarioEncotrado.getId(), usuarioEncotrado.getNome(),
+				usuarioEncotrado.getSobreNome(), usuarioEncotrado.getCelular(), usuarioEncotrado.getDataNascimento(),
+				usuarioEncotrado.getEmail());
 
-		mv.addObject("usuario",usuario);
+		mv.addObject("usuario", usuario);
 
 		mv.setViewName("usuario/atualiza-cadastro-usuario");
 
@@ -148,21 +214,20 @@ public class UsuarioController {
 	}
 
 	@PostMapping("/atualizar/{id}")
-	public ModelAndView atualizarUsuario(@PathVariable("id") Long id, @Valid UsuarioFilter usuario, BindingResult resultado) {
+	public ModelAndView atualizarUsuario(@PathVariable("id") Long id, @Valid UsuarioFilter usuario,
+			BindingResult resultado) {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("usuario/atualiza-cadastro-usuario");
-		modelAndView.addObject("usuario",usuario);	
+		modelAndView.addObject("usuario", usuario);
 		if (resultado.hasErrors()) {
 			usuario.setId(id);
 			return modelAndView;
 		}
-		usuarioServico.atualizarUsuario(id,usuario);
+		usuarioServico.atualizarUsuario(id, usuario);
 
 		modelAndView.addObject("msgSucesso", "Dados atualizados com sucesso.");
 		return modelAndView;
 	}
-
-
 
 	@RequestMapping(value = "/usuario/pos-login-usuario", method = RequestMethod.GET)
 	public ModelAndView home(@ModelAttribute CabeleireiroFilter cabeleireiroFilter) {
@@ -175,7 +240,7 @@ public class UsuarioController {
 
 		mv.addObject("nomeUsuario", "Bem-vindo " + usuario.getNome() + ", " + usuario.getSobreNome());
 
-		mv.addObject("usuario",usuario);
+		mv.addObject("usuario", usuario);
 
 		mv.addObject("cabeleireiroFilter", cabeleireiroFilter);
 
@@ -191,29 +256,26 @@ public class UsuarioController {
 		model.addAttribute("cabeleireiroFilter", cabeleireiroFilter);
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		
+
 		Usuario usuario = usuarioServico.encontrarUsuarioPorEmail(auth.getName());
 
 		ModelAndView mv = new ModelAndView("usuario/pos-login-usuario");
 		mv.addObject("nomeUsuario", "Bem-vindo " + usuario.getNome() + ", " + usuario.getSobreNome());
 
-		mv.addObject("usuario",usuario);
+		mv.addObject("usuario", usuario);
 
-		CabeleireiroFilter c = new CabeleireiroFilter(cabeleireiroFilter.getId(),cabeleireiroFilter.getNomeEstabelecimento(), cabeleireiroFilter.getRua(), 
-				cabeleireiroFilter.getBairro(), cabeleireiroFilter.getCidade(), cabeleireiroFilter.getCep(),cabeleireiroFilter.getRegiao() ,cabeleireiroFilter.getComplemento(),cabeleireiroFilter.getNumero());
+		CabeleireiroFilter c = new CabeleireiroFilter(cabeleireiroFilter.getId(),
+				cabeleireiroFilter.getNomeEstabelecimento(), cabeleireiroFilter.getRua(),
+				cabeleireiroFilter.getBairro(), cabeleireiroFilter.getCidade(), cabeleireiroFilter.getCep(),
+				cabeleireiroFilter.getRegiao(), cabeleireiroFilter.getComplemento(), cabeleireiroFilter.getNumero());
 
 		List<CabeleireiroFilter> cabeleireiros = usuarioServico.filtrar(c);
 
 		mv.addObject("total", cabeleireiros.size());
 
-
 		model.addAttribute("cabeleireiros", cabeleireiros);
-
 
 		return mv;
 	}
-
-
-
 
 }

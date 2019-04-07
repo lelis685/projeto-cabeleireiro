@@ -1,6 +1,6 @@
 package br.com.cabeleireiro.domain;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -30,17 +32,17 @@ public class Fila {
 	@JoinColumn
 	private Usuario usuario;
 
-	@DateTimeFormat(iso = ISO.DATE)
-	@Column(name = "entrada_fila", columnDefinition = "DATE")
-	private LocalDate entradaFila;
+	@Column(name = "entrada_fila")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date entradaFila;
 
-	@DateTimeFormat(iso = ISO.DATE)
-	@Column(name = "inicio_corte", columnDefinition = "DATE")
-	private LocalDate inicioCorte;
+	@DateTimeFormat(iso = ISO.DATE_TIME)
+	@Column(name = "inicio_corte", columnDefinition = "TIMESTAMP")
+	private Date inicioCorte;
 
-	@DateTimeFormat(iso = ISO.DATE)
-	@Column(name = "fim_corte", columnDefinition = "DATE")
-	private LocalDate fimCorte;
+	@DateTimeFormat(iso = ISO.DATE_TIME)
+	@Column(name = "fim_corte", columnDefinition = "TIMESTAMP")
+	private Date fimCorte;
 
 	@Enumerated(EnumType.STRING)
 	private Status status;
@@ -49,8 +51,8 @@ public class Fila {
 	
 	
 
-	public Fila(Cabeleireiro cabeleireiro, Usuario usuario, LocalDate entradaFila, LocalDate inicioCorte,
-			LocalDate fimCorte, Status status, double valor) {
+	public Fila(Cabeleireiro cabeleireiro, Usuario usuario, Date entradaFila, Date inicioCorte,
+			Date fimCorte, Status status, double valor) {
 		this.cabeleireiro = cabeleireiro;
 		this.usuario = usuario;
 		this.entradaFila = entradaFila;
@@ -61,6 +63,16 @@ public class Fila {
 	}
 
 	public Fila() {
+	}
+	
+	
+
+	public Cabeleireiro getCabeleireiro() {
+		return cabeleireiro;
+	}
+
+	public void setCabeleireiro(Cabeleireiro cabeleireiro) {
+		this.cabeleireiro = cabeleireiro;
 	}
 
 	public Long getId() {
@@ -80,27 +92,27 @@ public class Fila {
 		this.usuario = usuario;
 	}
 
-	public LocalDate getEntradaFila() {
+	public Date getEntradaFila() {
 		return entradaFila;
 	}
 
-	public void setEntradaFila(LocalDate entradaFila) {
+	public void setEntradaFila(Date entradaFila) {
 		this.entradaFila = entradaFila;
 	}
 
-	public LocalDate getInicioCorte() {
+	public Date getInicioCorte() {
 		return inicioCorte;
 	}
 
-	public void setInicioCorte(LocalDate inicioCorte) {
+	public void setInicioCorte(Date inicioCorte) {
 		this.inicioCorte = inicioCorte;
 	}
 
-	public LocalDate getFimCorte() {
+	public Date getFimCorte() {
 		return fimCorte;
 	}
 
-	public void setFimCorte(LocalDate fimCorte) {
+	public void setFimCorte(Date fimCorte) {
 		this.fimCorte = fimCorte;
 	}
 

@@ -118,9 +118,7 @@
            
               <td th:text="${cabeleireiro.rua} + ', '+ ${cabeleireiro.numero} + ' - ' +${cabeleireiro.complemento}+' - '+
                   ${cabeleireiro.bairro} + ', '+  ${cabeleireiro.cidade} + ' Região '+ ${cabeleireiro.regiao}+', '+${cabeleireiro.cep}">Endereço completo</td>
-           
                  
-                
                    <td> <a  th:href="@{/usuarios/fila/{id}(id=${cabeleireiro.id})}" >Visualizar fila</a></td>
           </tr>
         </tbody>

@@ -16,15 +16,15 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-    
+
+
 
   </head>
   <body>
 
       <nav class="navbar navbar-default">
         
-        <div class="container">
-        
+       
         <div class="navbar-header">
            
                 <h1><span th:utext="${nome}"></span></h1>
@@ -34,8 +34,6 @@
               
                 <a th:href="@{/logout}">Sair</a>
                <a th:href="@{/usuarios/usuario/pos-login-usuario}">Voltar</a>
-
-      
 
         </div>
 
@@ -51,24 +49,24 @@
 
          
 
-  
+            <h3><span style="font-size: 20; color: #FF1C19;" th:utext="${error}"></span></h3>
+            
               <form class="button" th:action="@{/usuarios/fila/{id}(id=${id})}" th:object="${cabeleireiro}"  method="POST">
-                       
                        <b>Valores: </b>Corte adulto R$ <span th:utext="${adulto}"></span>   <input type="radio" th:name="valor" th:value="${adulto}" checked="checked"/>   
                    Corte infantil R$  <span th:utext="${infantil}"></span>   <input type="radio" th:name="valor" th:value="${infantil}" />
                        
-                        <input type="submit" class="btn btn-info "value="Entrar na fila"/>
+                        <input type="submit" class="btn btn-info " name="c" value="Entrar na fila" id="submitButton" onclick="this.form.submit(); this.disabled = true;"/>
                         
                   </form>
               <br>
            
              
-          
+   <form class="button" th:action="@{/usuarios/sair/{id}(id=${id})}" th:object="${usuario}"  method="POST">    
       <button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#demo">Sair da Fila</button>
-     <div id="demo" class="collapse out">
-       <input type="text" placeholder="Motivo da desistência"/>
-          <button class="btn btn-info">Confirmar</button>
-  </div>
+          <input type="text" name="motivo" placeholder="Motivo da desistência"/>
+           <button type="submit"  class="btn btn-info" >Confirmar</button>
+           </form>
+
           
           
           
@@ -100,47 +98,32 @@
 
   <div class="form-group col-sm-4">
 
-    
-
-
 
   </div>
+   
 
 <div class="form-group col-sm-8">
           <table class="table table-striped table-bordered table-hover table-condensed">
-        <thead>
+      <thead>
           <tr class="btn-info azul">
-
-            <th>Nome</th>
+            <th>Nome Cliente</th>
             <th>Status</th>
+             <th>Entrada na fila</th>
           </tr>
         </thead>
 
         <tbody>
-          <tr>
-              <td>Sleyter Bispo</td>
-              <td>Em andamento</td>
-          </tr>
-          <tr>
-              <td>Marco Lelis</td>
-              <td>Pendente</td>
-          </tr>
-          <tr>
-              <td>Thiago Abreu</td>
-              <td>Pendente</td>
-          </tr>
-
-          <tr>
-              <td>Bruno Vaz</td>
-              <td>Pendente</td>
-          </tr>
-
-          <tr>
-              <td>Erika Moreira</td>
-              <td>Pendente</td>
+         <tr th:each="f: ${fila}">
+              <td th:text="${f.usuario.nome} + ' ' + ${f.usuario.sobreNome}"></td>
+           
+              <td th:text="${f.status}"></td>
+               <td th:text="${f.entradaFila}"></td>
+          
           </tr>
         </tbody>
       </table>
+      
+      
     </div>
 
   </div>
