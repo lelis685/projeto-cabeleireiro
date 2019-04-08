@@ -50,9 +50,17 @@
      
      
      <div class="form-group col-sm-6">
-              <button class="btn btn-info">Iniciar Corte</button><br><br>
+            
+              
+              
+              
+                  <form class="button" th:action="@{/cabeleireiros/inicia}"   method="POST">
+                        <input type="submit" class="btn btn-info "value="Iniciar Corte" id="submitButton" />
+                  </form>
+                  
+                  
      
-
+<br><br>
 <div class="form-group col-sm-8">
           <table class="table table-striped table-bordered table-hover table-condensed">
       <thead>

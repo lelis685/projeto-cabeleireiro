@@ -86,7 +86,7 @@ public class CabeleireiroController {
 	
 		Cabeleireiro cabeleireiro = cabeleireiroServico.encontrarCabeleireiroPorEmail(auth.getName());
 		
-	     List<Fila> filaPorCabeleireiro = filaServico.getFilaPorCabeleireiro(cabeleireiro);
+	    List<Fila> filaPorCabeleireiro = filaServico.getFilaPorCabeleireiro(cabeleireiro);
 		
 
 		mv.addObject("fila", filaPorCabeleireiro);
@@ -100,12 +100,13 @@ public class CabeleireiroController {
 	}
 	
 	@PostMapping("/inicia")
-	public String iniciarCorte() {
+	public String inicio() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
+		Cabeleireiro cabeleireiro = cabeleireiroServico.encontrarCabeleireiroPorEmail(auth.getName());
 		
-		
-		
-		return "redirect:/cabeleireiros/pos-login-cabeleireiro";
+		filaServico.iniciaCorte(cabeleireiro);
+		return "redirect:/cabeleireiros/cabeleireiro/pos-login-cabeleireiro";
 	}
 	
 	

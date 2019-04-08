@@ -8,8 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.cabeleireiro.domain.Cabeleireiro;
 import br.com.cabeleireiro.domain.Fila;
+import br.com.cabeleireiro.domain.Status;
 import br.com.cabeleireiro.domain.Usuario;
 import br.com.cabeleireiro.repository.FilaRepository;
+import br.com.cabeleireiro.util.FormatarData;
 
 @Service
 public class FilaServico {
@@ -36,7 +38,7 @@ public class FilaServico {
 	
 	
 	public List<Fila> getFilaPorCabeleireiro(Cabeleireiro cabeleireiro){
-		return filaRepository.findByCabeleireiroOrderByEntradaFila(cabeleireiro);
+		return filaRepository.findByCabeleireiroOrderByEntradaFilaAsc(cabeleireiro);
 	}
 	
 	
@@ -45,10 +47,16 @@ public class FilaServico {
 	}
 	
 	
+	public Fila getPrimeiroUsuario(Cabeleireiro cabeleireiro) {
+		return  filaRepository.findFirst1ByCabeleireiroOrderByEntradaFilaAsc(cabeleireiro);
+	}
 	
 	
 	
-	
+	@Transactional
+	public void iniciaCorte(Cabeleireiro cabeleireiro) {
+		filaRepository.iniciaCorte(Status.EM_ANDAMENTO,FormatarData.formataData(),getPrimeiroUsuario(cabeleireiro).getUsuario(),cabeleireiro);
+	}
 	
 	
 	

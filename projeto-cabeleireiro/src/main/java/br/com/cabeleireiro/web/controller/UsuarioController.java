@@ -1,10 +1,7 @@
 package br.com.cabeleireiro.web.controller;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -35,6 +32,7 @@ import br.com.cabeleireiro.service.CabeleireiroServico;
 import br.com.cabeleireiro.service.DesistenciaServico;
 import br.com.cabeleireiro.service.FilaServico;
 import br.com.cabeleireiro.service.UsuarioServico;
+import br.com.cabeleireiro.util.FormatarData;
 
 @Controller
 @RequestMapping("/usuarios")
@@ -108,7 +106,7 @@ public class UsuarioController {
 		
 		if (usuarioExiste != null) {
 			desistenciaServico.salvarDesistencia(new Desistencia(cabeleireiro, usuario
-					, usuarioExiste.getValor(),req.getParameter("motivo"), formataData()));
+					, usuarioExiste.getValor(),req.getParameter("motivo"), FormatarData.formataData()));
 			
 			filaServico.sairFila(usuarioExiste.getUsuario());
 		}
@@ -163,7 +161,7 @@ public class UsuarioController {
 			return mostrarPagFila(id);
 		}
 
-		Date data = formataData();
+		Date data =FormatarData.formataData();
 
 
 		Fila fila = new Fila(cabeleireiro, usuario, data, null, Status.PENDENTE,
@@ -176,25 +174,6 @@ public class UsuarioController {
 		return mostrarPagFila(id);
 	}
 
-	private Date formataData() {
-		// formatar data atual com horas
-		String dataAtual = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-		SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		TimeZone tz = TimeZone.getTimeZone("America/Sao_Paulo");
-		TimeZone.setDefault(tz);
-		formato.setTimeZone(tz);
-
-		Date data = null;
-
-		try {
-			data = formato.parse(dataAtual);
-
-			System.err.println(data);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return data;
-	}
 
 	@GetMapping("/editar/{id}")
 	public ModelAndView mostrarFormularioAtualizar(@PathVariable("id") Long id) {

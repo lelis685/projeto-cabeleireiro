@@ -1,5 +1,6 @@
 package br.com.cabeleireiro.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,12 +18,14 @@ public interface FilaRepository extends JpaRepository<Fila, Long> {
 	
 	
 	@Modifying
-	@Query("update Fila u set u.status = ?1  where u.usuario = ?2")
-	void iniciaCorte(Status status,Usuario usuario);
+	@Query("update Fila u set u.status = ?1, u.inicioCorte= ?2  where u.usuario = ?3 and u.cabeleireiro = ?4")
+	void iniciaCorte(Status status,Date date,Usuario usuario,Cabeleireiro cabeleireiro);
 	
-	// Fila findFirst
+	//List<User> findFirst10ByLastname(String lastname, Sort sort);
+
+	Fila findFirst1ByCabeleireiroOrderByEntradaFilaAsc(Cabeleireiro cabeleireiro);
 	
-	List<Fila> findByCabeleireiroOrderByEntradaFila(Cabeleireiro cabeleireiro);
+	List<Fila> findByCabeleireiroOrderByEntradaFilaAsc(Cabeleireiro cabeleireiro);
 	
 	void deleteByUsuario(Usuario usuario);
 	
