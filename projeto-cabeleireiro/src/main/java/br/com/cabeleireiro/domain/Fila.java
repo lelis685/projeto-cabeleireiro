@@ -40,10 +40,6 @@ public class Fila {
 	@Column(name = "inicio_corte", columnDefinition = "TIMESTAMP")
 	private Date inicioCorte;
 
-	@DateTimeFormat(iso = ISO.DATE_TIME)
-	@Column(name = "fim_corte", columnDefinition = "TIMESTAMP")
-	private Date fimCorte;
-
 	@Enumerated(EnumType.STRING)
 	private Status status;
 
@@ -51,13 +47,11 @@ public class Fila {
 	
 	
 
-	public Fila(Cabeleireiro cabeleireiro, Usuario usuario, Date entradaFila, Date inicioCorte,
-			Date fimCorte, Status status, double valor) {
+	public Fila(Cabeleireiro cabeleireiro, Usuario usuario, Date entradaFila, Date inicioCorte, Status status, double valor) {
 		this.cabeleireiro = cabeleireiro;
 		this.usuario = usuario;
 		this.entradaFila = entradaFila;
 		this.inicioCorte = inicioCorte;
-		this.fimCorte = fimCorte;
 		this.status = status;
 		this.valor = valor;
 	}
@@ -108,13 +102,6 @@ public class Fila {
 		this.inicioCorte = inicioCorte;
 	}
 
-	public Date getFimCorte() {
-		return fimCorte;
-	}
-
-	public void setFimCorte(Date fimCorte) {
-		this.fimCorte = fimCorte;
-	}
 
 	public Status getStatus() {
 		return status;

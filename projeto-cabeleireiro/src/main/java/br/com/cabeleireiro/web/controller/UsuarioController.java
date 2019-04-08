@@ -166,7 +166,7 @@ public class UsuarioController {
 		Date data = formataData();
 
 
-		Fila fila = new Fila(cabeleireiro, usuario, data, null, null, Status.PENDENTE,
+		Fila fila = new Fila(cabeleireiro, usuario, data, null, Status.PENDENTE,
 				Double.parseDouble(req.getParameter("valor")));
 		
 

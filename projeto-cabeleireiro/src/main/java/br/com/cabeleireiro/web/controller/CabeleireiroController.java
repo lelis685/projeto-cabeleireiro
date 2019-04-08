@@ -1,5 +1,7 @@
 package br.com.cabeleireiro.web.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.com.cabeleireiro.domain.Cabeleireiro;
+import br.com.cabeleireiro.domain.Fila;
 import br.com.cabeleireiro.repository.filter.CabeleireiroFilter;
 import br.com.cabeleireiro.repository.filter.CabeleireiroFilterAtualiza;
 import br.com.cabeleireiro.service.CabeleireiroServico;
+import br.com.cabeleireiro.service.FilaServico;
 
 @Controller
 @RequestMapping("/cabeleireiros")
@@ -27,6 +31,10 @@ public class CabeleireiroController {
 
 	@Autowired
 	private CabeleireiroServico cabeleireiroServico;
+	
+	@Autowired
+	private FilaServico filaServico;
+
 	
 	@GetMapping("/cadastrar")
 	public ModelAndView cadastrar() {
@@ -36,6 +44,8 @@ public class CabeleireiroController {
 		mv.setViewName("cabeleireiro/cadastro-cabeleireiro");
 		return mv;
 	}
+	
+	
 	
 	@PostMapping("/salvar")
 	public ModelAndView salvarCabeleireiro(@Valid Cabeleireiro cabeleireiro, BindingResult bindingResult) {
@@ -67,7 +77,6 @@ public class CabeleireiroController {
 	@RequestMapping(value = "/cabeleireiro/pos-login-cabeleireiro", method = RequestMethod.GET)
 	public ModelAndView home(@ModelAttribute CabeleireiroFilter cabeleireiroFilter) {
 	
-		System.out.println("home()");
 	
 		ModelAndView mv = new ModelAndView();
 		
@@ -76,12 +85,27 @@ public class CabeleireiroController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	
 		Cabeleireiro cabeleireiro = cabeleireiroServico.encontrarCabeleireiroPorEmail(auth.getName());
+		
+	     List<Fila> filaPorCabeleireiro = filaServico.getFilaPorCabeleireiro(cabeleireiro);
+		
+
+		mv.addObject("fila", filaPorCabeleireiro);
+		
 	
 		mv.addObject("cabeleireiro",cabeleireiro);
 		
 		System.out.println(cabeleireiro);
 	
 		return mv;
+	}
+	
+	@PostMapping("/inicia")
+	public String iniciarCorte() {
+		
+		
+		
+		
+		return "redirect:/cabeleireiros/pos-login-cabeleireiro";
 	}
 	
 	

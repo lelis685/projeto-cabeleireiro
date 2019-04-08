@@ -53,38 +53,23 @@
               <button class="btn btn-info">Iniciar Corte</button><br><br>
      
 
-   <div class="form-group col-sm-8">
+<div class="form-group col-sm-8">
           <table class="table table-striped table-bordered table-hover table-condensed">
-        <thead>
+      <thead>
           <tr class="btn-info azul">
-
-            <th>Nome</th>
+            <th>Nome Cliente</th>
             <th>Status</th>
+             <th>Entrada na fila</th>
           </tr>
         </thead>
 
         <tbody>
-          <tr>
-              <td>Sleyter Bispo</td>
-              <td>Em andamento</td>
-          </tr>
-          <tr>
-              <td>Marco Lelis</td>
-              <td>Pendente</td>
-          </tr>
-          <tr>
-              <td>Thiago Abreu</td>
-              <td>Pendente</td>
-          </tr>
-
-          <tr>
-              <td>Bruno Vaz</td>
-              <td>Pendente</td>
-          </tr>
-
-          <tr>
-              <td>Erika Moreira</td>
-              <td>Pendente</td>
+         <tr th:each="f: ${fila}">
+              <td th:text="${f.usuario.nome} + ' ' + ${f.usuario.sobreNome}"></td>
+           
+              <td th:text="${f.status}"></td>
+               <td th:text="${f.entradaFila}"></td>
+          
           </tr>
         </tbody>
       </table>
