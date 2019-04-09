@@ -20,10 +20,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import br.com.cabeleireiro.domain.Cabeleireiro;
 import br.com.cabeleireiro.domain.Fila;
+import br.com.cabeleireiro.domain.Transacao;
 import br.com.cabeleireiro.repository.filter.CabeleireiroFilter;
 import br.com.cabeleireiro.repository.filter.CabeleireiroFilterAtualiza;
 import br.com.cabeleireiro.service.CabeleireiroServico;
 import br.com.cabeleireiro.service.FilaServico;
+import br.com.cabeleireiro.service.TransacaoServico;
+import br.com.cabeleireiro.util.FormatarData;
 
 @Controller
 @RequestMapping("/cabeleireiros")
@@ -34,6 +37,9 @@ public class CabeleireiroController {
 	
 	@Autowired
 	private FilaServico filaServico;
+	
+	@Autowired
+	private TransacaoServico transacaoServico;
 
 	
 	@GetMapping("/cadastrar")
@@ -108,6 +114,27 @@ public class CabeleireiroController {
 		filaServico.iniciaCorte(cabeleireiro);
 		return "redirect:/cabeleireiros/cabeleireiro/pos-login-cabeleireiro";
 	}
+	
+	@PostMapping("/finaliza")
+	public String fim() {
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Cabeleireiro cabeleireiro = cabeleireiroServico.encontrarCabeleireiroPorEmail(auth.getName());
+		
+		Fila primeiroUsuario = filaServico.getPrimeiroUsuario(cabeleireiro);
+		
+		transacaoServico.salvarTransacao(new Transacao
+				(cabeleireiro, primeiroUsuario.getUsuario(), 
+						primeiroUsuario.getValor(), 
+						primeiroUsuario.getEntradaFila(), 
+						primeiroUsuario.getInicioCorte(), 
+						FormatarData.formataData()));
+		
+		filaServico.sairFila(primeiroUsuario.getUsuario());
+		
+		return "redirect:/cabeleireiros/cabeleireiro/pos-login-cabeleireiro";
+	}
+	
 	
 	
 	@GetMapping("/editar/{id}")

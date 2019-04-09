@@ -20,8 +20,6 @@ public interface FilaRepository extends JpaRepository<Fila, Long> {
 	@Modifying
 	@Query("update Fila u set u.status = ?1, u.inicioCorte= ?2  where u.usuario = ?3 and u.cabeleireiro = ?4")
 	void iniciaCorte(Status status,Date date,Usuario usuario,Cabeleireiro cabeleireiro);
-	
-	//List<User> findFirst10ByLastname(String lastname, Sort sort);
 
 	Fila findFirst1ByCabeleireiroOrderByEntradaFilaAsc(Cabeleireiro cabeleireiro);
 	

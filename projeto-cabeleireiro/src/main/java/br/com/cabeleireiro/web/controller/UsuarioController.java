@@ -102,7 +102,6 @@ public class UsuarioController {
 		Cabeleireiro cabeleireiro = cabeleireiroServico.encontrarCabeleireiroPorId(id);
 
 		Fila usuarioExiste = filaServico.usuarioExiste(usuario);
-
 		
 		if (usuarioExiste != null) {
 			desistenciaServico.salvarDesistencia(new Desistencia(cabeleireiro, usuario
