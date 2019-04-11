@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -207,7 +206,7 @@ public class UsuarioController {
 		return modelAndView;
 	}
 
-	@RequestMapping(value = "/usuario/pos-login-usuario", method = RequestMethod.GET)
+	@RequestMapping(value = "/usuario/home", method = RequestMethod.GET)
 	public ModelAndView home(@ModelAttribute CabeleireiroFilter cabeleireiroFilter) {
 
 		ModelAndView mv = new ModelAndView();
@@ -222,13 +221,12 @@ public class UsuarioController {
 
 		mv.addObject("cabeleireiroFilter", cabeleireiroFilter);
 
-		mv.setViewName("usuario/pos-login-usuario");
+		mv.setViewName("usuario/home");
 
 		return mv;
 	}
 
 	@GetMapping("/pesquisa-cabeleireiro")
-	@Scope("prototype")
 	public ModelAndView pesquisarCabeleireiro(@ModelAttribute CabeleireiroFilter cabeleireiroFilter, Model model) {
 
 		model.addAttribute("cabeleireiroFilter", cabeleireiroFilter);
@@ -237,7 +235,7 @@ public class UsuarioController {
 
 		Usuario usuario = usuarioServico.encontrarUsuarioPorEmail(auth.getName());
 
-		ModelAndView mv = new ModelAndView("usuario/pos-login-usuario");
+		ModelAndView mv = new ModelAndView("usuario/home");
 		mv.addObject("nomeUsuario", "Bem-vindo " + usuario.getNome() + ", " + usuario.getSobreNome());
 
 		mv.addObject("usuario", usuario);

@@ -77,7 +77,6 @@ public class SegurancaConfiguracao extends WebSecurityConfigurerAdapter{
 		.loginPage("/login")
 		.failureUrl("/login?error=true")
 		.successHandler(lidaMultilasRoles)
-		
 		.usernameParameter("email")
 		.passwordParameter("senha")
 		.and().logout()

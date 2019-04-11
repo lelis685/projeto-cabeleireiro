@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 public class LidaMultilasRoles extends SimpleUrlAuthenticationSuccessHandler {
 
 
-	    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+	    private RedirectStrategy estrategiaRedirecinamento = new DefaultRedirectStrategy();
 
 	    @Override
 	    protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
@@ -27,17 +27,14 @@ public class LidaMultilasRoles extends SimpleUrlAuthenticationSuccessHandler {
 	        String targetUrl = determineTargetUrl(authentication);
 
 	        if (response.isCommitted()) {
-	            System.out.println("Can't redirect");
+	            System.out.println("Não pode redirecionar");
 	            return;
 	        }
 
-	        redirectStrategy.sendRedirect(request, response, targetUrl);
+	        estrategiaRedirecinamento.sendRedirect(request, response, targetUrl);
 	    }
 
-	    /*
-	     * This method extracts the roles of currently logged-in user and returns
-	     * appropriate URL according to his/her role.
-	     */
+	  
 	    protected String determineTargetUrl(Authentication authentication) {
 	        String url = "";
 
@@ -52,9 +49,9 @@ public class LidaMultilasRoles extends SimpleUrlAuthenticationSuccessHandler {
 	        System.out.println(roles);
 
 	       if (isAdmin(roles)) {
-	            url = "/cabeleireiros/cabeleireiro/pos-login-cabeleireiro";
+	            url = "/cabeleireiros/cabeleireiro/home";
 	        } else if (isUser(roles)) {
-	            url = "/usuarios/usuario/pos-login-usuario";
+	            url = "/usuarios/usuario/home";
 	        } else {
 	            url = "/accessDenied";
 	        }
@@ -76,15 +73,17 @@ public class LidaMultilasRoles extends SimpleUrlAuthenticationSuccessHandler {
 	        return false;
 	    }
 
-	    public void setRedirectStrategy(RedirectStrategy redirectStrategy) {
-	        this.redirectStrategy = redirectStrategy;
-	    }
 
-	    protected RedirectStrategy getRedirectStrategy() {
-	        return redirectStrategy;
-	    }
-	 
-	 
+		public RedirectStrategy getEstrategiaRedirecinamento() {
+			return estrategiaRedirecinamento;
+		}
+
+
+		public void setEstrategiaRedirecinamento(RedirectStrategy estrategiaRedirecinamento) {
+			this.estrategiaRedirecinamento = estrategiaRedirecinamento;
+		}
+
+	   
 	 
 	 
 	

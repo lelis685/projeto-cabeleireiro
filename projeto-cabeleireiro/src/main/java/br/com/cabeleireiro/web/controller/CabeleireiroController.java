@@ -34,146 +34,133 @@ public class CabeleireiroController {
 
 	@Autowired
 	private CabeleireiroServico cabeleireiroServico;
-	
+
 	@Autowired
 	private FilaServico filaServico;
-	
+
 	@Autowired
 	private TransacaoServico transacaoServico;
 
-	
 	@GetMapping("/cadastrar")
 	public ModelAndView cadastrar() {
 		ModelAndView mv = new ModelAndView();
 		Cabeleireiro cabeleireiro = new Cabeleireiro();
-		mv.addObject("cabeleireiro",cabeleireiro );
+		mv.addObject("cabeleireiro", cabeleireiro);
 		mv.setViewName("cabeleireiro/cadastro-cabeleireiro");
 		return mv;
 	}
-	
-	
-	
+
 	@PostMapping("/salvar")
 	public ModelAndView salvarCabeleireiro(@Valid Cabeleireiro cabeleireiro, BindingResult bindingResult) {
 		ModelAndView mv = new ModelAndView();
-		  
+
 		Cabeleireiro cabeleireiroExiste = cabeleireiroServico.encontrarCabeleireiroPorEmail(cabeleireiro.getEmail());
-		
+
 		if (cabeleireiroExiste != null) {
-			bindingResult
-			    .rejectValue("email", "error.usuario",
-			    		"Já existe um cabeleireiro com esse email");
+			bindingResult.rejectValue("email", "error.usuario", "Já existe um cabeleireiro com esse email");
 		}
-		
+
 		System.out.println(cabeleireiro);
-		
-		if(bindingResult.hasErrors()) {
+
+		if (bindingResult.hasErrors()) {
 			mv.setViewName("cabeleireiro/cadastro-cabeleireiro");
-		}else {
+		} else {
 			cabeleireiroServico.salvarCabeleireiro(cabeleireiro);
-			mv.addObject("msgSucesso","Cabeleireiro cadastrado com sucesso.");
+			mv.addObject("msgSucesso", "Cabeleireiro cadastrado com sucesso.");
 			mv.addObject("cabeleireiro", new Cabeleireiro());
 			mv.setViewName("cabeleireiro/cadastro-cabeleireiro");
 		}
-		
+
 		return mv;
 	}
-	
-	
-	@RequestMapping(value = "/cabeleireiro/pos-login-cabeleireiro", method = RequestMethod.GET)
+
+	@RequestMapping(value = "/cabeleireiro/home", method = RequestMethod.GET)
 	public ModelAndView home(@ModelAttribute CabeleireiroFilter cabeleireiroFilter) {
-	
-	
+
 		ModelAndView mv = new ModelAndView();
-		
-		mv.setViewName("cabeleireiro/pos-login-cabeleireiro");
-	
+
+		mv.setViewName("cabeleireiro/home");
+
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	
+
 		Cabeleireiro cabeleireiro = cabeleireiroServico.encontrarCabeleireiroPorEmail(auth.getName());
-		
-	    List<Fila> filaPorCabeleireiro = filaServico.getFilaPorCabeleireiro(cabeleireiro);
-		
+
+		List<Fila> filaPorCabeleireiro = filaServico.getFilaPorCabeleireiro(cabeleireiro);
 
 		mv.addObject("fila", filaPorCabeleireiro);
-		
-	
-		mv.addObject("cabeleireiro",cabeleireiro);
-		
+
+		mv.addObject("cabeleireiro", cabeleireiro);
+
 		System.out.println(cabeleireiro);
-	
+
 		return mv;
 	}
-	
+
 	@PostMapping("/inicia")
 	public String inicio() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		
+
 		Cabeleireiro cabeleireiro = cabeleireiroServico.encontrarCabeleireiroPorEmail(auth.getName());
-		
+
 		filaServico.iniciaCorte(cabeleireiro);
-		return "redirect:/cabeleireiros/cabeleireiro/pos-login-cabeleireiro";
+		return "redirect:/cabeleireiros/cabeleireiro/home";
 	}
-	
+
 	@PostMapping("/finaliza")
 	public String fim() {
-		
+
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Cabeleireiro cabeleireiro = cabeleireiroServico.encontrarCabeleireiroPorEmail(auth.getName());
-		
+
 		Fila primeiroUsuario = filaServico.getPrimeiroUsuario(cabeleireiro);
-		
-		transacaoServico.salvarTransacao(new Transacao
-				(cabeleireiro, primeiroUsuario.getUsuario(), 
-						primeiroUsuario.getValor(), 
-						primeiroUsuario.getEntradaFila(), 
-						primeiroUsuario.getInicioCorte(), 
-						FormatarData.formataData()));
-		
+
+		transacaoServico.salvarTransacao(new Transacao(cabeleireiro, primeiroUsuario.getUsuario(),
+				primeiroUsuario.getValor(), primeiroUsuario.getEntradaFila(), primeiroUsuario.getInicioCorte(),
+				FormatarData.formataData()));
+
 		filaServico.sairFila(primeiroUsuario.getUsuario());
-		
-		return "redirect:/cabeleireiros/cabeleireiro/pos-login-cabeleireiro";
+
+		return "redirect:/cabeleireiros/cabeleireiro/home";
 	}
-	
-	
-	
+
 	@GetMapping("/editar/{id}")
-	public ModelAndView mostrarFormularioAtualizar(@PathVariable("id") Long id,Model model) {
+	public ModelAndView mostrarFormularioAtualizar(@PathVariable("id") Long id, Model model) {
 		ModelAndView mv = new ModelAndView();
-		
+
 		Cabeleireiro cabeleireiroEncotrado = cabeleireiroServico.encontrarCabeleireiroPorId(id);
-	
-	    CabeleireiroFilterAtualiza cabeleireiro = new CabeleireiroFilterAtualiza
-			   (cabeleireiroEncotrado.getId(), cabeleireiroEncotrado.getNomeEstabelecimento(), cabeleireiroEncotrado.getCnpj(),
-					   cabeleireiroEncotrado.getEndereco(), cabeleireiroEncotrado.getEmail(), cabeleireiroEncotrado.getTelefone(),cabeleireiroEncotrado.getValorAdulto(),
-					   cabeleireiroEncotrado.getValorInfantil());
-		
-		mv.addObject("cabeleireiro",cabeleireiro);
-	
+
+		CabeleireiroFilterAtualiza cabeleireiro = new CabeleireiroFilterAtualiza(cabeleireiroEncotrado.getId(),
+				cabeleireiroEncotrado.getNomeEstabelecimento(), cabeleireiroEncotrado.getCnpj(),
+				cabeleireiroEncotrado.getEndereco(), cabeleireiroEncotrado.getEmail(),
+				cabeleireiroEncotrado.getTelefone(), cabeleireiroEncotrado.getValorAdulto(),
+				cabeleireiroEncotrado.getValorInfantil());
+
+		mv.addObject("cabeleireiro", cabeleireiro);
+
 		mv.setViewName("cabeleireiro/atualiza-cadastro-cabeleireiro");
-	
-	    return mv;
+
+		return mv;
 	}
-	
+
 	@PostMapping("/atualizar/{id}")
-	  public ModelAndView atualizarCabeleireiro(@PathVariable("id") long id, @Valid CabeleireiroFilterAtualiza cabeleireiroFilterAtualiza, BindingResult resultado) {
+	public ModelAndView atualizarCabeleireiro(@PathVariable("id") long id,
+			@Valid CabeleireiroFilterAtualiza cabeleireiroFilterAtualiza, BindingResult resultado) {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("cabeleireiro/atualiza-cadastro-cabeleireiro");
-		modelAndView.addObject("cabeleireiro",cabeleireiroServico.encontrarCabeleireiroPorEmail(cabeleireiroFilterAtualiza.getEmail()));	
+		modelAndView.addObject("cabeleireiro",
+				cabeleireiroServico.encontrarCabeleireiroPorEmail(cabeleireiroFilterAtualiza.getEmail()));
 		if (resultado.hasErrors()) {
-    	  cabeleireiroFilterAtualiza.setId(id);
+			cabeleireiroFilterAtualiza.setId(id);
 			modelAndView.setViewName("cabeleireiro/atualiza-cadastro-cabeleireiro");
 			return modelAndView;
-      }
-		
-      cabeleireiroServico.atualizarCabeleireiro(id, cabeleireiroFilterAtualiza);
-      modelAndView.addObject("msgSucesso", "Dados atualizados com sucesso.");
-   
-      return modelAndView;
-  }
-	
-	
-	
+		}
+
+		cabeleireiroServico.atualizarCabeleireiro(id, cabeleireiroFilterAtualiza);
+		modelAndView.addObject("msgSucesso", "Dados atualizados com sucesso.");
+
+		return modelAndView;
+	}
+
 	@PostMapping("/desativar/{id}")
 	public ModelAndView desativar(@PathVariable("id") Long id) {
 		ModelAndView mv = new ModelAndView();
@@ -182,15 +169,5 @@ public class CabeleireiroController {
 		mv.addObject("msgSucesso", "Conta desativada com sucesso.");
 		return mv;
 	}
-	
-	
-	
-	
-	
 
-	
-	
-	
-	
-	
 }
