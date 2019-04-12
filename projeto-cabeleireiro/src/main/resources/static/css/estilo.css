@@ -94,6 +94,13 @@ body{
 	border: 1px solid #fff;
 }
 
+.container2{
+	background: linear-gradient(to right, #2b2b2b 0%, #574f2f 100%);
+	box-shadow: 0 15px 25px rgba(0,0,0,.9);
+	border-radius: 15px;
+	opacity: 0.8;
+}
+
 .form-login{
 	max-width: 400px;
 	padding: 15px;

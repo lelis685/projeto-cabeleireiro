@@ -137,7 +137,7 @@ public class UsuarioController {
 		Fila usuarioExiste = filaServico.usuarioExiste(usuario);
 		
 		if (usuarioExiste != null) {
-			mv.addObject("error","Você está em uma fila do "+ usuarioExiste.getCabeleireiro().getNomeEstabelecimento());
+			mv.addObject("error","Você está na fila do "+ usuarioExiste.getCabeleireiro().getNomeEstabelecimento());
 			return mv;
 		}
 
@@ -215,7 +215,7 @@ public class UsuarioController {
 
 		Usuario usuario = usuarioServico.encontrarUsuarioPorEmail(auth.getName());
 
-		mv.addObject("nomeUsuario", "Bem-vindo " + usuario.getNome() + ", " + usuario.getSobreNome());
+		mv.addObject("nomeUsuario",usuario.getNome() + ", " + usuario.getSobreNome());
 
 		mv.addObject("usuario", usuario);
 
@@ -236,7 +236,7 @@ public class UsuarioController {
 		Usuario usuario = usuarioServico.encontrarUsuarioPorEmail(auth.getName());
 
 		ModelAndView mv = new ModelAndView("usuario/home");
-		mv.addObject("nomeUsuario", "Bem-vindo " + usuario.getNome() + ", " + usuario.getSobreNome());
+		mv.addObject("nomeUsuario",usuario.getNome() + ", " + usuario.getSobreNome());
 
 		mv.addObject("usuario", usuario);
 
