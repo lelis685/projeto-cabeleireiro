@@ -1,101 +1,73 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-   
-   
-    <title>TELA 3 TCC</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Home</title>
 
-    <!-- Bootstrap -->
-    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
-    <link th:href="@{/css/posLoginCabeleireiro.css}" rel="stylesheet">
+<link rel="stylesheet" th:href="@{/bootstrap/css/tela1.css}">
+<link rel="icon" th:href="@{/imagens/tesoura.png}">
 
-  </head>
-  <body>
+<link rel="stylesheet" th:href="@{/css/estilo.css}">
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+<link rel="stylesheet" th:href="@{/css/estiloCliente.css}">
 
-      <nav class="navbar navbar-default">
-        
-        <div class="container">
-        
-        <div class="navbar-header">
+</head>
+<body>
 
-          <a href="#" class="navbar-brand"><h1>Salão Faça- Espaço do seu cabelo</h1></a>
-
-        </div>
-
-        <div clas="collapse navbar-collapse" id="barra-navegacao">
-          <button class="dropdown btn btn-default">
-                <a href="" class="dropdown-toggle noneunderline" data-toggle="dropdown">
-                Minha Conta <span class="caret"></span>
-              </a>
-                <ul class="dropdown-menu">
-                 <li><a  th:href="@{/logout}">Sair</a></li>
-                  <li> <a  th:href="@{/cabeleireiros/editar/{id}(id=${cabeleireiro.id})}"  >Atualizar Cadastro</a></li>
-               
-                </ul>
-               
-              </button>
-          </ul>
-
-        </div>
-
-        </div>
-
-      </nav>
-    <br><br><br><br>
-
-    <div class="container">
-     
-     
-     <div class="form-group col-sm-6">
-            
-              
-              
-              
-                  <form class="button" th:action="@{/cabeleireiros/inicia}"   method="POST">
-                        <input type="submit" class="btn btn-info "value="Iniciar Corte" id="submitButton" />
-                  </form>
-                  <br>
-                   <form class="button" th:action="@{/cabeleireiros/finaliza}"   method="POST">
-                        <input type="submit" class="btn btn-danger "value="Finalizar Corte" id="submitButton" />
-                  </form>
-                  
-                  
-     
-<br><br>
-<div class="form-group col-sm-8">
-          <table class="table table-striped table-bordered table-hover table-condensed">
-      <thead>
-          <tr class="btn-info azul">
-            <th>Nome Cliente</th>
-            <th>Status</th>
-             <th>Entrada na fila</th>
-          </tr>
-        </thead>
-
-        <tbody>
-         <tr th:each="f: ${fila}">
-              <td th:text="${f.usuario.nome} + ' ' + ${f.usuario.sobreNome}"></td>
-           
-              <td th:text="${f.status}"></td>
-               <td th:text="${f.entradaFila}"></td>
-          
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-  </div>
+	<button  class="btn btn-danger">
+		<a th:href="@{/logout}">Sair</a>
+	</button>
+	<button class="btn btn-info">
+		<a th:href="@{/cabeleireiros/editar/{id}(id=${cabeleireiro.id})}">Atualizar
+			cadastro <span th:utext="${nomeCabeleireiro}"></span>
+		</a>
+	</button>
+	
+		<button class="btn btn-secondary">
+		<a th:href="@{/cabeleireiros/relatorio}">Relatório</a>
+	</button>
 
 
+<div align="center">
+	<br><br><br><br><br><br><br><br>
+	<p><form class="needs-validation" style=" display: inline;" th:action="@{/cabeleireiros/inicia}"
+		method="POST">
+		<input type="submit" class="btn btn-info " value="Iniciar Corte"
+			id="submitButton" />
+
+	</form>
+
+	<form class="button"  style=" display: inline;" th:action="@{/cabeleireiros/finaliza}"
+		method="POST">
+		<input type="submit" class="btn btn-success " value="Finalizar Corte"
+			id="submitButton" />
+	</form>
+</p>
+
+	<div class="form-group col-sm-8">
+		<table class="table table-sm table-dark">
+			<thead>
+				<tr class="btn-info azul">
+					<th>Nome Cliente</th>
+					<th>Status</th>
+					<th>Entrada na fila</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="f: ${fila}"
+					style="background: linear-gradient(to right, #2b2b2b 0%, #574f2f 100%); box-shadow: 0 15px 25px rgba(0, 0, 0, .9); border-radius: 15px; opacity: 0.8;">
+					<td th:text="${f.usuario.nome} + ' ' + ${f.usuario.sobreNome}"></td>
+
+					<td th:text="${f.status}"></td>
+					<td th:text="${f.entradaFila}"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
 
 
-
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
-  </body>
+</body>
 </html>

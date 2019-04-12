@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Relatório</title>
+
+<link rel="stylesheet" th:href="@{/bootstrap/css/tela1.css}">
+<link rel="icon" th:href="@{/imagens/tesoura.png}">
+
+<link rel="stylesheet" th:href="@{/css/estilo.css}">
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+<link rel="stylesheet" th:href="@{/css/estiloCliente.css}">
+
+</head>
+<body>
+
+<button class="btn btn-danger">
+		<a th:href="@{/logout}">Sair</a>
+	</button>
+	 <button class="btn btn-info">
+		<a th:href="@{/cabeleireiros/cabeleireiro/home}">Voltar</a>
+	</button> 
+
+    <div class="container">
+    
+ <div align="center" style="color: white;"><b><h2>Relatórios</h2></b></div>  
+    	
+    	<div class="p-2 mb-2 bg-info text-white">
+    	Faturamento Total Mensal:
+    	</div>
+    	
+    	<div class="p-2 mb-2 bg-info text-white">
+    	Faturamento Total Anual:  
+    	</div>
+    	
+    	<div class="p-2 mb-2 bg-info text-white">
+    	Quantidade de Clientes Atendidos no Mês:
+    	</div>
+    	
+    	<div class="p-2 mb-2 bg-info text-white">
+    	Quantidade de Desistência de Corte:
+    	</div>
+  
+        <div class="p-2 mb-2 bg-info text-white">
+    	Tempo Médio de Atendimento:
+    	</div>
+  
+    </div>
+    
+    
+    
+</body>
+</html>

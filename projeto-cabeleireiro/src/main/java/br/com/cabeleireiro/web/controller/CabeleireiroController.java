@@ -49,6 +49,18 @@ public class CabeleireiroController {
 		mv.setViewName("cabeleireiro/cadastro-cabeleireiro");
 		return mv;
 	}
+	
+	@GetMapping("/relatorio")
+	public ModelAndView relatorio() {
+		ModelAndView mv = new ModelAndView();
+		
+		//Cabeleireiro cabeleireiro = new Cabeleireiro();
+		
+		//mv.addObject("cabeleireiro", cabeleireiro);
+	
+		mv.setViewName("cabeleireiro/relatorio");
+		return mv;
+	}
 
 	@PostMapping("/salvar")
 	public ModelAndView salvarCabeleireiro(@Valid Cabeleireiro cabeleireiro, BindingResult bindingResult) {
@@ -88,6 +100,7 @@ public class CabeleireiroController {
 		List<Fila> filaPorCabeleireiro = filaServico.getFilaPorCabeleireiro(cabeleireiro);
 
 		mv.addObject("fila", filaPorCabeleireiro);
+		mv.addObject("nomeCabeleireiro",cabeleireiro.getNomeEstabelecimento());
 
 		mv.addObject("cabeleireiro", cabeleireiro);
 
