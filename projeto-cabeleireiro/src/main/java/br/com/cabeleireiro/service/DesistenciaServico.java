@@ -3,6 +3,7 @@ package br.com.cabeleireiro.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.cabeleireiro.domain.Cabeleireiro;
 import br.com.cabeleireiro.domain.Desistencia;
 import br.com.cabeleireiro.repository.DesistenciaRepository;
 
@@ -20,7 +21,9 @@ public class DesistenciaServico {
     	return desistenciaRepository.save(desistencia);
     }
 	
-	
+    public int quantidadeDesistenciaMes(Cabeleireiro cabeleireiro) {
+    	return desistenciaRepository.getQuantidadeDesistenciaMes(cabeleireiro);
+    }
 	
 	
 }

@@ -119,4 +119,12 @@ public class Fila {
 		this.valor = valor;
 	}
 
+	@Override
+	public String toString() {
+		return "Fila [id=" + id + ", cabeleireiro=" + cabeleireiro + ", usuario=" + usuario + ", entradaFila="
+				+ entradaFila + ", inicioCorte=" + inicioCorte + ", status=" + status + ", valor=" + valor + "]";
+	}
+	
+	
+
 }

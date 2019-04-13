@@ -125,6 +125,7 @@ public class UsuarioController {
 		Cabeleireiro cabeleireiroEncontrado = cabeleireiroServico.encontrarCabeleireiroPorId(id);
 		List<Fila> filaPorCabeleireiro = filaServico.getFilaPorCabeleireiro(cabeleireiroEncontrado);
 		
+		System.err.println(filaPorCabeleireiro);
 
 		mv.addObject("fila", filaPorCabeleireiro);
 		mv.addObject("cabeleireiro", cabeleireiroEncontrado);
@@ -145,7 +146,7 @@ public class UsuarioController {
 	}
 
 	@PostMapping("/fila/{id}")
-	public ModelAndView gravarFila(@PathVariable("id") Long id, HttpServletRequest req) {
+	public String gravarFila(@PathVariable("id") Long id, HttpServletRequest req) {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -156,10 +157,10 @@ public class UsuarioController {
 		Fila usuarioExiste = filaServico.usuarioExiste(usuario);
 
 		if (usuarioExiste != null) {
-			return mostrarPagFila(id);
+			return "redirect:/usuarios/fila/" + id;
 		}
 
-		Date data =FormatarData.formataData();
+		Date data = FormatarData.formataData();
 
 
 		Fila fila = new Fila(cabeleireiro, usuario, data, null, Status.PENDENTE,
@@ -169,7 +170,7 @@ public class UsuarioController {
 		filaServico.inserirFila(fila);
 
 
-		return mostrarPagFila(id);
+		return "redirect:/usuarios/fila/" + id;
 	}
 
 

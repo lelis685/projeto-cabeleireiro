@@ -24,6 +24,7 @@ import br.com.cabeleireiro.domain.Transacao;
 import br.com.cabeleireiro.repository.filter.CabeleireiroFilter;
 import br.com.cabeleireiro.repository.filter.CabeleireiroFilterAtualiza;
 import br.com.cabeleireiro.service.CabeleireiroServico;
+import br.com.cabeleireiro.service.DesistenciaServico;
 import br.com.cabeleireiro.service.FilaServico;
 import br.com.cabeleireiro.service.TransacaoServico;
 import br.com.cabeleireiro.util.FormatarData;
@@ -40,6 +41,9 @@ public class CabeleireiroController {
 
 	@Autowired
 	private TransacaoServico transacaoServico;
+	
+	@Autowired
+	private DesistenciaServico desistenciaServico;
 
 	@GetMapping("/cadastrar")
 	public ModelAndView cadastrar() {
@@ -54,11 +58,27 @@ public class CabeleireiroController {
 	public ModelAndView relatorio() {
 		ModelAndView mv = new ModelAndView();
 		
-		//Cabeleireiro cabeleireiro = new Cabeleireiro();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Cabeleireiro cabeleireiro = cabeleireiroServico.encontrarCabeleireiroPorEmail(auth.getName());
 		
-		//mv.addObject("cabeleireiro", cabeleireiro);
+		double somaMensal = transacaoServico.somaMensal(cabeleireiro);
+		mv.addObject("somaMensal", somaMensal);
+		
+		double somaAnual = transacaoServico.somaAnual(cabeleireiro);
+		mv.addObject("somaAnual", somaAnual);
+		
+		int quantidadeClientesMes = transacaoServico.quantidadeClientesMes(cabeleireiro);
+		mv.addObject("quantidadeClientesMes", quantidadeClientesMes);
+		
+		int quantidadeDesistenciaMes = desistenciaServico.quantidadeDesistenciaMes(cabeleireiro);
+		mv.addObject("quantidadeDesistenciaMes", quantidadeDesistenciaMes);
 	
+	    String tempoMedioCorte = transacaoServico.tempoMedioCorte(cabeleireiro);
+		mv.addObject("tempoMedioCorte", tempoMedioCorte);
+		
+		
 		mv.setViewName("cabeleireiro/relatorio");
+		
 		return mv;
 	}
 

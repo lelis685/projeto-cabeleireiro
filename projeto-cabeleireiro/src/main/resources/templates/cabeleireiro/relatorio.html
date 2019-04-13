@@ -28,23 +28,23 @@
  <div align="center" style="color: white;"><b><h2>Relatórios</h2></b></div>  
     	
     	<div class="p-2 mb-2 bg-info text-white">
-    	Faturamento Total Mensal:
+    	Faturamento Total Mensal: <span style="color: yellow;"><b>R$ <span th:utext="${somaMensal}"></span></b></span>
     	</div>
     	
     	<div class="p-2 mb-2 bg-info text-white">
-    	Faturamento Total Anual:  
+    	Faturamento Total Anual:  <span style="color: yellow;"><b>R$ <span th:utext="${somaAnual}"></span></b></span>
     	</div>
     	
     	<div class="p-2 mb-2 bg-info text-white">
-    	Quantidade de Clientes Atendidos no Mês:
+    	Quantidade de Clientes Atendidos no Mês: <span style="color: yellow;"><b><span th:utext="${quantidadeClientesMes}"></span></b></span>
     	</div>
     	
     	<div class="p-2 mb-2 bg-info text-white">
-    	Quantidade de Desistência de Corte:
+    	Quantidade de Desistência de Corte: <span style="color: yellow;"><b><span th:utext="${quantidadeDesistenciaMes}"></span></b></span>
     	</div>
   
         <div class="p-2 mb-2 bg-info text-white">
-    	Tempo Médio de Atendimento:
+    	Tempo Médio de Atendimento em hh:mm:ss(horas:minutos:segundos) <span style="color: yellow;"><b><span th:utext="${tempoMedioCorte}"></span></b></span>
     	</div>
   
     </div>

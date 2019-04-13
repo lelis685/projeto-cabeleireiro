@@ -10,14 +10,7 @@ import br.com.cabeleireiro.domain.Cabeleireiro;
 @Repository
 public interface CabeleireiroRepository extends JpaRepository<Cabeleireiro, Long> {
 
-	/*
-    CONSULTA QUE RETORNA DIFERENÇA EM MINUTOS DE INICIO E FIM
-	select inicio,fim,
-	 CAPTURA MINUTOS E ENTAO SOMA COM A CONVERSAO DE HORAS PARA MINUTOS
-	 TIME_FORMAT(time(fim) -  time(inicio),'%i' ) + TIME_FORMAT(time(fim) -  time(inicio),'%H' )*60
-	from teste;
-	
-	*/
+
 	
 	
 	Cabeleireiro findByEmail(String email);
