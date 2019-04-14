@@ -221,14 +221,16 @@ public class Cabeleireiro {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-	
-	
 
 	@Override
 	public String toString() {
 		return "Cabeleireiro [id=" + id + ", nomeEstabelecimento=" + nomeEstabelecimento + ", cnpj=" + cnpj
-				+ ", endereco=" + endereco + ", email=" + email + ", senha=" + senha + ", ativo=" + ativo + ", roles="
-				+ roles + "]";
+				+ ", endereco=" + endereco + ", email=" + email + ", ativo=" + ativo + ", telefone=" + telefone
+				+ ", valorAdulto=" + valorAdulto + ", valorInfantil=" + valorInfantil + "]";
 	}
+
+	
+	
+
 
 }

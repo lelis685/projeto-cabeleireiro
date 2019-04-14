@@ -27,7 +27,6 @@ public class HomeController {
 
 	@RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
 	public ModelAndView login(){
-		System.out.println("login");
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("login");
 		return mv;
@@ -38,7 +37,6 @@ public class HomeController {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("ativa-cadastro-usuario");
 		mv.addObject("usuario", new UsuarioFilterAtivar());
-		System.err.println("mostrarFormAtivar******************************************************");
 		return mv;
 	}
 
@@ -49,13 +47,10 @@ public class HomeController {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("ativa-cadastro-usuario");
 		mv.addObject("usuario", new UsuarioFilterAtivar());
-		System.err.println("ativar******************************************************");
 
 		Usuario usuarioClienteExiste = usuarioServico.encontrarUsuarioPorEmail(usuario.getEmail());
 		Cabeleireiro usuarioCabeleireiroExiste = cabeleireiroServico.encontrarCabeleireiroPorEmail(usuario.getEmail());
 		
-		System.out.println(usuarioClienteExiste);
-		System.out.println(usuarioCabeleireiroExiste);
 
 		if (usuarioClienteExiste == null && usuarioCabeleireiroExiste == null) {
 			mv.addObject("error", "Não existe um usuário com esse email");

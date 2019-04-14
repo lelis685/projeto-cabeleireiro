@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import br.com.cabeleireiro.domain.Cabeleireiro;
 import br.com.cabeleireiro.domain.Fila;
+import br.com.cabeleireiro.domain.Status;
 import br.com.cabeleireiro.domain.Transacao;
 import br.com.cabeleireiro.repository.filter.CabeleireiroFilter;
 import br.com.cabeleireiro.repository.filter.CabeleireiroFilterAtualiza;
@@ -61,20 +62,34 @@ public class CabeleireiroController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Cabeleireiro cabeleireiro = cabeleireiroServico.encontrarCabeleireiroPorEmail(auth.getName());
 		
-		double somaMensal = transacaoServico.somaMensal(cabeleireiro);
-		mv.addObject("somaMensal", somaMensal);
+		int existeCabeleireiro = transacaoServico.existeCabeleireiro(cabeleireiro);
 		
-		double somaAnual = transacaoServico.somaAnual(cabeleireiro);
-		mv.addObject("somaAnual", somaAnual);
+		if(existeCabeleireiro > 0) {
+			double somaMensal = transacaoServico.somaMensal(cabeleireiro);
+			mv.addObject("somaMensal", somaMensal);
+			
+			double somaAnual = transacaoServico.somaAnual(cabeleireiro);
+			mv.addObject("somaAnual", somaAnual);
+			
+			int quantidadeClientesMes = transacaoServico.quantidadeClientesMes(cabeleireiro);
+			mv.addObject("quantidadeClientesMes", quantidadeClientesMes);
+			
+			int quantidadeDesistenciaMes = desistenciaServico.quantidadeDesistenciaMes(cabeleireiro);
+			mv.addObject("quantidadeDesistenciaMes", quantidadeDesistenciaMes);
+			
+			String tempoMedioCorte = transacaoServico.tempoMedioCorte(cabeleireiro);
+			mv.addObject("tempoMedioCorte", tempoMedioCorte);
+			
+			mv.addObject("invalido", "");
+		}else {
+			mv.addObject("somaMensal", 0);
+			mv.addObject("somaAnual", 0);
+			mv.addObject("quantidadeClientesMes", 0);
+			mv.addObject("quantidadeDesistenciaMes", desistenciaServico.quantidadeDesistenciaMes(cabeleireiro));
+			mv.addObject("tempoMedioCorte", "00:00:00");
+			mv.addObject("invalido", "Não foi realizado nenhum corte até o momento");
+		}
 		
-		int quantidadeClientesMes = transacaoServico.quantidadeClientesMes(cabeleireiro);
-		mv.addObject("quantidadeClientesMes", quantidadeClientesMes);
-		
-		int quantidadeDesistenciaMes = desistenciaServico.quantidadeDesistenciaMes(cabeleireiro);
-		mv.addObject("quantidadeDesistenciaMes", quantidadeDesistenciaMes);
-	
-	    String tempoMedioCorte = transacaoServico.tempoMedioCorte(cabeleireiro);
-		mv.addObject("tempoMedioCorte", tempoMedioCorte);
 		
 		
 		mv.setViewName("cabeleireiro/relatorio");
@@ -134,8 +149,19 @@ public class CabeleireiroController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
 		Cabeleireiro cabeleireiro = cabeleireiroServico.encontrarCabeleireiroPorEmail(auth.getName());
-
-		filaServico.iniciaCorte(cabeleireiro);
+		
+		Fila primeiroUsuario = filaServico.getPrimeiroUsuario(cabeleireiro);
+		
+		System.err.println(primeiroUsuario);
+		
+		if(primeiroUsuario == null || primeiroUsuario.getStatus().equals(Status.EM_ANDAMENTO)) {
+			return "redirect:/cabeleireiros/cabeleireiro/home?errorInicio=true";
+		}
+		
+		if(primeiroUsuario.getStatus().equals(Status.PENDENTE) && primeiroUsuario != null) {
+			filaServico.iniciaCorte(cabeleireiro);
+		}
+		
 		return "redirect:/cabeleireiros/cabeleireiro/home";
 	}
 
@@ -146,12 +172,19 @@ public class CabeleireiroController {
 		Cabeleireiro cabeleireiro = cabeleireiroServico.encontrarCabeleireiroPorEmail(auth.getName());
 
 		Fila primeiroUsuario = filaServico.getPrimeiroUsuario(cabeleireiro);
+		
+		if(primeiroUsuario == null || primeiroUsuario.getStatus().equals(Status.PENDENTE)) {
+			return  "redirect:/cabeleireiros/cabeleireiro/home?error=true";
+		}
 
-		transacaoServico.salvarTransacao(new Transacao(cabeleireiro, primeiroUsuario.getUsuario(),
-				primeiroUsuario.getValor(), primeiroUsuario.getEntradaFila(), primeiroUsuario.getInicioCorte(),
-				FormatarData.formataData()));
-
-		filaServico.sairFila(primeiroUsuario.getUsuario());
+		if(primeiroUsuario.getStatus().equals(Status.EM_ANDAMENTO) && primeiroUsuario != null) {
+			transacaoServico.salvarTransacao(new Transacao(cabeleireiro, primeiroUsuario.getUsuario(),
+					primeiroUsuario.getValor(), primeiroUsuario.getEntradaFila(), primeiroUsuario.getInicioCorte(),
+					FormatarData.formataData()));
+			
+			filaServico.sairFila(primeiroUsuario.getUsuario());
+		}
+		
 
 		return "redirect:/cabeleireiros/cabeleireiro/home";
 	}
@@ -167,8 +200,11 @@ public class CabeleireiroController {
 				cabeleireiroEncotrado.getEndereco(), cabeleireiroEncotrado.getEmail(),
 				cabeleireiroEncotrado.getTelefone(), cabeleireiroEncotrado.getValorAdulto(),
 				cabeleireiroEncotrado.getValorInfantil());
+	
 
 		mv.addObject("cabeleireiro", cabeleireiro);
+		
+		System.err.println(cabeleireiro.getValorAdulto());
 
 		mv.setViewName("cabeleireiro/atualiza-cadastro-cabeleireiro");
 
@@ -178,8 +214,10 @@ public class CabeleireiroController {
 	@PostMapping("/atualizar/{id}")
 	public ModelAndView atualizarCabeleireiro(@PathVariable("id") long id,
 			@Valid CabeleireiroFilterAtualiza cabeleireiroFilterAtualiza, BindingResult resultado) {
+	
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("cabeleireiro/atualiza-cadastro-cabeleireiro");
+		
 		modelAndView.addObject("cabeleireiro",
 				cabeleireiroServico.encontrarCabeleireiroPorEmail(cabeleireiroFilterAtualiza.getEmail()));
 		if (resultado.hasErrors()) {

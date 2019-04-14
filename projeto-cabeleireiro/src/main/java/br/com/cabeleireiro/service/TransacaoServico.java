@@ -17,6 +17,11 @@ public class TransacaoServico {
 	public TransacaoServico(TransacaoRepository transacaoRepository) {
 		this.transacaoRepository = transacaoRepository;
 	}
+	
+	public int existeCabeleireiro(Cabeleireiro cabeleireiro) {
+		return transacaoRepository.getExisteCabeleireiro(cabeleireiro);
+		
+	}
 
 	public Transacao salvarTransacao(Transacao transacao) {
 		return transacaoRepository.save(transacao);

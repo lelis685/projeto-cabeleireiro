@@ -1,7 +1,5 @@
 package br.com.cabeleireiro.repository.filter;
 
-import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
@@ -11,31 +9,23 @@ public class CabeleireiroFilterAtualiza {
 
 	private Long id;
 
-	@Column(name = "nome_estabelecimento", nullable = false)
 	@NotEmpty(message = "*Por favor preencha seu nome do estabelecimento")
 	private String nomeEstabelecimento;
 
-	@Column(nullable = false)
 	@NotEmpty(message = "*Por favor preencha seu CNPJ")
 	private String cnpj;
 
-	@Column(nullable = false)
-	@Embedded
 	private Endereco endereco;
 
-	@Column(nullable = false)
 	@Email(message = "*Por favor preencha um email válido")
 	@NotEmpty(message = "*Por favor preencha seu email")
 	private String email;
 
-	@Column(nullable = false)
 	@NotEmpty(message = "*Por favor preencha seu telefone")
 	private String telefone;
 
-	@Column(name = "valor_adulto")
 	private double valorAdulto;
 
-	@Column(name = "valor_infantil")
 	private double valorInfantil;
 
 	public CabeleireiroFilterAtualiza() {
@@ -50,6 +40,8 @@ public class CabeleireiroFilterAtualiza {
 		this.endereco = endereco;
 		this.email = email;
 		this.telefone = telefone;
+		this.valorAdulto = valorAdulto;
+		this.valorInfantil = valorInfantil;
 	}
 
 	public Long getId() {
@@ -115,5 +107,14 @@ public class CabeleireiroFilterAtualiza {
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
+
+	@Override
+	public String toString() {
+		return "CabeleireiroFilterAtualiza [id=" + id + ", nomeEstabelecimento=" + nomeEstabelecimento + ", cnpj="
+				+ cnpj + ", endereco=" + endereco + ", email=" + email + ", telefone=" + telefone + ", valorAdulto="
+				+ valorAdulto + ", valorInfantil=" + valorInfantil + "]";
+	}
+	
+	
 
 }

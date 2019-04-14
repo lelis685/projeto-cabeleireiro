@@ -17,34 +17,38 @@
 <body>
 
 <button class="btn btn-danger">
-		<a th:href="@{/logout}">Sair</a>
+		<a style="color: black;" th:href="@{/logout}">Sair</a>
 	</button>
 	 <button class="btn btn-info">
-		<a th:href="@{/cabeleireiros/cabeleireiro/home}">Voltar</a>
+		<a style="color: black;" th:href="@{/cabeleireiros/cabeleireiro/home}">Voltar</a>
 	</button> 
 
     <div class="container">
     
  <div align="center" style="color: white;"><b><h2>Relatórios</h2></b></div>  
-    	
-    	<div class="p-2 mb-2 bg-info text-white">
-    	Faturamento Total Mensal: <span style="color: yellow;"><b>R$ <span th:utext="${somaMensal}"></span></b></span>
+ 	
+ 	 <div align="center">
+        <span style="color: white; font-size: 18px;" ><b><span th:utext="${invalido}"></span></b></span>
     	</div>
     	
     	<div class="p-2 mb-2 bg-info text-white">
-    	Faturamento Total Anual:  <span style="color: yellow;"><b>R$ <span th:utext="${somaAnual}"></span></b></span>
+    	Faturamento Total Mensal: <span style="color: white; font-size: 18px;" ><b>R$ <span th:utext="${somaMensal}"></span></b></span>
     	</div>
     	
     	<div class="p-2 mb-2 bg-info text-white">
-    	Quantidade de Clientes Atendidos no Mês: <span style="color: yellow;"><b><span th:utext="${quantidadeClientesMes}"></span></b></span>
+    	Faturamento Total Anual:  <span style="color: white; font-size: 18px;"><b>R$ <span th:utext="${somaAnual}"></span></b></span>
     	</div>
     	
     	<div class="p-2 mb-2 bg-info text-white">
-    	Quantidade de Desistência de Corte: <span style="color: yellow;"><b><span th:utext="${quantidadeDesistenciaMes}"></span></b></span>
+    	Quantidade de Clientes Atendidos no Mês: <span style="color: white; font-size: 18px;"><b><span th:utext="${quantidadeClientesMes}"></span></b></span>
+    	</div>
+    	
+    	<div class="p-2 mb-2 bg-info text-white">
+    	Quantidade de Desistência de Corte: <span style="color: white; font-size: 18px;"><b><span th:utext="${quantidadeDesistenciaMes}"></span></b></span>
     	</div>
   
         <div class="p-2 mb-2 bg-info text-white">
-    	Tempo Médio de Atendimento em hh:mm:ss(horas:minutos:segundos) <span style="color: yellow;"><b><span th:utext="${tempoMedioCorte}"></span></b></span>
+    	Tempo Médio de Atendimento em hh:mm:ss(horas:minutos:segundos) <span style="color: white; font-size: 18px;"><b><span th:utext="${tempoMedioCorte}"></span></b></span>
     	</div>
   
     </div>

@@ -16,39 +16,53 @@
 </head>
 
 <body>
-		      <button class="btn btn-danger" ><a th:href="@{/logout}" >Sair</a></button>
-              <button class="btn btn-info" ><a th:href="@{/usuarios/editar/{id}(id=${usuario.id})}">Atualizar cadastro <span th:utext="${nomeUsuario}"></span></a></button>
+	<button class="btn btn-danger">
+		<a style="color: black;" th:href="@{/logout}">Sair</a>
+	</button>
+	<button class="btn btn-info">
+		<a style="color: black;" th:href="@{/usuarios/editar/{id}(id=${usuario.id})}">Atualizar cadastro <span th:utext="${nomeUsuario}"></span>
+		</a>
+	</button>
 
 	<div class="container">
 		<form th:action="@{/usuarios/pesquisa-cabeleireiro}"
-			th:object="${cabeleireiroFilter}" method="get" class="needs-validation">
- <div class="form-row">
-    <div class="col-md-4 mb-3">
-       <input type="text" class="form-control" th:field="*{nomeEstabelecimento}" id="nomeEstabelecimento" placeholder="Nome Estabelecimento">
-    </div>
-    <div class="col-md-4 mb-3">
-      <input type="text" class="form-control" th:field="*{regiao}" name ="regiao" id="regiao" placeholder="Região">
-    </div>
-    <div class="col-md-4 mb-3">
-        <input type="text" class="form-control" th:field="*{bairro}" name ="bairro" id="bairro" placeholder="Bairro">
-      </div>
+			th:object="${cabeleireiroFilter}" method="get"
+			class="needs-validation">
+			<div class="form-row">
+				<div class="col-md-4 mb-3">
+					<input type="text" class="form-control"
+						th:field="*{nomeEstabelecimento}" id="nomeEstabelecimento"
+						placeholder="Nome Estabelecimento">
+				</div>
+				<div class="col-md-4 mb-3">
+					<input type="text" class="form-control" th:field="*{regiao}"
+						name="regiao" id="regiao" placeholder="Região">
+				</div>
+				<div class="col-md-4 mb-3">
+					<input type="text" class="form-control" th:field="*{bairro}"
+						name="bairro" id="bairro" placeholder="Bairro">
+				</div>
 
-     <div class="col-md-2 mb-3">
-       <input type="number" class="form-control" th:field="*{numero}"id="numero" placeholder="Número">
-    </div>
-  <div class="form-row">
-    <div class="col-md-4 mb-3">
-    <input type="text" class="form-control" th:field="*{rua}"  id="rua" placeholder="Rua">
-    </div>
-    <div class="col-md-4 mb-3">
-       <input type="text" class="form-control" th:field="*{cidade}"  id="cidade" placeholder="Cidade">
-    </div>
-    <div class="col-md-4 mb-3">
-       <input type="text" class="form-control" th:field="*{cep}"id="cep" placeholder="Cep">
-    </div>
-  </div>
-	</div>
-   <button class="btn btn-info"  type="submit">Pesquisar</button>
+				<div class="col-md-2 mb-3">
+					<input type="number" class="form-control" th:field="*{numero}"
+						id="numero" placeholder="Número">
+				</div>
+				<div class="form-row">
+					<div class="col-md-4 mb-3">
+						<input type="text" class="form-control" th:field="*{rua}" id="rua"
+							placeholder="Rua">
+					</div>
+					<div class="col-md-4 mb-3">
+						<input type="text" class="form-control" th:field="*{cidade}"
+							id="cidade" placeholder="Cidade">
+					</div>
+					<div class="col-md-4 mb-3">
+						<input type="text" class="form-control" th:field="*{cep}" id="cep"
+							placeholder="Cep">
+					</div>
+				</div>
+			</div>
+			<button class="btn btn-info" type="submit">Pesquisar</button>
 		</form>
 	</div>
 	<h2 align="center">
@@ -56,7 +70,7 @@
 	</h2>
 	<br>
 
-	<table  class="table table-sm table-dark">
+	<table class="table table-sm table-dark">
 		<thead>
 			<tr class="btn-info azul">
 				<th>Nome do Estabelecimento</th>
@@ -66,17 +80,18 @@
 		</thead>
 
 		<tbody>
-			<tr  style="background: linear-gradient(to right, #2b2b2b 0%, #574f2f 100%);box-shadow: 0 15px 25px rgba(0,0,0,.9);
-	border-radius: 15px;opacity: 0.8;"  th:each="cabeleireiro: ${cabeleireiros}">
-				<td   th:text="${cabeleireiro.nomeEstabelecimento}">Nome doEstabelecimento</td>
+			<tr
+				style="background: linear-gradient(to right, #2b2b2b 0%, #574f2f 100%); box-shadow: 0 15px 25px rgba(0, 0, 0, .9); border-radius: 15px; opacity: 0.8;"
+				th:each="cabeleireiro: ${cabeleireiros}">
+				<td th:text="${cabeleireiro.nomeEstabelecimento}">Nome do Estabelecimento</td>
 
 				<td
 					th:text="${cabeleireiro.rua} + ', '+ ${cabeleireiro.numero} + ' - ' +${cabeleireiro.complemento}+' - '+
                   ${cabeleireiro.bairro} + ', '+  ${cabeleireiro.cidade} + ' Região '+ ${cabeleireiro.regiao}+', '+${cabeleireiro.cep}">Endereço
 					completo</td>
 
-				<td><b><a style="color:blue;" th:href="@{/usuarios/fila/{id}(id=${cabeleireiro.id})}">Visualizar
-						fila</a></b></td>
+				<td><b><a style="color: blue;"
+						th:href="@{/usuarios/fila/{id}(id=${cabeleireiro.id})}">Visualizar fila</a></b></td>
 			</tr>
 		</tbody>
 	</table>

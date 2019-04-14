@@ -14,6 +14,11 @@ public interface TransacaoRepository extends JpaRepository<Transacao, Long> {
 			  value = "SELECT SUM(valor) FROM transacao  WHERE cabeleireiro_id = ?1 and month(entrada_fila) = month(now())", 
 			  nativeQuery = true)
 	 double getSomaMensal(Cabeleireiro cabeleireiro );
+	 
+	 @Query(
+			  value = "SELECT count(1) FROM transacao  WHERE cabeleireiro_id = ?1", 
+			  nativeQuery = true)
+	 int getExisteCabeleireiro(Cabeleireiro cabeleireiro );
 
 	 
 	 @Query(
