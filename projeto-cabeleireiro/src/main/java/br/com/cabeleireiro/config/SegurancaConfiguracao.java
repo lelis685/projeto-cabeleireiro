@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -72,8 +71,7 @@ public class SegurancaConfiguracao extends WebSecurityConfigurerAdapter{
 		.antMatchers("/ativa-cadastro-usuario").permitAll()
 		.antMatchers("/cabeleireiros/**").permitAll()
 		.antMatchers("/usuarios/**").permitAll()
-		.antMatchers("/admin/**").hasAnyAuthority("ADMIN").anyRequest()
-		.authenticated() .and().csrf().disable().formLogin()
+         .and().csrf().disable().formLogin()
 		.loginPage("/login")
 		.failureUrl("/login?error=true")
 		.successHandler(lidaMultilasRoles)

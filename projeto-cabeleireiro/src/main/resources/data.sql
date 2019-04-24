@@ -1,13 +1,13 @@
-/*REPLACE INTO `role` VALUES (1,'ADMIN');
+/*
 REPLACE INTO `role` VALUES (2,'USUARIO');
 REPLACE INTO `role` VALUES (3,'CABELEIREIRO');
 
-REPLACE INTO `usuario` VALUES (1,1,'11956555',' 2018-11-27','admin@gmail.com','admin','$2a$10$vCnGP80lnzwdgBjzbXqemuk/5PnIVQuYvs8UdwsQyOUulLLVX3ON.','admin');
+
 REPLACE INTO `usuario` VALUES (2,1,'11956377574',' 1997-11-27','marco@gmail.com','Marco','$2a$10$XT0Zq/d9rcq38RvdCw9WBOV.NSXFlIpDu1VZVN4d3lFNwiWRFLkMq','Antonio');
 REPLACE INTO `usuario` VALUES (3,1,'11945355574',' 1998-11-27','sleyter@gmail.com','Sleyter','$2a$10$pM9rR5RC6aQekNvWoW2vkuJBH5H7GqJB2cQoPPepj/tTvaqx57sJ6','Bispo');
 REPLACE INTO `usuario` VALUES (4,1,'11945369574',' 2000-12-25','thiago@gmail.com','Thiago','$2a$10$J.7vIBcVVVA0M.zD3BZ5MeZxQtMK0tXPvpnGmD/j4g6qP9UuX.D8u','Silva');
 
-REPLACE INTO `usuarios_roles` VALUES(1,1);
+
 REPLACE INTO `usuarios_roles` VALUES(2,2);
 REPLACE INTO `usuarios_roles` VALUES(3,2);
 REPLACE INTO `usuarios_roles` VALUES(4,2);
